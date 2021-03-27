@@ -1,13 +1,13 @@
 import React from "react";
+import "./scss/core.scss";
+import Login from "./pages/Login";
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Abu</h1>
-      </header>
+      <Login />
     </div>
   );
-}
+};
 
 export default App;

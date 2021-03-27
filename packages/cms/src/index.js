@@ -4,6 +4,9 @@ import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 
+import { icons } from "./assets/icons";
+React.icons = icons;
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
