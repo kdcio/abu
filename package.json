@@ -8,7 +8,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "start:cms": "yarn workspace cms start"
   },
   "devDependencies": {
     "husky": "^5.2.0",
