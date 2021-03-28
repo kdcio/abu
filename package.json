@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
-    "setup": "yarn workspace abu-res setup",
+    "setup": "./scripts/setup-cog.sh",
     "start:cms": "yarn workspace cms start"
   },
   "devDependencies": {
