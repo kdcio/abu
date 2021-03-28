@@ -1,15 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import Auth from "@aws-amplify/auth";
+import credentials from "./aws-exports";
+import { AuthProvider } from "context/auth";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 
-import { icons } from "./assets/icons";
+import { icons } from "assets/icons";
 React.icons = icons;
+Auth.configure(credentials);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

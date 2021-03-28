@@ -1,12 +1,18 @@
 import React from "react";
-import "./scss/core.scss";
-import Login from "./pages/Login";
+import { useAuth } from "context/auth";
+import FullPageSpinner from "components/FullPageSpinner";
+import "scss/core.scss";
+
+const Auth = React.lazy(() => import("pages/Auth"));
+const Main = React.lazy(() => import("pages/Main"));
 
 const App = () => {
+  const { loading, user } = useAuth();
+  if (loading) return <FullPageSpinner />;
   return (
-    <div className="App">
-      <Login />
-    </div>
+    <React.Suspense fallback={<FullPageSpinner />}>
+      {user ? <Main /> : <Auth />}
+    </React.Suspense>
   );
 };
 
