@@ -39,7 +39,7 @@ PROFILE_MATCH="PROFILE: "
 PROFILE=$(grep "$PROFILE_MATCH" config/$STAGE.yml | sed -e "s/^$PROFILE_MATCH//")
 
 echo -e "\n${Blue}Setting up cognito...${NC}\n"
-yarn workspace abu-res setup:cog dev
+yarn workspace res setup:cog dev
 
 # Get export list
 EXP_LIST=$(aws cloudformation list-exports --output text --profile $PROFILE --region $REGION)
