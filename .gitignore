@@ -105,3 +105,4 @@ dist
 
 config/*
 !config/sample.yml
+packages/cms/cypress.env.json

@@ -89,6 +89,7 @@ const SignIn = () => {
                     <CRow>
                       <CCol xs="6">
                         <CButton
+                          id="login"
                           color="primary"
                           className="px-4"
                           onClick={doSignIn}

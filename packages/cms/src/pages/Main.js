@@ -5,8 +5,10 @@ const Main = () => {
   const { logout } = useAuth();
   return (
     <div>
-      Main
-      <button onClick={logout}>Logout</button>
+      <h1>Main</h1>
+      <button id="logout" onClick={logout}>
+        Logout
+      </button>
     </div>
   );
 };

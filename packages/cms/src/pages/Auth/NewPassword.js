@@ -132,6 +132,7 @@ const NewPassword = () => {
                     <CRow>
                       <CCol xs="6">
                         <CButton
+                          id="complete"
                           color="primary"
                           className="px-4"
                           onClick={doNewPassword}
