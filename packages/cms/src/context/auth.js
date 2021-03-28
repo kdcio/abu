@@ -31,7 +31,7 @@ const AuthProvider = (props) => {
           setUser(u);
           setLoading(false);
         })
-        .catch(() => {
+        .catch((err) => {
           const u = localStorage.getItem(USER_KEY);
           if (u) setUser(JSON.parse(u));
           setLoading(false);
@@ -64,7 +64,7 @@ const AuthProvider = (props) => {
       given_name: firstName,
       family_name: lastName,
     });
-    setCogUser(u);
+    setCogUser({ ...u });
   };
 
   const signUp = (username, password, firstName, lastName) => {
