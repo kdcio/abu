@@ -1,7 +1,7 @@
 require("dotenv/config");
 const { whenProd } = require("@craco/craco");
 const cspHtmlWebpackPlugin = require("csp-html-webpack-plugin");
-const purgecss = require("@fullhuman/postcss-purgecss");
+// const purgecss = require("@fullhuman/postcss-purgecss");
 
 const apiParts = process.env.REACT_APP_API_ENDPOINT.split("/");
 const apiEndpoint = `${apiParts[0]}//${apiParts[2]}`;
@@ -47,29 +47,29 @@ const cspConfigPolicy = {
 };
 
 module.exports = {
-  style: {
-    postcss: {
-      plugins: [
-        ...whenProd(
-          () => [
-            purgecss({
-              content: ["./src/**/*.js"],
-              safelist: [
-                /(^|\.)fa-/,
-                /-fa($|\.)/,
-                /^body$/,
-                /navbar*/,
-                /card*/,
-                /modal*/,
-                /bg-dark/,
-              ],
-            }),
-          ],
-          []
-        ),
-      ],
-    },
-  },
+  // style: {
+  //   postcss: {
+  //     plugins: [
+  //       ...whenProd(
+  //         () => [
+  //           purgecss({
+  //             content: ["./src/**/*.js"],
+  //             safelist: [
+  //               /(^|\.)fa-/,
+  //               /-fa($|\.)/,
+  //               /^body$/,
+  //               /navbar*/,
+  //               /card*/,
+  //               /modal*/,
+  //               /bg-dark/,
+  //             ],
+  //           }),
+  //         ],
+  //         []
+  //       ),
+  //     ],
+  //   },
+  // },
   webpack: {
     plugins: [
       ...whenProd(() => [new cspHtmlWebpackPlugin(cspConfigPolicy)], []),
