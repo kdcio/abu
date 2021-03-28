@@ -1,0 +1,83 @@
+service: abu-cognito
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage}
+  region: ${file(../config/${self:provider.stage}.yml):REGION}
+  profile: ${file(../config/${self:provider.stage}.yml):PROFILE}
+  environment:
+    TZ: ${file(../config/${self:provider.stage}.yml):TZ, "Asia/Manila"}
+
+custom:
+  currentStage: ${self:provider.stage}
+  userPoolName: abu-${self:provider.stage}
+  userPoolClientName: abu-client-${self:provider.stage}
+
+resources:
+  Resources:
+    CognitoUserPool:
+      Type: "AWS::Cognito::UserPool"
+      Properties:
+        AccountRecoverySetting:
+          RecoveryMechanisms:
+            - Name: verified_email
+              Priority: 1
+        AutoVerifiedAttributes:
+          - email
+        # EmailConfiguration:
+        #   EmailSendingAccount: DEVELOPER
+        #   SourceArn: ${file(../config/${self:provider.stage}.yml):SES_SOURCE_ARN}
+        MfaConfiguration: OFF
+        UserPoolName: ${self:custom.userPoolName}
+        UsernameAttributes:
+          - email
+        Schema:
+          - Mutable: true
+            Name: given_name
+            Required: true
+          - Mutable: true
+            Name: family_name
+            Required: true
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 6
+            RequireLowercase: False
+            RequireNumbers: True
+            RequireSymbols: False
+            RequireUppercase: True
+    CognitoUserPoolClient:
+      Type: "AWS::Cognito::UserPoolClient"
+      Properties:
+        ClientName: ${self:custom.userPoolClientName}
+        GenerateSecret: False
+        UserPoolId:
+          Ref: CognitoUserPool
+    CreateCogUserDeletePolicy:
+      Type: AWS::IAM::ManagedPolicy
+      Properties:
+        ManagedPolicyName: ${self:service}-delete-${self:custom.currentStage}
+        Description: "Policy for deleting cognito user"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Action:
+                - "cognito-idp:AdminDeleteUser"
+              Resource:
+                - Fn::GetAtt:
+                    - CognitoUserPool
+                    - Arn
+  Outputs:
+    AbuCognitoUserPoolArn:
+      Value:
+        Fn::GetAtt:
+          - CognitoUserPool
+          - Arn
+      Export:
+        Name: AbuCognitoUserPoolArn-${self:custom.currentStage}
+    AbuCognitoUserPoolId:
+      Value:
+        Ref: CognitoUserPool
+      Export:
+        Name: AbuCognitoUserPoolId-${self:custom.currentStage}
