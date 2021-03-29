@@ -8,25 +8,26 @@ import {
   CHeaderNavLink,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import { useSidebar } from "context/sidebar";
 
 import HeaderDropdown from "./HeaderDropdown";
 
 const Header = () => {
-  // const dispatch = useDispatch();
-  // const sidebarShow = useSelector((state) => state.sidebarShow);
+  const { sidebarShow, setSidebarShow } = useSidebar();
 
   const toggleSidebar = () => {
-    // const val = [true, "responsive"].includes(sidebarShow)
-    //   ? false
-    //   : "responsive";
-    // dispatch({ type: "set", sidebarShow: val });
+    console.log(sidebarShow);
+    const val = [true, "responsive"].includes(sidebarShow)
+      ? false
+      : "responsive";
+    setSidebarShow(val);
   };
 
   const toggleSidebarMobile = () => {
-    // const val = [false, "responsive"].includes(sidebarShow)
-    //   ? true
-    //   : "responsive";
-    // dispatch({ type: "set", sidebarShow: val });
+    const val = [false, "responsive"].includes(sidebarShow)
+      ? true
+      : "responsive";
+    setSidebarShow(val);
   };
 
   return (
