@@ -1,6 +1,8 @@
 import React, { Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import { CContainer, CFade } from "@coreui/react";
+import { useAuth } from "context/auth";
+import { GRP_EDITOR } from "../constants";
 
 // routes config
 import routes from "../routes";
@@ -14,6 +16,8 @@ const loading = (
 );
 
 const Content = () => {
+  const { user } = useAuth();
+  const group = user?.groups?.[0] || GRP_EDITOR;
   return (
     <main className="c-main">
       <CContainer fluid>
@@ -21,7 +25,8 @@ const Content = () => {
           <Switch>
             {routes.map((route, idx) => {
               return (
-                route.component && (
+                route.component &&
+                route.groups.includes(group) && (
                   <Route
                     key={idx}
                     path={route.path}

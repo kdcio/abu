@@ -16,8 +16,9 @@ const AuthProvider = (props) => {
   const [signUpPassword, setSignUpPassword] = useState(null);
 
   const saveUser = (cred) => {
-    const { attributes, username } = cred;
-    const u = { ...attributes, username };
+    const { attributes, username, signInUserSession } = cred;
+    const groups = signInUserSession?.accessToken?.payload["cognito:groups"];
+    const u = { ...attributes, username, groups };
     localStorage.setItem(USER_KEY, JSON.stringify(u));
     return u;
   };
@@ -31,7 +32,7 @@ const AuthProvider = (props) => {
           setUser(u);
           setLoading(false);
         })
-        .catch((err) => {
+        .catch(() => {
           const u = localStorage.getItem(USER_KEY);
           if (u) setUser(JSON.parse(u));
           setLoading(false);

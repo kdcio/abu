@@ -12,13 +12,19 @@ import {
 } from "@coreui/react";
 
 import CIcon from "@coreui/icons-react";
+import { useAuth } from "context/auth";
+import { GRP_EDITOR } from "../constants";
 
 // sidebar nav config
-import navigation from "./navigation";
+import navigation from "./_navigation";
 
 const Sidebar = () => {
+  const { user } = useAuth();
+  const group = user?.groups?.[0] || GRP_EDITOR;
   // const dispatch = useDispatch();
   // const show = useSelector((state) => state.sidebarShow);
+
+  const navs = navigation.filter((n) => n.groups.includes(group));
 
   return (
     <CSidebar
@@ -35,7 +41,7 @@ const Sidebar = () => {
       </CSidebarBrand>
       <CSidebarNav>
         <CCreateElement
-          items={navigation}
+          items={navs}
           components={{
             CSidebarNavDivider,
             CSidebarNavDropdown,
