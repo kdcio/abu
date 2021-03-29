@@ -4,14 +4,14 @@ import FullPageSpinner from "components/FullPageSpinner";
 import "scss/core.scss";
 
 const Auth = React.lazy(() => import("pages/Auth"));
-const Main = React.lazy(() => import("pages/Main"));
+const Layout = React.lazy(() => import("containers/Layout"));
 
 const App = () => {
   const { loading, user } = useAuth();
   if (loading) return <FullPageSpinner />;
   return (
     <React.Suspense fallback={<FullPageSpinner />}>
-      {user ? <Main /> : <Auth />}
+      {user ? <Layout /> : <Auth />}
     </React.Suspense>
   );
 };
