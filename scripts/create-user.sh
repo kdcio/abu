@@ -6,18 +6,37 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-if [ -z "$1" ]
-  then
-    echo -e "\nThis script will create a user in your existing cognito.\n"
-    echo -e "Usage: ./setup-cog.sh ${BLUE}<stage> <email>${NC}\n"
-    echo -e "Example: ./setup-cog.sh staging jon@doe.com\n"
+function help {
+    echo -e "\nUsage: create-user.sh ${BLUE}<stage> <email> [group]${NC}\n"
+    echo -e "This script will create a user in your existing cognito.\n"
+    echo -e "Arguments:"
+    echo -e "  stage\t\tDeployment stage"
+    echo -e "  email\t\tEmail address of user"
+    echo -e "  group\t\tGroup permission. Possible values: admin or editor\n"
+    echo -e "Example: create-user.sh staging jon@doe.com editor\n"
+}
+
+if [ -z "$1" ]; then
+  help
+  exit 0
+fi
+
+if [ "$1" = "--help" ]; then
+  help
+  exit 0
+fi
+
+if [ -z "$2" ]; then
+    echo -e "\nMissing ${RED}email${NC}"
+  help
   exit 1
 fi
 
-if [ -z "$2" ]
-  then
-    echo -e "\nMissing ${RED}email${NC}\n"
-  exit 1
+if [ -z "$3" ]; then
+  # Default group
+  GROUP='editor'
+else
+  GROUP=$3
 fi
 
 STAGE=$1
@@ -31,24 +50,22 @@ if [[ ! $EMAIL =~ ${regex} ]]; then
   exit 1
 fi
 
-
-REGION_MATCH="REGION: "
-REGION=$(grep "$REGION_MATCH" config/$STAGE.yml | sed -e "s/^$REGION_MATCH//")
-
-PROFILE_MATCH="PROFILE: "
-PROFILE=$(grep "$PROFILE_MATCH" config/$STAGE.yml | sed -e "s/^$PROFILE_MATCH//")
-
-# Get export list
-EXP_LIST=$(aws cloudformation list-exports --output text --profile $PROFILE --region $REGION)
-
-# Get Pool Id
-POOL_ID=$(echo "$EXP_LIST" | grep $POOL_KEY | awk 'END {print $4}')
+cd "$(dirname "$0")"
+source ./pool-id.sh
 
 echo -e "\n${BLUE}Create cognito user...${NC}\n"
 aws cognito-idp admin-create-user \
     --profile $PROFILE \
     --region $REGION \
     --user-pool-id $POOL_ID \
+    --username $2
+
+echo -e "\n${BLUE}Add user to group...${NC}\n"
+aws cognito-idp admin-add-user-to-group \
+    --profile $PROFILE \
+    --region $REGION \
+    --user-pool-id $POOL_ID \
+    --group-name $GROUP \
     --username $2
 
 echo -e "\n\n${GREEN}Cognito user${NC} ${BLUE}$EMAIL${NC} ${GREEN}created!!!${NC}\n"
