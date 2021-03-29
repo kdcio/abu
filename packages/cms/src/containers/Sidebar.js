@@ -13,6 +13,7 @@ import {
 
 import CIcon from "@coreui/icons-react";
 import { useAuth } from "context/auth";
+import { useSidebar } from "context/sidebar";
 import { GRP_EDITOR } from "../constants";
 
 // sidebar nav config
@@ -20,6 +21,7 @@ import navigation from "./_navigation";
 
 const Sidebar = () => {
   const { user } = useAuth();
+  const { sidebarShow, setSidebarShow } = useSidebar();
   const group = user?.groups?.[0] || GRP_EDITOR;
   // const dispatch = useDispatch();
   // const show = useSelector((state) => state.sidebarShow);
@@ -27,10 +29,7 @@ const Sidebar = () => {
   const navs = navigation.filter((n) => n.groups.includes(group));
 
   return (
-    <CSidebar
-    // show={show}
-    // onShowChange={(val) => dispatch({ type: "set", sidebarShow: val })}
-    >
+    <CSidebar show={sidebarShow} onShowChange={(val) => setSidebarShow(val)}>
       <CSidebarBrand className="d-md-down-none" to="/">
         <CIcon className="c-sidebar-brand-full" name="cil-heart" height={30} />
         <CIcon
