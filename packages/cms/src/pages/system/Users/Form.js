@@ -24,7 +24,7 @@ const Form = () => {
       <CCardBody>
         <CForm>
           <CRow>
-            <CCol xs="12">
+            <CCol sm="6">
               <CFormGroup>
                 <CLabel htmlFor="first-name">First Name</CLabel>
                 <CInput
@@ -33,10 +33,6 @@ const Form = () => {
                   required
                 />
               </CFormGroup>
-            </CCol>
-          </CRow>
-          <CRow>
-            <CCol xs="12">
               <CFormGroup>
                 <CLabel htmlFor="last-name">Last Name</CLabel>
                 <CInput
@@ -45,16 +41,22 @@ const Form = () => {
                   required
                 />
               </CFormGroup>
-            </CCol>
-          </CRow>
-          <CRow>
-            <CCol xs="4">
               <CFormGroup>
                 <CLabel htmlFor="group">Group</CLabel>
                 <CSelect custom name="group" id="group">
                   <option value="editor">editor</option>
                   <option value="admin">admin</option>
                 </CSelect>
+              </CFormGroup>
+            </CCol>
+            <CCol sm="6">
+              <CFormGroup>
+                <CLabel htmlFor="new-password">New Password</CLabel>
+                <CInput id="new-password" type="password" required />
+              </CFormGroup>
+              <CFormGroup>
+                <CLabel htmlFor="confirm-password">Confirm New Password</CLabel>
+                <CInput id="confirm-password" type="password" required />
               </CFormGroup>
             </CCol>
           </CRow>
