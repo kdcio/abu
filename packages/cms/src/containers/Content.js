@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { CContainer, CFade } from "@coreui/react";
 import { useAuth } from "context/auth";
 import { GRP_EDITOR } from "../constants";
@@ -41,6 +41,7 @@ const Content = () => {
                 )
               );
             })}
+            <Redirect from="/" to="/dashboard" />
             <Route path="*">
               <Suspense fallback={loading}>
                 <NotFound />

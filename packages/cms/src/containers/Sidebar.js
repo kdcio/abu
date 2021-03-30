@@ -23,8 +23,6 @@ const Sidebar = () => {
   const { user } = useAuth();
   const { sidebarShow, setSidebarShow } = useSidebar();
   const group = user?.groups?.[0] || GRP_EDITOR;
-  // const dispatch = useDispatch();
-  // const show = useSelector((state) => state.sidebarShow);
 
   const navs = navigation.filter((n) => n.groups.includes(group));
 
