@@ -4,7 +4,8 @@ let email = null;
 let password = null;
 let firstName = null;
 let lastName = null;
-describe("Authentication Page:", function () {
+
+describe("Authentication Page Admin", function () {
   beforeEach(function () {
     cy.visit("/");
     cy.clearLocalStorage();
@@ -18,7 +19,7 @@ describe("Authentication Page:", function () {
     password = `${faker.internet.password()}1A`;
     email = faker.internet.email(firstName, lastName, "test.kdc.codes");
 
-    cy.addCognitoUser(email);
+    cy.addCognitoUser(email, "admin");
 
     cy.getVerificationCode(email).then((code) => {
       cy.get("#email").type(email);
@@ -31,10 +32,27 @@ describe("Authentication Page:", function () {
     cy.get("#password").type(password, { log: false });
     cy.get("#confirm-password").type(password, { log: false });
     cy.get("#complete").click();
+
     cy.get("#full-name")
       .should("be.visible")
       .contains(`${firstName} ${lastName}`)
       .click();
+    cy.get(":nth-child(1) > .c-sidebar-nav-link")
+      .should("be.visible")
+      .contains("Dashboard");
+    cy.get(":nth-child(3) > .c-sidebar-nav-link")
+      .should("be.visible")
+      .contains("Sample");
+    cy.get(":nth-child(5) > .c-sidebar-nav-link")
+      .should("be.visible")
+      .contains("Content");
+    cy.get(":nth-child(6) > .c-sidebar-nav-link")
+      .should("be.visible")
+      .contains("Apps");
+    cy.get(":nth-child(7) > .c-sidebar-nav-link")
+      .should("be.visible")
+      .contains("Users");
+
     cy.get("#logout").should("be.visible").click();
     cy.get("h1").contains("Login");
   });
@@ -44,10 +62,27 @@ describe("Authentication Page:", function () {
     cy.get("#email").type(email);
     cy.get("#password").type(password, { log: false });
     cy.get("#login").click();
+
     cy.get("#full-name")
       .should("be.visible")
       .contains(`${firstName} ${lastName}`)
       .click();
+    cy.get(":nth-child(1) > .c-sidebar-nav-link")
+      .should("be.visible")
+      .contains("Dashboard");
+    cy.get(":nth-child(3) > .c-sidebar-nav-link")
+      .should("be.visible")
+      .contains("Sample");
+    cy.get(":nth-child(5) > .c-sidebar-nav-link")
+      .should("be.visible")
+      .contains("Content");
+    cy.get(":nth-child(6) > .c-sidebar-nav-link")
+      .should("be.visible")
+      .contains("Apps");
+    cy.get(":nth-child(7) > .c-sidebar-nav-link")
+      .should("be.visible")
+      .contains("Users");
+
     cy.get("#logout").click();
     cy.get("h1").contains("Login");
   });
