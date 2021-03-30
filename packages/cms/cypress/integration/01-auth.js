@@ -2,6 +2,8 @@ import faker from "faker";
 
 let email = null;
 let password = null;
+let firstName = null;
+let lastName = null;
 describe("Authentication Page:", function () {
   beforeEach(function () {
     cy.visit("/");
@@ -11,8 +13,8 @@ describe("Authentication Page:", function () {
   it("First signin ask to change password", () => {
     cy.get("h1").contains("Login");
 
-    const firstName = faker.name.firstName();
-    const lastName = faker.name.lastName();
+    firstName = faker.name.firstName();
+    lastName = faker.name.lastName();
     password = `${faker.internet.password()}1A`;
     email = faker.internet.email(firstName, lastName, "test.kdc.codes");
 
@@ -29,8 +31,12 @@ describe("Authentication Page:", function () {
     cy.get("#password").type(password, { log: false });
     cy.get("#confirm-password").type(password, { log: false });
     cy.get("#complete").click();
-    cy.get("#logout").should("be.visible").contains("Logout");
-    cy.get("#logout").click();
+    cy.get("#full-name")
+      .should("be.visible")
+      .contains(`${firstName} ${lastName}`)
+      .click();
+    cy.get("#logout").should("be.visible").click();
+    cy.get("h1").contains("Login");
   });
 
   it("Second signin go to main", () => {
@@ -38,8 +44,12 @@ describe("Authentication Page:", function () {
     cy.get("#email").type(email);
     cy.get("#password").type(password, { log: false });
     cy.get("#login").click();
-    cy.get("#logout").should("be.visible").contains("Logout");
+    cy.get("#full-name")
+      .should("be.visible")
+      .contains(`${firstName} ${lastName}`)
+      .click();
     cy.get("#logout").click();
+    cy.get("h1").contains("Login");
   });
 
   after(function () {
