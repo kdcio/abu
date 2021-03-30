@@ -1,13 +1,6 @@
 import React from "react";
 
-import {
-  CRow,
-  CCol,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CButton,
-} from "@coreui/react";
+import { CRow, CCol, CCard, CCardBody, CCardHeader } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { Link } from "react-router-dom";
 
