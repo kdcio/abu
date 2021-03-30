@@ -29,7 +29,8 @@
     }
   },
   "lint-staged": {
-    "*.js": [
+    "packages/cms/src/**/*.js": [
+      "yarn workspace cms lint",
       "pretty-quick --staged"
     ]
   },

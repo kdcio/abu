@@ -2,6 +2,16 @@
   "name": "cms",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject",
+    "lint": "eslint src --max-warnings 0",
+    "cypress": "cypress open",
+    "analyze": "node ./analyze.js",
+    "serve": "serve -s build -p 8060"
+  },
   "dependencies": {
     "@coreui/coreui": "^3.4.0",
     "@coreui/icons": "^1.0.1",
@@ -31,15 +41,17 @@
     "workbox-strategies": "^5.1.3",
     "workbox-streams": "^5.1.3"
   },
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "craco eject",
-    "lint": "eslint src",
-    "cypress": "cypress open",
-    "analyze": "node ./analyze.js",
-    "serve": "serve -s build -p 8060"
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^3.1.3",
+    "csp-html-webpack-plugin": "^5.1.0",
+    "cypress": "^6.8.0",
+    "cypress-wait-until": "^1.7.1",
+    "eslint-plugin-cypress": "^2.11.2",
+    "faker": "^5.5.1",
+    "postcss": "^7.0.35",
+    "progress-bar-webpack-plugin": "^2.1.0",
+    "serve": "^11.3.2",
+    "webpack-bundle-analyzer": "^4.4.0"
   },
   "eslintConfig": {
     "extends": [
@@ -58,17 +70,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^3.1.3",
-    "csp-html-webpack-plugin": "^5.1.0",
-    "cypress": "^6.8.0",
-    "cypress-wait-until": "^1.7.1",
-    "eslint-plugin-cypress": "^2.11.2",
-    "faker": "^5.5.1",
-    "postcss": "^7.0.35",
-    "progress-bar-webpack-plugin": "^2.1.0",
-    "serve": "^11.3.2",
-    "webpack-bundle-analyzer": "^4.4.0"
   }
 }

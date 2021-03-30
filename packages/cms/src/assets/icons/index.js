@@ -7,6 +7,11 @@ import {
   cilNotes,
   cilHeart,
   cilAccountLogout,
+  cilPenAlt,
+  cilTrash,
+  cilPlus,
+  cilScrubber,
+  cilBan,
 } from "@coreui/icons";
 
 export const icons = {
@@ -18,4 +23,9 @@ export const icons = {
   cilNotes,
   cilHeart,
   cilAccountLogout,
+  cilPenAlt,
+  cilTrash,
+  cilPlus,
+  cilScrubber,
+  cilBan,
 };
