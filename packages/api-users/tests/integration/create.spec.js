@@ -92,7 +92,7 @@ describe("Create User", () => {
     expect(createUser).toBeCalledTimes(0);
   });
 
-  it("should throw forbidden", async () => {
+  it("should only allow admins to create user", async () => {
     const email = faker.internet.email();
     const user = genUser();
     const event = makeFakeEvent({
