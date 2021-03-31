@@ -1,38 +1,40 @@
 import faker from "faker";
 import makeFakeEvent from "../helpers/event";
-import createUser from "cognito/lib/create";
-import { handler } from "../../src/create";
+import readUser from "cognito/lib/read";
+import { handler } from "../../src/read";
 
-jest.mock("cognito/lib/create");
+jest.mock("cognito/lib/read");
 
-describe("User", () => {
+describe("Read User", () => {
   beforeAll(async () => {
     process.env.AWS_REGION = "ap-southeast-1";
     process.env.COG_POOL_ID = "pool-id";
   });
 
   beforeEach(() => {
-    createUser.mockClear();
+    readUser.mockClear();
   });
 
-  it("should create user", async () => {
-    createUser.mockImplementation(() => Promise.resolve());
+  it("should read user", async () => {
+    readUser.mockImplementation(() => Promise.resolve({ name: "john" }));
     const email = faker.internet.email();
-    const group = "editor";
 
     const event = makeFakeEvent({
       path: "/",
       headers: { "Content-Type": "application/json" },
       httpMethod: "POST",
-      body: JSON.stringify({ email, group }),
+      body: JSON.stringify({ email }),
     });
 
     const response = await handler(event);
-    expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(200);
     expect(response.isBase64Encoded).toBe(false);
 
-    expect(createUser).toBeCalledTimes(1);
-    expect(createUser).toBeCalledWith({ email, group });
+    const json = JSON.parse(response.body);
+    expect(json).toEqual({ name: "john" });
+
+    expect(readUser).toBeCalledTimes(1);
+    expect(readUser).toBeCalledWith({ email });
   });
 
   it("should throw missing email", async () => {
@@ -49,26 +51,7 @@ describe("User", () => {
     const json = JSON.parse(response.body);
     expect(json.message).toBe("Missing email");
 
-    expect(createUser).toBeCalledTimes(0);
-  });
-
-  it("should throw missing group", async () => {
-    const email = faker.internet.email();
-    const event = makeFakeEvent({
-      path: "/",
-      headers: { "Content-Type": "application/json" },
-      httpMethod: "POST",
-      body: JSON.stringify({ email }),
-    });
-
-    const response = await handler(event);
-    expect(response.statusCode).toEqual(400);
-    expect(response.isBase64Encoded).toBe(false);
-
-    const json = JSON.parse(response.body);
-    expect(json.message).toBe("Missing group");
-
-    expect(createUser).toBeCalledTimes(0);
+    expect(readUser).toBeCalledTimes(0);
   });
 
   it("should throw unauthorized", async () => {
@@ -88,6 +71,6 @@ describe("User", () => {
     const json = JSON.parse(response.body);
     expect(json.message).toBe("Unauthorized");
 
-    expect(createUser).toBeCalledTimes(0);
+    expect(readUser).toBeCalledTimes(0);
   });
 });
