@@ -16,14 +16,25 @@ describe("Read User", () => {
   });
 
   it("should read user", async () => {
-    readUser.mockImplementation(() => Promise.resolve({ name: "john" }));
     const email = faker.internet.email();
+    const user = {
+      created: "2021-03-29T01:05:14.954Z",
+      updated: "2021-03-29T01:12:50.287Z",
+      statues: "CONFIRMED",
+      username: "ec2c8bb1-ada6-41d7-8451-aee42ad0d5d7",
+      sub: "ec2c8bb1-ada6-41d7-8451-aee42ad0d5d7",
+      given_name: "John",
+      family_name: "Doe",
+      email,
+      groups: ["admin"],
+    };
+    readUser.mockImplementation(() => Promise.resolve(user));
 
     const event = makeFakeEvent({
       path: "/",
+      pathParameters: { id: email },
       headers: { "Content-Type": "application/json" },
-      httpMethod: "POST",
-      body: JSON.stringify({ email }),
+      httpMethod: "GET",
     });
 
     const response = await handler(event);
@@ -31,17 +42,18 @@ describe("Read User", () => {
     expect(response.isBase64Encoded).toBe(false);
 
     const json = JSON.parse(response.body);
-    expect(json).toEqual({ name: "john" });
+    expect(json).toEqual(user);
 
     expect(readUser).toBeCalledTimes(1);
     expect(readUser).toBeCalledWith({ email });
   });
 
-  it("should throw missing email", async () => {
+  it("should throw missing username", async () => {
     const event = makeFakeEvent({
       path: "/",
+      pathParameters: {},
       headers: { "Content-Type": "application/json" },
-      httpMethod: "POST",
+      httpMethod: "GET",
     });
 
     const response = await handler(event);
@@ -49,7 +61,7 @@ describe("Read User", () => {
     expect(response.isBase64Encoded).toBe(false);
 
     const json = JSON.parse(response.body);
-    expect(json.message).toBe("Missing email");
+    expect(json.message).toBe("Missing username");
 
     expect(readUser).toBeCalledTimes(0);
   });
@@ -60,8 +72,7 @@ describe("Read User", () => {
       requestContext: {},
       path: "/",
       headers: { "Content-Type": "application/json" },
-      httpMethod: "POST",
-      body: JSON.stringify({ email }),
+      httpMethod: "GET",
     });
 
     const response = await handler(event);

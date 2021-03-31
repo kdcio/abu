@@ -1,7 +1,6 @@
 const makeRead = ({ readUser }) => {
-  const read = async ({ email }) => {
-    if (!email) throw new Error("Missing email");
-    const res = await readUser({ email });
+  const read = async ({ username }) => {
+    const res = await readUser({ email: username });
     return res;
   };
   return read;
