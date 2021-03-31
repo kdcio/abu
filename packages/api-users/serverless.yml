@@ -1,0 +1,47 @@
+service: abu-api-users
+
+plugins:
+  - serverless-bundle
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 9021
+    noPrependStageInUrl: true
+    useChildProcesses: true
+
+package:
+  individually: true
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'local'}
+  region: ${file(../../config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
+  profile: ${file(../../config/${self:provider.stage}.yml):PROFILE, 'default'}
+  runtime: nodejs12.x
+  memorySize: 256
+  timeout: 30
+  environment:
+    TZ: ${file(../../config/${self:provider.stage}.yml):TZ, 'Asia/Singapore'}
+    STAGE: ${self:provider.stage}
+    NODE_ENV: ${self:provider.stage}
+    DEBUG: ${file(../../config/${self:provider.stage}.yml):DEBUG, 'lambda:event,lambda:error'}
+    COG_POOL_ID:
+      Fn::ImportValue: AbuCognitoUserPoolId-${self:provider.stage}
+
+functions: ${file(./functions.yml)}
+
+resources:
+  Resources:
+    ApiGatewayAuthorizer:
+      DependsOn:
+        - ApiGatewayRestApi
+      Type: AWS::ApiGateway::Authorizer
+      Properties:
+        Name: cognito-authorizer
+        IdentitySource: method.request.header.Authorization
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        Type: COGNITO_USER_POOLS
+        ProviderARNs:
+          - Fn::ImportValue: AbuCognitoUserPoolArn-${self:provider.stage}
