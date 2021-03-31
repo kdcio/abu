@@ -1,16 +1,15 @@
-import debug from "debug";
-
 const makePostUser = ({ create, parser, response }) => {
   const postUser = async ({ event }) => {
     const request = parser(event);
-    let user = null;
-    if (request?.authorizer?.claims?.sub) {
-      user = request.authorizer.claims;
-    } else {
+
+    if (!request?.authorizer?.claims?.sub) {
       throw new Error("Unauthorized");
     }
 
-    // TODO: check group if admin. return forbidden if not
+    const groups = request?.authorizer?.claims?.["cognito:groups"];
+    if (!groups || groups.indexOf("admin") < 0) {
+      throw new Error("Forbidden: only admins can perform this action");
+    }
 
     await create(request.body);
     return response.CREATED();
