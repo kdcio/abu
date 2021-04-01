@@ -1,3 +1,5 @@
+import { logo } from "./logo";
+
 import {
   cilUser,
   cilLockLocked,
@@ -15,6 +17,7 @@ import {
 } from "@coreui/icons";
 
 export const icons = {
+  logo,
   cilUser,
   cilLockLocked,
   cilSpeedometer,

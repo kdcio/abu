@@ -29,7 +29,7 @@ const Sidebar = () => {
   return (
     <CSidebar show={sidebarShow} onShowChange={(val) => setSidebarShow(val)}>
       <CSidebarBrand className="d-md-down-none" to="/">
-        <CIcon className="c-sidebar-brand-full" name="cil-heart" height={30} />
+        <CIcon className="c-sidebar-brand-full" name="logo" height={32} />
         <CIcon
           className="c-sidebar-brand-minimized"
           name="cil-heart"
