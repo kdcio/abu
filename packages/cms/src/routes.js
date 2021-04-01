@@ -5,7 +5,7 @@ const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const UsersList = React.lazy(() => import("./pages/system/Users"));
 const UsersForm = React.lazy(() => import("./pages/system/Users/Form"));
 const UsersAdd = React.lazy(() => import("./pages/system/Users/Add"));
-const SysContent = React.lazy(() => import("./pages/system/Content"));
+const Models = React.lazy(() => import("./pages/system/Models"));
 const Apps = React.lazy(() => import("./pages/system/Apps"));
 const Content = React.lazy(() => import("./pages/Content"));
 
@@ -20,6 +20,11 @@ const routes = [
     exact: true,
     component: Dashboard,
     groups: [GRP_ADMIN, GRP_EDITOR],
+  },
+  {
+    path: "/system",
+    exact: true,
+    groups: [GRP_ADMIN],
   },
   {
     path: "/system/users",
@@ -40,8 +45,8 @@ const routes = [
     groups: [GRP_ADMIN],
   },
   {
-    path: "/system/content",
-    component: SysContent,
+    path: "/system/models",
+    component: Models,
     groups: [GRP_ADMIN],
   },
   { path: "/system/apps", component: Apps, groups: [GRP_ADMIN] },

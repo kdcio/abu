@@ -41,6 +41,7 @@ const Content = () => {
                 )
               );
             })}
+            <Redirect from="/system" to="/system/models" />
             <Redirect from="/" to="/dashboard" />
             <Route path="*">
               <Suspense fallback={loading}>

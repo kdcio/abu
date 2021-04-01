@@ -12,6 +12,8 @@ import { useSidebar } from "context/sidebar";
 
 import HeaderDropdown from "./HeaderDropdown";
 
+import "scss/components/header.scss";
+
 const Header = () => {
   const { sidebarShow, setSidebarShow } = useSidebar();
 
@@ -49,7 +51,10 @@ const Header = () => {
 
       <CHeaderNav className="d-md-down-none mr-auto">
         <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/">Page Title</CHeaderNavLink>
+          <CHeaderNavLink to="/dashboard">Content</CHeaderNavLink>
+        </CHeaderNavItem>
+        <CHeaderNavItem className="px-3">
+          <CHeaderNavLink to="/system">Settings</CHeaderNavLink>
         </CHeaderNavItem>
       </CHeaderNav>
 
