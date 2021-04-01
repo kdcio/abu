@@ -20,17 +20,25 @@ read:
           authorizerId:
             Ref: ApiGatewayAuthorizer
         cors: true
-# update:
-#   handler: src/update.handler
-#   events:
-#     - http:
-#         path: /{id}
-#         method: patch
-#         authorizer:
-#           type: COGNITO_USER_POOLS
-#           authorizerId:
-#             Ref: ApiGatewayAuthorizer
-#         cors: true
+update:
+  handler: src/update.handler
+  events:
+    - http:
+        path: /{id}
+        method: put
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+    - http:
+        path: /{id}
+        method: patch
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
 remove:
   handler: src/remove.handler
   events:
