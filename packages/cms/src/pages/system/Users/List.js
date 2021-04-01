@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from "react";
 
-import { CRow, CCol, CCard, CCardBody, CCardHeader } from "@coreui/react";
+import {
+  CRow,
+  CCol,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CButton,
+} from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import Spinner from "components/Spinner";
 
 import list from "api/list";
+import remove from "api/remove";
 
 const Users = () => {
+  const history = useHistory();
   const [processing, setProcessing] = useState(true);
   const [users, setUsers] = useState([]);
 
@@ -19,6 +28,17 @@ const Users = () => {
     };
     getUsers();
   }, []);
+
+  const removeUser = async (id, idx) => {
+    if (!window.confirm("Are you sure to delete this user?")) return;
+    setProcessing(true);
+    await remove({ apiName: "Users", id });
+    const newUsers = [...users];
+    newUsers.splice(idx, 1);
+    setUsers(newUsers);
+    setProcessing(false);
+  };
+
   return (
     <>
       <CCard>
@@ -53,7 +73,7 @@ const Users = () => {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
+                {users.map((user, idx) => (
                   <tr key={user.sub}>
                     <td>{user.given_name}</td>
                     <td>{user.family_name}</td>
@@ -62,19 +82,27 @@ const Users = () => {
                     <td className="text-center">{user.status}</td>
                     <td className="text-center">
                       {user.status === "CONFIRMED" && (
-                        <Link to={`/system/users/edit/${user.sub}`}>
-                          <CIcon
-                            name="cil-pen-alt"
-                            className="text-info px-1"
-                            height={18}
-                          />
-                        </Link>
+                        <CButton
+                          type="button"
+                          size="sm"
+                          color="info"
+                          variant="ghost"
+                          onClick={() =>
+                            history.push(`/system/users/edit/${user.sub}`)
+                          }
+                        >
+                          <CIcon name="cil-pen-alt" />
+                        </CButton>
                       )}
-                      <CIcon
-                        name="cil-trash"
-                        className="text-danger px-1"
-                        height={18}
-                      />
+                      <CButton
+                        type="button"
+                        size="sm"
+                        color="danger"
+                        variant="ghost"
+                        onClick={() => removeUser(user.sub, idx)}
+                      >
+                        <CIcon name="cil-trash" />
+                      </CButton>
                     </td>
                   </tr>
                 ))}
