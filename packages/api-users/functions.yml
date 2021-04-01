@@ -31,17 +31,17 @@ read:
 #           authorizerId:
 #             Ref: ApiGatewayAuthorizer
 #         cors: true
-# delete:
-#   handler: src/update.handler
-#   events:
-#     - http:
-#         path: /{id}
-#         method: delete
-#         authorizer:
-#           type: COGNITO_USER_POOLS
-#           authorizerId:
-#             Ref: ApiGatewayAuthorizer
-#         cors: true
+remove:
+  handler: src/remove.handler
+  events:
+    - http:
+        path: /{id}
+        method: delete
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
 list:
   handler: src/list.handler
   events:
