@@ -40,7 +40,7 @@ const Add = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} autocomplete="off">
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       <CCard>
         <CCardHeader>
           <h3>Add User</h3>
@@ -58,7 +58,7 @@ const Add = () => {
                   placeholder="Enter your email"
                   ref={register({ required: true })}
                   disabled={processing}
-                  autocomplete="off"
+                  autoComplete="off"
                 />
                 <small className="form-text text-muted">
                   A temporary password will be sent to this email address.
