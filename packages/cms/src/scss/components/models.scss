@@ -5,4 +5,15 @@
     border-radius: 0;
     cursor: pointer;
   }
+
+  .model-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .c-icon {
+      margin-right: 20px;
+      opacity: 0.7;
+    }
+  }
 }

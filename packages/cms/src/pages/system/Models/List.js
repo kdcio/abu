@@ -77,10 +77,20 @@ const Models = () => {
                 active={selected?.id === model.id}
                 onClick={() => selectByIndex(idx)}
               >
-                <h5 className="d-flex w-100 justify-content-between">
-                  {model.name}
-                </h5>
-                <div className="mb-1">{model.id}</div>
+                <div className="model-item">
+                  {model.collection ? (
+                    <CIcon name="cil-library" />
+                  ) : (
+                    <CIcon name="cil-file" />
+                  )}
+
+                  <div>
+                    <h5 className="d-flex w-100 justify-content-between">
+                      {model.name}
+                    </h5>
+                    <div className="mb-1">{model.id}</div>
+                  </div>
+                </div>
               </CListGroupItem>
             ))}
           </CListGroup>

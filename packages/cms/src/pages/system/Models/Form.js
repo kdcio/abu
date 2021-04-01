@@ -7,7 +7,6 @@ import Info from "./Info";
 
 const Form = () => {
   const { selected } = useList();
-  console.log(selected);
 
   if (!selected) return <Info />;
 
