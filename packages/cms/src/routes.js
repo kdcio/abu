@@ -2,8 +2,9 @@ import React from "react";
 import { GRP_ADMIN, GRP_EDITOR } from "./constants";
 
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
-const Users = React.lazy(() => import("./pages/system/Users"));
+const UsersList = React.lazy(() => import("./pages/system/Users"));
 const UsersForm = React.lazy(() => import("./pages/system/Users/Form"));
+const UsersAdd = React.lazy(() => import("./pages/system/Users/Add"));
 const SysContent = React.lazy(() => import("./pages/system/Content"));
 const Apps = React.lazy(() => import("./pages/system/Apps"));
 const Content = React.lazy(() => import("./pages/Content"));
@@ -23,11 +24,17 @@ const routes = [
   {
     path: "/system/users",
     exact: true,
-    component: Users,
+    component: UsersList,
     groups: [GRP_ADMIN],
   },
   {
-    path: "/system/users/:id",
+    path: "/system/users/add",
+    exact: true,
+    component: UsersAdd,
+    groups: [GRP_ADMIN],
+  },
+  {
+    path: "/system/users/edit/:id",
     exact: true,
     component: UsersForm,
     groups: [GRP_ADMIN],

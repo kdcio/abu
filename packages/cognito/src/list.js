@@ -32,7 +32,7 @@ const list = async () => {
   const userMap = (u) => ({
     created: u.UserCreateDate,
     updated: u.UserLastModifiedDate,
-    statues: u.UserStatus,
+    status: u.UserStatus,
     username: u.Username,
     ...u.Attributes.reduce(attrReducer, {}),
   });
