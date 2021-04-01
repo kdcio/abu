@@ -13,7 +13,7 @@ import {
   CSelect,
   CRow,
 } from "@coreui/react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import CIcon from "@coreui/icons-react";
 
 import get from "api/get";
@@ -25,13 +25,13 @@ const Form = () => {
       const user = await get({ apiName: "Users", id });
       console.log(user);
     };
-    getUser();
+    id && getUser();
   }, [id]);
 
   return (
     <CCard>
       <CCardHeader>
-        <h3>User</h3>
+        <h3>{id ? "Edit" : "Add"} User</h3>
       </CCardHeader>
       <CCardBody>
         <CForm>
@@ -78,9 +78,9 @@ const Form = () => {
         <CButton type="submit" size="sm" color="primary" className="mr-2">
           <CIcon name="cil-scrubber" /> Submit
         </CButton>
-        <CButton type="button" size="sm" color="danger">
+        <Link to={`/system/users`} className="btn btn-danger btn-sm">
           <CIcon name="cil-ban" /> Cancel
-        </CButton>
+        </Link>
       </CCardFooter>
     </CCard>
   );

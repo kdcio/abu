@@ -29,7 +29,7 @@ const Users = () => {
             </CCol>
             <CCol sm="6">
               <Link
-                to={`/system/users/new`}
+                to={`/system/users/add`}
                 className="btn btn-primary float-right"
               >
                 <CIcon name="cil-plus" /> Add
@@ -59,7 +59,7 @@ const Users = () => {
                     <td>{user.email}</td>
                     <td className="text-center">{user.groups?.[0]}</td>
                     <td className="text-center">
-                      <Link to={`/system/users/${user.sub}`}>
+                      <Link to={`/system/users/edit/${user.sub}`}>
                         <CIcon
                           name="cil-pen-alt"
                           className="text-info px-1"

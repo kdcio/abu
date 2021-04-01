@@ -27,7 +27,13 @@ const routes = [
     groups: [GRP_ADMIN],
   },
   {
-    path: "/system/users/:id",
+    path: "/system/users/add",
+    exact: true,
+    component: UsersForm,
+    groups: [GRP_ADMIN],
+  },
+  {
+    path: "/system/users/edit/:id",
     exact: true,
     component: UsersForm,
     groups: [GRP_ADMIN],
