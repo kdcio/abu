@@ -66,7 +66,7 @@ describe("Manage Users by Admin", function () {
     cy.get("#addUser").click();
     cy.get("#addTitle").should("be.visible").contains("Add User");
 
-    // editor
+    // Add editor user
     const eFirstName = faker.name.firstName();
     const eLastName = faker.name.lastName();
     const ePassword = `${faker.internet.password()}1A`;
@@ -141,14 +141,50 @@ describe("Manage Users by Admin", function () {
     cy.get("tbody > :nth-child(1) > :nth-child(2)").contains(`${eLastName} jr`);
     cy.get("tbody > :nth-child(1) > :nth-child(4)").contains("admin");
 
+    // Change password
+    const newPassword = `${faker.internet.password()}1A`;
+    cy.get("tbody > :nth-child(1) > :nth-child(6) > .edit-btn").click();
+    cy.get("#password").clear().type(newPassword);
+    cy.get("#confirmPassword").clear().type(newPassword);
+    cy.get("#update").click();
+
+    // Logout as admin
+    cy.get("#full-name")
+      .should("be.visible")
+      .contains(`${firstName} ${lastName}`)
+      .click();
+    cy.get("#logout").click();
+
+    // Test new password
+    cy.get("#email").type(eEmail);
+    cy.get("#password").type(newPassword, { log: false });
+    cy.get("#login").click();
+    cy.get("#full-name")
+      .should("be.visible")
+      .contains(`${eFirstName} ${eLastName}`)
+      .click();
+    cy.get("#logout").click();
+
+    // login again as admin and delete editor
+    cy.get("h1").contains("Login");
+    cy.get("#email").type(email);
+    cy.get("#password").type(password, { log: false });
+    cy.get("#login").click();
+    cy.get("#full-name")
+      .should("be.visible")
+      .contains(`${firstName} ${lastName}`);
+    cy.get(":nth-child(7) > .c-sidebar-nav-link")
+      .should("be.visible")
+      .contains("Users")
+      .click();
+
+    // Delete user
     cy.on("window:confirm", () => true);
     cy.get(":nth-child(1) > :nth-child(6) > .delete-btn").click();
     cy.get("tbody > :nth-child(1) > :nth-child(3)").should(
       "not.contain",
       eEmail
     );
-
-    // cy.deleteCognitoUser(eEmail);
   });
 
   after(function () {
