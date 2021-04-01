@@ -1,3 +1,16 @@
+const escapeHTML = (str) =>
+  str.replace(
+    /[&<>'"]/g,
+    (tag) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "'": "&#39;",
+        '"': "&quot;",
+      }[tag])
+  );
+
 const getVerificationCode = (email) => {
   const url = Cypress.env("mailUrl");
   const apiKey = Cypress.env("mailApiKey");
@@ -15,8 +28,9 @@ const getVerificationCode = (email) => {
 
         const emailObj = JSON.parse(response.body);
         const { html } = emailObj;
+        // console.log(escapeHTML(html));
         const matcher = /temporary password is (.{6})/gm;
-        const match = matcher.exec(html);
+        const match = matcher.exec(escapeHTML(html));
         return match[1];
       });
   } catch (error) {
