@@ -1,7 +1,8 @@
 import React from "react";
+import Empty from "components/Empty";
 
 const Apps = () => {
-  return <div>Apps</div>;
+  return <Empty title="Apps coming soon!" btnName="Dashboard" to="/" />;
 };
 
 export default Apps;

@@ -6,7 +6,7 @@ const navigation = [
   {
     _tag: "CSidebarNavItem",
     name: "Dashboard",
-    to: "/",
+    to: "/dashboard",
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />,
     groups: [GRP_ADMIN, GRP_EDITOR],
   },
