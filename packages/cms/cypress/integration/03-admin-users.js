@@ -141,7 +141,14 @@ describe("Manage Users by Admin", function () {
     cy.get("tbody > :nth-child(1) > :nth-child(2)").contains(`${eLastName} jr`);
     cy.get("tbody > :nth-child(1) > :nth-child(4)").contains("admin");
 
-    cy.deleteCognitoUser(eEmail);
+    cy.on("window:confirm", () => true);
+    cy.get(":nth-child(1) > :nth-child(6) > .delete-btn").click();
+    cy.get("tbody > :nth-child(1) > :nth-child(3)").should(
+      "not.contain",
+      eEmail
+    );
+
+    // cy.deleteCognitoUser(eEmail);
   });
 
   after(function () {
