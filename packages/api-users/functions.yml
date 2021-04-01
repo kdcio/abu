@@ -1,0 +1,82 @@
+create:
+  handler: src/create.handler
+  events:
+    - http:
+        path: /
+        method: post
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+read:
+  handler: src/read.handler
+  events:
+    - http:
+        path: /{id}
+        method: get
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+update:
+  handler: src/update.handler
+  events:
+    - http:
+        path: /{id}
+        method: put
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+    - http:
+        path: /{id}
+        method: patch
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+remove:
+  handler: src/remove.handler
+  events:
+    - http:
+        path: /{id}
+        method: delete
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+list:
+  handler: src/list.handler
+  events:
+    - http:
+        path: /
+        method: get
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+password:
+  handler: src/password.handler
+  events:
+    - http:
+        path: /{id}/password
+        method: patch
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+    - http:
+        path: /{id}/password
+        method: put
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true

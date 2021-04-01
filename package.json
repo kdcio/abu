@@ -10,10 +10,26 @@
   "scripts": {
     "prepare": "husky install",
     "setup": "./scripts/setup-cog.sh",
-    "start:cms": "yarn workspace cms start"
+    "start:cms": "yarn workspace cms start",
+    "start:api": "sls offline start -c api-local.yml",
+    "build:api": "./scripts/build-api.sh",
+    "test:api": "./scripts/test-api.sh",
+    "coverage:api": "./scripts/coverage-api.sh"
   },
   "devDependencies": {
+    "@babel/cli": "^7.13.14",
+    "@babel/core": "^7.13.14",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.23.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "faker": "^5.5.2",
     "husky": "^5.2.0",
+    "jest": "^26.6.3",
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
