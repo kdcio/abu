@@ -18,7 +18,7 @@ const list = async () => {
     cognito
       .listUsersInGroup({
         UserPoolId: process.env.COG_POOL_ID,
-        GroupName: 'admin',
+        GroupName: 'editor',
       })
       .promise()
   );
