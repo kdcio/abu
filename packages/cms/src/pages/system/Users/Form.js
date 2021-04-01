@@ -174,8 +174,13 @@ const Form = () => {
                   className={`form-control ${errors.password && "is-invalid"}`}
                   id="password"
                   name="password"
-                  ref={register}
-                  pattern="(?=.*\d)(?=.*[A-Z]).{6,}"
+                  ref={register({
+                    pattern: {
+                      value: /(?=.*\d)(?=.*[A-Z]).{6,}/,
+                      message:
+                        "Must contain at least one number and one uppercase letter, and at least 6 or more characters",
+                    },
+                  })}
                   disabled={processing}
                   autoComplete="off"
                 />
@@ -195,11 +200,15 @@ const Form = () => {
                   id="confirmPassword"
                   name="confirmPassword"
                   ref={register({
+                    pattern: {
+                      value: /(?=.*\d)(?=.*[A-Z]).{6,}/,
+                      message:
+                        "Must contain at least one number and one uppercase letter, and at least 6 or more characters",
+                    },
                     validate: (value) =>
                       value === password.current ||
                       "The passwords do not match",
                   })}
-                  pattern="(?=.*\d)(?=.*[A-Z]).{6,}"
                   disabled={processing}
                   autoComplete="off"
                 />
