@@ -11,6 +11,7 @@
     "prepare": "husky install",
     "setup": "./scripts/setup-cog.sh",
     "start:cms": "yarn workspace cms start",
+    "start:api": "sls offline start -c api-local.yml",
     "build:api": "./scripts/build-api.sh",
     "test:api": "./scripts/test-api.sh",
     "coverage:api": "./scripts/coverage-api.sh"
