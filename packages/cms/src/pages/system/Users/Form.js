@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   CButton,
   CCard,
@@ -20,9 +20,12 @@ import update from "api/update";
 const Form = () => {
   const { id } = useParams();
   const history = useHistory();
-  const { register, handleSubmit, errors, getValues, reset } = useForm();
+  const { register, handleSubmit, errors, getValues, reset, watch } = useForm();
   const [processing, setProcessing] = useState(true);
   const [defaultValues, setDefaultValues] = useState({});
+
+  const password = useRef({});
+  password.current = watch("password", "");
 
   const updateUser = async ({ firstName, lastName, group }) => {
     const data = {};
@@ -39,6 +42,7 @@ const Form = () => {
       data.oldGroup = defaultValues.group;
     }
 
+    if (Object.keys(data).length <= 0) return;
     // send only changed data
     await update({
       apiName: "Users",
@@ -47,10 +51,22 @@ const Form = () => {
     });
   };
 
+  const changePassword = async ({ password, confirmPassword }) => {
+    if (!password || !confirmPassword) return;
+    await update({
+      apiName: "Users",
+      id,
+      pathSuffix: "/password",
+      data: { password },
+    });
+  };
+
   const onSubmit = async (data) => {
     setProcessing(true);
-    console.log(data);
-    await updateUser(data);
+    const proms = [];
+    proms.push(updateUser(data));
+    proms.push(changePassword(data));
+    await Promise.all(proms);
     setProcessing(false);
     history.push("/system/users");
   };
@@ -150,19 +166,22 @@ const Form = () => {
                 )}
               </CFormGroup>
               <CFormGroup>
-                <CLabel htmlFor="password">New Password</CLabel>
+                <CLabel htmlFor="password">
+                  New Password <small>(Leave blank to retain password)</small>
+                </CLabel>
                 <input
                   type="password"
                   className={`form-control ${errors.password && "is-invalid"}`}
                   id="password"
                   name="password"
                   ref={register}
+                  pattern="(?=.*\d)(?=.*[A-Z]).{6,}"
                   disabled={processing}
                   autoComplete="off"
                 />
                 {errors.password && (
                   <div className="invalid-feedback">
-                    Please provide password.
+                    {errors.password.message}
                   </div>
                 )}
               </CFormGroup>
@@ -175,13 +194,18 @@ const Form = () => {
                   }`}
                   id="confirmPassword"
                   name="confirmPassword"
-                  ref={register}
+                  ref={register({
+                    validate: (value) =>
+                      value === password.current ||
+                      "The passwords do not match",
+                  })}
+                  pattern="(?=.*\d)(?=.*[A-Z]).{6,}"
                   disabled={processing}
                   autoComplete="off"
                 />
                 {errors.confirmPassword && (
                   <div className="invalid-feedback">
-                    Please provide confirm password.
+                    {errors.confirmPassword.message}
                   </div>
                 )}
               </CFormGroup>
