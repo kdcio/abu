@@ -1,30 +1,37 @@
 import init from '../src/init';
 import list from '../src/list';
 
+import admins from './fixtures/admins.json';
+import editors from './fixtures/editors.json';
+import expected from './fixtures/list-expected.json';
+
 jest.mock('../src/init');
 
 describe('List users', () => {
   beforeEach(() => {
-    // Clear all instances and calls to constructor and all methods:
     init.mockClear();
     delete process.env.COG_POOL_ID;
   });
 
   it('should list users', async () => {
     process.env.COG_POOL_ID = 'pool-id';
+
     const fakeCog = {
-      listUsers: jest.fn().mockReturnValue({
-        promise: () => Promise.resolve(),
-      }),
+      listUsersInGroup: jest
+        .fn()
+        .mockImplementationOnce(() => ({
+          promise: () => Promise.resolve(admins),
+        }))
+        .mockImplementationOnce(() => ({
+          promise: () => Promise.resolve(editors),
+        })),
     };
     init.mockImplementation(() => fakeCog);
 
-    await list();
+    const res = await list();
     expect(init).toBeCalledTimes(1);
-    expect(fakeCog.listUsers).toBeCalledTimes(1);
-    expect(fakeCog.listUsers).toBeCalledWith({
-      UserPoolId: 'pool-id',
-    });
+    expect(fakeCog.listUsersInGroup).toBeCalledTimes(2);
+    expect(res).toEqual(expected);
   });
 
   it('should throw missing pool id', async () => {

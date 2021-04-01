@@ -1,0 +1,129 @@
+{
+  "Users": [
+    {
+      "Username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d5",
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d5"
+        },
+        {
+          "Name": "given_name",
+          "Value": "Legolas"
+        },
+        {
+          "Name": "family_name",
+          "Value": "Thranduilion"
+        },
+        {
+          "Name": "email",
+          "Value": "legolas@thranduilion.elf"
+        }
+      ],
+      "UserCreateDate": "2020-03-19T21:05:14.954Z",
+      "UserLastModifiedDate": "2021-02-12T01:12:50.287Z",
+      "Enabled": true,
+      "UserStatus": "CONFIRMED"
+    },
+    {
+      "Username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d6",
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d6"
+        },
+        {
+          "Name": "given_name",
+          "Value": "Elessar"
+        },
+        {
+          "Name": "family_name",
+          "Value": "Telcontar"
+        },
+        {
+          "Name": "email",
+          "Value": "elessar@telcontar.com"
+        }
+      ],
+      "UserCreateDate": "2020-07-11T11:05:14.954Z",
+      "UserLastModifiedDate": "2021-02-01T01:12:50.287Z",
+      "Enabled": true,
+      "UserStatus": "CONFIRMED"
+    },
+    {
+      "Username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d7",
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d7"
+        },
+        {
+          "Name": "given_name",
+          "Value": "Tom"
+        },
+        {
+          "Name": "family_name",
+          "Value": "Bombadil"
+        },
+        {
+          "Name": "email",
+          "Value": "tom@bombadil.io"
+        }
+      ],
+      "UserCreateDate": "2021-02-12T13:05:14.954Z",
+      "UserLastModifiedDate": "2021-03-21T04:12:50.287Z",
+      "Enabled": true,
+      "UserStatus": "FORCE_CHANGE_PASSWORD"
+    },
+    {
+      "Username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d8",
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d8"
+        },
+        {
+          "Name": "given_name",
+          "Value": "Barliman"
+        },
+        {
+          "Name": "family_name",
+          "Value": "Butterbur"
+        },
+        {
+          "Name": "email",
+          "Value": "barliman@butterbur.com"
+        }
+      ],
+      "UserCreateDate": "2020-05-05T01:05:14.954Z",
+      "UserLastModifiedDate": "2021-03-15T15:12:50.287Z",
+      "Enabled": false,
+      "UserStatus": "ARCHIVED"
+    },
+    {
+      "Username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d9",
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d9"
+        },
+        {
+          "Name": "given_name",
+          "Value": "Eowyn"
+        },
+        {
+          "Name": "family_name",
+          "Value": "Telcontar"
+        },
+        {
+          "Name": "email",
+          "Value": "elessar@telcontar.com"
+        }
+      ],
+      "UserCreateDate": "2020-04-01T01:05:14.954Z",
+      "UserLastModifiedDate": "2021-03-10T10:22:50.287Z",
+      "Enabled": true,
+      "UserStatus": "CONFIRMED"
+    }
+  ]
+}

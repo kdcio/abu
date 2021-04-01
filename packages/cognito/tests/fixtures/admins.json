@@ -1,0 +1,104 @@
+{
+  "Users": [
+    {
+      "Username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d1",
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d1"
+        },
+        {
+          "Name": "given_name",
+          "Value": "Frodo"
+        },
+        {
+          "Name": "family_name",
+          "Value": "Baggins"
+        },
+        {
+          "Name": "email",
+          "Value": "frodo@baggins.com"
+        }
+      ],
+      "UserCreateDate": "2020-03-29T01:05:14.954Z",
+      "UserLastModifiedDate": "2021-01-29T01:12:50.287Z",
+      "Enabled": true,
+      "UserStatus": "CONFIRMED"
+    },
+    {
+      "Username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d2",
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d2"
+        },
+        {
+          "Name": "given_name",
+          "Value": "Samwise"
+        },
+        {
+          "Name": "family_name",
+          "Value": "Gamgee"
+        },
+        {
+          "Name": "email",
+          "Value": "samwise@gamgee.net"
+        }
+      ],
+      "UserCreateDate": "2020-06-19T01:05:14.954Z",
+      "UserLastModifiedDate": "2021-02-19T01:12:50.287Z",
+      "Enabled": true,
+      "UserStatus": "CONFIRMED"
+    },
+    {
+      "Username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d3",
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d3"
+        },
+        {
+          "Name": "given_name",
+          "Value": "Peregrin"
+        },
+        {
+          "Name": "family_name",
+          "Value": "Took"
+        },
+        {
+          "Name": "email",
+          "Value": "peregrin@took.io"
+        }
+      ],
+      "UserCreateDate": "2021-03-22T03:05:14.954Z",
+      "UserLastModifiedDate": "2021-03-22T03:12:50.287Z",
+      "Enabled": true,
+      "UserStatus": "FORCE_CHANGE_PASSWORD"
+    },
+    {
+      "Username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d4",
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d4"
+        },
+        {
+          "Name": "given_name",
+          "Value": "Meriadoc"
+        },
+        {
+          "Name": "family_name",
+          "Value": "Brandybuck"
+        },
+        {
+          "Name": "email",
+          "Value": "meriadoc@brandybuck.dev"
+        }
+      ],
+      "UserCreateDate": "2020-04-04T01:05:14.954Z",
+      "UserLastModifiedDate": "2021-02-14T10:12:50.287Z",
+      "Enabled": false,
+      "UserStatus": "COMPROMISED"
+    }
+  ]
+}
