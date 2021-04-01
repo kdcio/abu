@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 
 const ListContext = createContext();
 
@@ -12,8 +12,9 @@ const ListProvider = (props) => {
   const [selectedIdx, setSelectedIdx] = useState(null);
 
   const selectByIndex = (idx) => {
+    setSelectedIdx(idx);
     if (idx === selectedIdx) setSelectedIdx(null);
-    else setSelectedIdx(idx);
+    else setSelected(list[idx] || null);
   };
 
   const removeItem = (idx) => {
@@ -21,11 +22,6 @@ const ListProvider = (props) => {
     newList.splice(idx, 1);
     setList(newList);
   };
-
-  useEffect(() => {
-    if (selectedIdx === null) setSelected(null);
-    else setSelected(list[selectedIdx] || null);
-  }, [list, selectedIdx]);
 
   return (
     <ListContext.Provider
