@@ -20,6 +20,7 @@ const Add = () => {
   const history = useHistory();
   const { register, handleSubmit, errors } = useForm();
   const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState(null);
 
   const createUser = async ({ firstName, lastName, email, group }) =>
     await create({
@@ -34,20 +35,29 @@ const Add = () => {
 
   const onSubmit = async (data) => {
     setProcessing(true);
-    await createUser(data);
+    try {
+      await createUser(data);
+      history.push("/system/users");
+    } catch (err) {
+      setError(err);
+    }
     setProcessing(false);
-    history.push("/system/users");
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       <CCard>
         <CCardHeader>
-          <h3>Add User</h3>
+          <h3 id="addTitle">Add User</h3>
         </CCardHeader>
         <CCardBody>
           <CRow>
             <CCol sm="12">
+              {error && (
+                <p className="text-danger text-center">
+                  <strong>{error}</strong>
+                </p>
+              )}
               <CFormGroup>
                 <CLabel htmlFor="firstName">Email</CLabel>
                 <input
@@ -89,6 +99,7 @@ const Add = () => {
         <CCardFooter>
           <CButton
             type="submit"
+            id="addUser"
             size="sm"
             color="primary"
             className="mr-2"
@@ -98,6 +109,7 @@ const Add = () => {
           </CButton>
           <CButton
             type="button"
+            id="cancel"
             size="sm"
             color="danger"
             className="mr-2"

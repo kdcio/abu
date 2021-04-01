@@ -45,10 +45,11 @@ const Users = () => {
         <CCardHeader>
           <CRow>
             <CCol sm="6">
-              <h3>Users</h3>
+              <h3 id="listTitle">Users</h3>
             </CCol>
             <CCol sm="6">
               <Link
+                id="addUser"
                 to={`/system/users/add`}
                 className="btn btn-primary float-right"
               >
@@ -61,53 +62,57 @@ const Users = () => {
           {processing ? (
             <Spinner />
           ) : (
-            <table className="table table-hover table-outline mb-0 d-none d-sm-table">
-              <thead className="thead-light">
-                <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th className="text-center">Group</th>
-                  <th className="text-center">Status</th>
-                  <th className="text-center">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user, idx) => (
-                  <tr key={user.sub}>
-                    <td>{user.given_name}</td>
-                    <td>{user.family_name}</td>
-                    <td>{user.email}</td>
-                    <td className="text-center">{user.groups?.[0]}</td>
-                    <td className="text-center">{user.status}</td>
-                    <td className="text-center">
-                      {user.status === "CONFIRMED" && (
+            <div className="table-responsive">
+              <table className="table table-hover table-outline mb-0 d-none d-sm-table">
+                <thead className="thead-light">
+                  <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th className="text-center">Group</th>
+                    <th className="text-center">Status</th>
+                    <th className="text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user, idx) => (
+                    <tr key={user.sub}>
+                      <td>{user.given_name}</td>
+                      <td>{user.family_name}</td>
+                      <td>{user.email}</td>
+                      <td className="text-center">{user.groups?.[0]}</td>
+                      <td className="text-center">{user.status}</td>
+                      <td className="text-center">
+                        {user.status === "CONFIRMED" && (
+                          <CButton
+                            type="button"
+                            size="sm"
+                            color="info"
+                            variant="ghost"
+                            className="edit-btn"
+                            onClick={() =>
+                              history.push(`/system/users/edit/${user.sub}`)
+                            }
+                          >
+                            <CIcon name="cil-pen-alt" />
+                          </CButton>
+                        )}
                         <CButton
                           type="button"
                           size="sm"
-                          color="info"
+                          color="danger"
                           variant="ghost"
-                          onClick={() =>
-                            history.push(`/system/users/edit/${user.sub}`)
-                          }
+                          className="delete-btn"
+                          onClick={() => removeUser(user.sub, idx)}
                         >
-                          <CIcon name="cil-pen-alt" />
+                          <CIcon name="cil-trash" />
                         </CButton>
-                      )}
-                      <CButton
-                        type="button"
-                        size="sm"
-                        color="danger"
-                        variant="ghost"
-                        onClick={() => removeUser(user.sub, idx)}
-                      >
-                        <CIcon name="cil-trash" />
-                      </CButton>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </CCardBody>
       </CCard>
