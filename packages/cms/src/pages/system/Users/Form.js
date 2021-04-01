@@ -109,7 +109,7 @@ const Form = () => {
                   name="email"
                   placeholder="Enter your email"
                   ref={register({ required: true })}
-                  readonly
+                  readOnly
                 />
                 {errors.email && (
                   <div className="invalid-feedback">Please provide email.</div>
