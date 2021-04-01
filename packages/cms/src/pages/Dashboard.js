@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth } from "context/auth";
 import { ReactComponent as DashboardImg } from "assets/svg/dashboard.svg";
 
-import "scss/dashboard.scss";
+import "scss/components/dashboard.scss";
 
 const Dashboard = () => {
   const { user } = useAuth();
