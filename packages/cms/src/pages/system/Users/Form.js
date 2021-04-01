@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CButton,
   CCard,
@@ -6,83 +6,208 @@ import {
   CCardFooter,
   CCardHeader,
   CCol,
-  CForm,
   CFormGroup,
-  CInput,
   CLabel,
-  CSelect,
   CRow,
 } from "@coreui/react";
-import { useParams, Link } from "react-router-dom";
+import { useHistory, useParams, Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import CIcon from "@coreui/icons-react";
 
 import get from "api/get";
+import update from "api/update";
 
 const Form = () => {
   const { id } = useParams();
+  const history = useHistory();
+  const { register, handleSubmit, errors, getValues, reset } = useForm();
+  const [processing, setProcessing] = useState(true);
+  const [defaultValues, setDefaultValues] = useState({});
+
+  const updateUser = async ({ firstName, lastName, group }) => {
+    const data = {};
+    if (
+      firstName !== defaultValues.firstName ||
+      lastName !== defaultValues.lastName
+    ) {
+      data.firstName = firstName;
+      data.lastName = lastName;
+    }
+
+    if (group !== defaultValues.group) {
+      data.newGroup = group;
+      data.oldGroup = defaultValues.group;
+    }
+
+    // send only changed data
+    await update({
+      apiName: "Users",
+      id,
+      data,
+    });
+  };
+
+  const onSubmit = async (data) => {
+    setProcessing(true);
+    console.log(data);
+    await updateUser(data);
+    setProcessing(false);
+    history.push("/system/users");
+  };
+
   useEffect(() => {
     const getUser = async () => {
-      const user = await get({ apiName: "Users", id });
-      console.log(user);
+      const res = await get({ apiName: "Users", id });
+      const values = {
+        ...getValues(),
+        firstName: res.given_name,
+        lastName: res.family_name,
+        group: res.groups?.[0] || "editor",
+        email: res.email,
+      };
+      setDefaultValues(values);
+      reset(values);
+      setProcessing(false);
     };
-    id && getUser();
-  }, [id]);
+    if (id) getUser();
+    else history.push("/system/users");
+  }, [id, getValues, reset, history]);
 
   return (
-    <CCard>
-      <CCardHeader>
-        <h3>{id ? "Edit" : "Add"} User</h3>
-      </CCardHeader>
-      <CCardBody>
-        <CForm>
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      <CCard>
+        <CCardHeader>
+          <h3>Edit User</h3>
+        </CCardHeader>
+        <CCardBody>
           <CRow>
             <CCol sm="6">
               <CFormGroup>
-                <CLabel htmlFor="first-name">First Name</CLabel>
-                <CInput
-                  id="first-name"
+                <CLabel htmlFor="firstName">Email</CLabel>
+                <input
+                  type="email"
+                  className={`form-control ${errors.email && "is-invalid"}`}
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  ref={register({ required: true })}
+                  disabled={processing}
+                />
+                {errors.email && (
+                  <div className="invalid-feedback">Please provide email.</div>
+                )}
+              </CFormGroup>
+              <CFormGroup>
+                <CLabel htmlFor="firstName">First Name</CLabel>
+                <input
+                  type="text"
+                  className={`form-control ${errors.firstName && "is-invalid"}`}
+                  id="firstName"
+                  name="firstName"
                   placeholder="Enter your first name"
-                  required
+                  ref={register({ required: true })}
+                  disabled={processing}
                 />
+                {errors.firstName && (
+                  <div className="invalid-feedback">
+                    Please provide first name.
+                  </div>
+                )}
               </CFormGroup>
               <CFormGroup>
-                <CLabel htmlFor="last-name">Last Name</CLabel>
-                <CInput
-                  id="last-name"
-                  placeholder="Enter your Last name"
-                  required
+                <CLabel htmlFor="lastName">Last Name</CLabel>
+                <input
+                  type="text"
+                  className={`form-control ${errors.lastName && "is-invalid"}`}
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Enter your last name"
+                  ref={register({ required: true })}
+                  disabled={processing}
                 />
-              </CFormGroup>
-              <CFormGroup>
-                <CLabel htmlFor="group">Group</CLabel>
-                <CSelect custom name="group" id="group">
-                  <option value="editor">editor</option>
-                  <option value="admin">admin</option>
-                </CSelect>
+                {errors.lastName && (
+                  <div className="invalid-feedback">
+                    Please provide last name.
+                  </div>
+                )}
               </CFormGroup>
             </CCol>
             <CCol sm="6">
               <CFormGroup>
-                <CLabel htmlFor="new-password">New Password</CLabel>
-                <CInput id="new-password" type="password" required />
+                <CLabel htmlFor="group">Group</CLabel>
+                <select
+                  className={`form-control ${errors.group && "is-invalid"}`}
+                  id="group"
+                  name="group"
+                  ref={register({ required: true })}
+                  disabled={processing}
+                >
+                  <option value="editor">Editor</option>
+                  <option value="admin">Admin</option>
+                </select>
+                {errors.group && (
+                  <div className="invalid-feedback">Please provide group.</div>
+                )}
               </CFormGroup>
               <CFormGroup>
-                <CLabel htmlFor="confirm-password">Confirm New Password</CLabel>
-                <CInput id="confirm-password" type="password" required />
+                <CLabel htmlFor="password">New Password</CLabel>
+                <input
+                  type="password"
+                  className={`form-control ${errors.password && "is-invalid"}`}
+                  id="password"
+                  name="password"
+                  ref={register}
+                  disabled={processing}
+                  autoComplete="off"
+                />
+                {errors.password && (
+                  <div className="invalid-feedback">
+                    Please provide password.
+                  </div>
+                )}
+              </CFormGroup>
+              <CFormGroup>
+                <CLabel htmlFor="confirmPassword">Confirm New Password</CLabel>
+                <input
+                  type="password"
+                  className={`form-control ${
+                    errors.confirmPassword && "is-invalid"
+                  }`}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  ref={register}
+                  disabled={processing}
+                  autoComplete="off"
+                />
+                {errors.confirmPassword && (
+                  <div className="invalid-feedback">
+                    Please provide confirm password.
+                  </div>
+                )}
               </CFormGroup>
             </CCol>
           </CRow>
-        </CForm>
-      </CCardBody>
-      <CCardFooter>
-        <CButton type="submit" size="sm" color="primary" className="mr-2">
-          <CIcon name="cil-scrubber" /> Submit
-        </CButton>
-        <Link to={`/system/users`} className="btn btn-danger btn-sm">
-          <CIcon name="cil-ban" /> Cancel
-        </Link>
-      </CCardFooter>
-    </CCard>
+        </CCardBody>
+        <CCardFooter>
+          <CButton
+            type="submit"
+            size="sm"
+            color="primary"
+            className="mr-2"
+            disabled={processing}
+          >
+            <CIcon name="cil-scrubber" /> Update
+          </CButton>
+          <Link
+            to={`/system/users`}
+            className="btn btn-danger btn-sm"
+            disabled={processing}
+          >
+            <CIcon name="cil-ban" /> Cancel
+          </Link>
+        </CCardFooter>
+      </CCard>
+    </form>
   );
 };
 
