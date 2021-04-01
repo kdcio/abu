@@ -2,7 +2,7 @@
   {
     "created": "2021-03-22T03:05:14.954Z",
     "updated": "2021-03-22T03:12:50.287Z",
-    "statues": "FORCE_CHANGE_PASSWORD",
+    "status": "FORCE_CHANGE_PASSWORD",
     "username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d3",
     "sub": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d3",
     "given_name": "Peregrin",
@@ -15,7 +15,7 @@
   {
     "created": "2021-02-12T13:05:14.954Z",
     "updated": "2021-03-21T04:12:50.287Z",
-    "statues": "FORCE_CHANGE_PASSWORD",
+    "status": "FORCE_CHANGE_PASSWORD",
     "username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d7",
     "sub": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d7",
     "given_name": "Tom",

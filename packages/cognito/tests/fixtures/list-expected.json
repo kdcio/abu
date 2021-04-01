@@ -2,7 +2,7 @@
   {
     "created": "2021-03-22T03:05:14.954Z",
     "updated": "2021-03-22T03:12:50.287Z",
-    "statues": "FORCE_CHANGE_PASSWORD",
+    "status": "FORCE_CHANGE_PASSWORD",
     "username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d3",
     "sub": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d3",
     "given_name": "Peregrin",
@@ -15,7 +15,7 @@
   {
     "created": "2021-02-12T13:05:14.954Z",
     "updated": "2021-03-21T04:12:50.287Z",
-    "statues": "FORCE_CHANGE_PASSWORD",
+    "status": "FORCE_CHANGE_PASSWORD",
     "username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d7",
     "sub": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d7",
     "given_name": "Tom",
@@ -28,7 +28,7 @@
   {
     "created": "2020-07-11T11:05:14.954Z",
     "updated": "2021-02-01T01:12:50.287Z",
-    "statues": "CONFIRMED",
+    "status": "CONFIRMED",
     "username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d6",
     "sub": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d6",
     "given_name": "Elessar",
@@ -41,7 +41,7 @@
   {
     "created": "2020-06-19T01:05:14.954Z",
     "updated": "2021-02-19T01:12:50.287Z",
-    "statues": "CONFIRMED",
+    "status": "CONFIRMED",
     "username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d2",
     "sub": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d2",
     "given_name": "Samwise",
@@ -54,7 +54,7 @@
   {
     "created": "2020-05-05T01:05:14.954Z",
     "updated": "2021-03-15T15:12:50.287Z",
-    "statues": "ARCHIVED",
+    "status": "ARCHIVED",
     "username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d8",
     "sub": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d8",
     "given_name": "Barliman",
@@ -67,7 +67,7 @@
   {
     "created": "2020-04-04T01:05:14.954Z",
     "updated": "2021-02-14T10:12:50.287Z",
-    "statues": "COMPROMISED",
+    "status": "COMPROMISED",
     "username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d4",
     "sub": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d4",
     "given_name": "Meriadoc",
@@ -80,7 +80,7 @@
   {
     "created": "2020-04-01T01:05:14.954Z",
     "updated": "2021-03-10T10:22:50.287Z",
-    "statues": "CONFIRMED",
+    "status": "CONFIRMED",
     "username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d9",
     "sub": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d9",
     "given_name": "Eowyn",
@@ -93,7 +93,7 @@
   {
     "created": "2020-03-29T01:05:14.954Z",
     "updated": "2021-01-29T01:12:50.287Z",
-    "statues": "CONFIRMED",
+    "status": "CONFIRMED",
     "username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d1",
     "sub": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d1",
     "given_name": "Frodo",
@@ -106,7 +106,7 @@
   {
     "created": "2020-03-19T21:05:14.954Z",
     "updated": "2021-02-12T01:12:50.287Z",
-    "statues": "CONFIRMED",
+    "status": "CONFIRMED",
     "username": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d5",
     "sub": "ec2c8bb1-ada6-41d7-8451-fee42ad0d5d5",
     "given_name": "Legolas",
