@@ -61,3 +61,22 @@ list:
           authorizerId:
             Ref: ApiGatewayAuthorizer
         cors: true
+password:
+  handler: src/password.handler
+  events:
+    - http:
+        path: /{id}/password
+        method: patch
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+    - http:
+        path: /{id}/password
+        method: put
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
