@@ -118,6 +118,7 @@ describe("Manage Users by Admin", function () {
       .contains("Users")
       .click();
 
+    // check if editor data has been update
     cy.get("#listTitle").should("be.visible").contains("Users");
     cy.get("tbody > :nth-child(1) > :nth-child(1)").contains(eFirstName);
     cy.get("tbody > :nth-child(1) > :nth-child(2)").contains(eLastName);
@@ -127,7 +128,20 @@ describe("Manage Users by Admin", function () {
 
     cy.get("tbody > :nth-child(1) > :nth-child(6) > .edit-btn").click();
 
-    //cy.deleteCognitoUser(eEmail);
+    // Edit user
+    cy.get("#formTitle").contains("Edit User");
+    cy.get("#email").should("have.value", eEmail);
+    cy.get("#firstName").should("have.value", eFirstName);
+    cy.get("#lastName").should("have.value", eLastName).type(" jr");
+    cy.get("#group").should("have.value", "editor").select("admin");
+    cy.get("#update").click();
+
+    // Check if user is updated
+    cy.get("#listTitle").should("be.visible").contains("Users");
+    cy.get("tbody > :nth-child(1) > :nth-child(2)").contains(`${eLastName} jr`);
+    cy.get("tbody > :nth-child(1) > :nth-child(4)").contains("admin");
+
+    cy.deleteCognitoUser(eEmail);
   });
 
   after(function () {

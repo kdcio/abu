@@ -93,7 +93,7 @@ const Form = () => {
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       <CCard>
         <CCardHeader>
-          <h3>Edit User</h3>
+          <h3 id="formTitle">Edit User</h3>
         </CCardHeader>
         <CCardBody>
           <CRow>
@@ -102,12 +102,14 @@ const Form = () => {
                 <CLabel htmlFor="firstName">Email</CLabel>
                 <input
                   type="email"
-                  className={`form-control ${errors.email && "is-invalid"}`}
+                  className={`form-control-plaintext ${
+                    errors.email && "is-invalid"
+                  }`}
                   id="email"
                   name="email"
                   placeholder="Enter your email"
                   ref={register({ required: true })}
-                  disabled={processing}
+                  readonly
                 />
                 {errors.email && (
                   <div className="invalid-feedback">Please provide email.</div>
@@ -224,6 +226,7 @@ const Form = () => {
         <CCardFooter>
           <CButton
             type="submit"
+            id="update"
             size="sm"
             color="primary"
             className="mr-2"
@@ -232,6 +235,7 @@ const Form = () => {
             <CIcon name="cil-scrubber" /> Update
           </CButton>
           <Link
+            id="cancel"
             to={`/system/users`}
             className="btn btn-danger btn-sm"
             disabled={processing}
