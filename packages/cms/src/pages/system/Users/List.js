@@ -48,6 +48,7 @@ const Users = () => {
                   <th>Last Name</th>
                   <th>Email</th>
                   <th className="text-center">Group</th>
+                  <th className="text-center">Status</th>
                   <th className="text-center">Actions</th>
                 </tr>
               </thead>
@@ -58,14 +59,17 @@ const Users = () => {
                     <td>{user.family_name}</td>
                     <td>{user.email}</td>
                     <td className="text-center">{user.groups?.[0]}</td>
+                    <td className="text-center">{user.status}</td>
                     <td className="text-center">
-                      <Link to={`/system/users/edit/${user.sub}`}>
-                        <CIcon
-                          name="cil-pen-alt"
-                          className="text-info px-1"
-                          height={18}
-                        />
-                      </Link>
+                      {user.status === "CONFIRMED" && (
+                        <Link to={`/system/users/edit/${user.sub}`}>
+                          <CIcon
+                            name="cil-pen-alt"
+                            className="text-info px-1"
+                            height={18}
+                          />
+                        </Link>
+                      )}
                       <CIcon
                         name="cil-trash"
                         className="text-danger px-1"
