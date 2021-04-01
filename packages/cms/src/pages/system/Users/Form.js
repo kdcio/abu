@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   CButton,
   CCard,
@@ -13,9 +13,21 @@ import {
   CSelect,
   CRow,
 } from "@coreui/react";
+import { useParams } from "react-router-dom";
 import CIcon from "@coreui/icons-react";
 
+import get from "api/get";
+
 const Form = () => {
+  const { id } = useParams();
+  useEffect(() => {
+    const getUser = async () => {
+      const user = await get({ apiName: "Users", id });
+      console.log(user);
+    };
+    getUser();
+  }, [id]);
+
   return (
     <CCard>
       <CCardHeader>
