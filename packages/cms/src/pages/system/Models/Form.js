@@ -2,8 +2,9 @@ import React from "react";
 import { CCard, CCardBody, CCardHeader } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { Link } from "react-router-dom";
-import { useList } from "context/list";
+import { useList, ListProvider } from "context/list";
 import Info from "./Info";
+import FieldList from "./FieldList";
 
 const Form = () => {
   const { selected } = useList();
@@ -26,7 +27,11 @@ const Form = () => {
           </Link>
         </div>
       </CCardHeader>
-      <CCardBody></CCardBody>
+      <CCardBody>
+        <ListProvider>
+          <FieldList />
+        </ListProvider>
+      </CCardBody>
     </CCard>
   );
 };
