@@ -2,7 +2,7 @@ create:
   handler: src/create.handler
   events:
     - http:
-        path: /{busId}
+        path: /
         method: post
         authorizer:
           type: COGNITO_USER_POOLS
@@ -13,7 +13,7 @@ get:
   handler: src/get.handler
   events:
     - http:
-        path: /{busId}/{id}
+        path: /{id}
         method: get
         authorizer:
           type: COGNITO_USER_POOLS
@@ -24,7 +24,7 @@ list:
   handler: src/list.handler
   events:
     - http:
-        path: /{busId}
+        path: /
         method: get
         authorizer:
           type: COGNITO_USER_POOLS
@@ -35,7 +35,15 @@ update:
   handler: src/update.handler
   events:
     - http:
-        path: /{busId}/{id}
+        path: /{id}
+        method: put
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+    - http:
+        path: /{id}
         method: patch
         authorizer:
           type: COGNITO_USER_POOLS
@@ -46,7 +54,7 @@ remove:
   handler: src/remove.handler
   events:
     - http:
-        path: /{busId}/{id}
+        path: /{id}
         method: delete
         authorizer:
           type: COGNITO_USER_POOLS

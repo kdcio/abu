@@ -20,7 +20,7 @@ const renameFunctions = (serviceName, basePath, funcs) => {
 };
 
 module.exports = () => {
-  const services = ["users"];
+  const services = ["users", "model"];
 
   let functions = {};
   services.forEach((serviceName) => {
