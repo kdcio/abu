@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { CFormGroup, CLabel, CSwitch, CButton } from "@coreui/react";
 import { useForm } from "react-hook-form";
 import snakeCase from "lodash.snakecase";
 
-const Setting = () => {
+const Setting = ({ processing, update, error }) => {
   const { register, handleSubmit, errors, watch, setValue } = useForm();
-  const [processing, setProcessing] = useState(false);
+
   const requiredRef = useRef();
 
   const name = watch("name");
@@ -13,15 +13,22 @@ const Setting = () => {
     setValue("id", snakeCase(name));
   }, [name, setValue]);
 
-  const onSubmit = async (data) => {
-    console.log("submit");
-    setProcessing(true);
-    console.log(data);
-    setProcessing(false);
+  const onSubmit = (data) => {
+    const field = {
+      id: data.id,
+      name: data.name,
+      validations: {
+        required: data.required,
+      },
+      help: data.help,
+    };
+    update(field);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      {error && <div className="text-danger font-weight-bold">{error}</div>}
+      <input type="hidden" name="type" value="image" ref={register} />
       <CFormGroup>
         <CLabel htmlFor="name">Name</CLabel>
         <input
@@ -58,23 +65,6 @@ const Setting = () => {
         </small>
         {errors.id && (
           <div className="invalid-feedback">Please provide id.</div>
-        )}
-      </CFormGroup>
-      <CFormGroup>
-        <CLabel htmlFor="default">Default value</CLabel>
-        <input
-          type="text"
-          className={`form-control form-control-lg ${
-            errors.default && "is-invalid"
-          }`}
-          id="default"
-          name="default"
-          placeholder=""
-          ref={register}
-          disabled={processing}
-        />
-        {errors.default && (
-          <div className="invalid-feedback">{errors.default.message}</div>
         )}
       </CFormGroup>
       <CFormGroup>

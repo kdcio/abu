@@ -28,7 +28,8 @@ const ListProvider = (props) => {
   const selectById = (id) => {
     const idx = list.findIndex((item) => item.id === id);
     if (idx < 0) return;
-    setSelectedIdx(idx);
+    // console.log(idx);
+    // setSelectedIdx(idx);
     setSelected(list[idx]);
   };
 

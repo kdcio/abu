@@ -44,6 +44,7 @@ const Add = () => {
 
   const onSubmit = async (data) => {
     setProcessing(true);
+    // TODO: check if id is unique
     try {
       await createModal(data);
       await hydrate();

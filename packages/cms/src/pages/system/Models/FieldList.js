@@ -8,13 +8,15 @@ import FieldInList from "components/system/FieldInList";
 const FieldList = () => {
   const { selected } = useList();
   const { setModal } = useModal();
-  const [list, setList] = useState([]);
+  const [fields, setFields] = useState([]);
 
   useEffect(() => {
-    if (selected?.fields) setList(selected.fields);
-  }, [selected, setList]);
+    // console.log(selected);
+    if (selected?.fields) setFields(selected.fields);
+    else setFields([]);
+  }, [selected, setFields]);
 
-  if (list.length === 0) {
+  if (fields.length === 0) {
     return (
       <div className="text-center">
         <h3>Add fields to this model!</h3>
@@ -36,7 +38,7 @@ const FieldList = () => {
   }
   return (
     <div>
-      {list.map((f) => (
+      {fields.map((f) => (
         <FieldInList key={f.id} {...f} />
       ))}
     </div>

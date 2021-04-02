@@ -7,6 +7,7 @@ import SlugField from "fields/slug/List";
 import TextField from "fields/text/List";
 
 const FieldInList = (field) => {
+  // console.log(field);
   switch (field.type) {
     case "date":
       return <DateField {...field} />;
