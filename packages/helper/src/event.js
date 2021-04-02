@@ -1,5 +1,5 @@
 const createEvent = require("@serverless/event-mocks").default;
-import genUser from "./gen/user";
+const genUser = require("./gen/user");
 
 const makeFakeEvent = (overrides) => {
   const user = genUser();

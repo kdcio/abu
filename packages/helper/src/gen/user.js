@@ -1,6 +1,6 @@
-import faker from "faker";
+const faker = require("faker");
 
-const genUser = ({ withId = true } = {}) => {
+module.exports = ({ withId = true } = {}) => {
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
   const provider = faker.internet.domainName();
@@ -12,5 +12,3 @@ const genUser = ({ withId = true } = {}) => {
   if (withId) user.sub = faker.datatype.uuid();
   return user;
 };
-
-export default genUser;
