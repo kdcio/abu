@@ -1,0 +1,35 @@
+{
+  "name": "api-user",
+  "version": "0.1.0",
+  "description": "API for users data",
+  "main": "index.js",
+  "scripts": {
+    "start": "sls offline -s dev",
+    "deploy": "sls deploy -s",
+    "deploy:func": "sls deploy function",
+    "build": "sls package",
+    "test": "serverless-bundle test --collect-coverage",
+    "test:watch": "serverless-bundle test --watch --collect-coverage"
+  },
+  "keywords": [
+    "api"
+  ],
+  "author": {
+    "name": "Ian Dela Cruz",
+    "email": "ian@kdcsoftware.com",
+    "url": "https://www.kdcsoftware.com"
+  },
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@kdcio/api-gw-req": "^1.2.0",
+    "@kdcio/api-gw-resp": "^1.7.1",
+    "cognito": "*",
+    "debug": "^4.3.1"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
+  }
+}

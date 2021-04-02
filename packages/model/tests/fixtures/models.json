@@ -1,0 +1,66 @@
+[
+  {
+    "id": "home",
+    "name": "Home",
+    "collection": false,
+    "fields": [
+      {
+        "type": "text",
+        "name": "Intro",
+        "id": "intro",
+        "validations": {
+          "required": true
+        },
+        "default": "",
+        "help": ""
+      },
+      {
+        "type": "text",
+        "name": "Page Title",
+        "id": "page_title",
+        "validations": {
+          "required": true
+        },
+        "default": "Welcome to AbuCMS",
+        "help": ""
+      }
+    ]
+  },
+  {
+    "id": "blog",
+    "name": "Blog",
+    "collection": true,
+    "fields": [
+      {
+        "type": "text",
+        "name": "Title",
+        "id": "title",
+        "validations": {
+          "required": true
+        },
+        "default": "",
+        "help": ""
+      },
+      {
+        "type": "image",
+        "name": "Cover Image",
+        "id": "cover_image",
+        "validations": {
+          "required": true
+        },
+        "default": "",
+        "help": ""
+      },
+      {
+        "type": "rich-text",
+        "name": "Body",
+        "id": "body",
+        "validations": {
+          "required": true
+        },
+        "default": "",
+        "help": ""
+      }
+    ]
+  }
+]
