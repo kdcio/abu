@@ -17,16 +17,17 @@ import { useModal } from "context/modal";
 const Models = () => {
   const { id } = useParams();
   const history = useHistory();
-  const { list, selected, selectById, setApiName, hydrating } = useList();
+  const { dispatch, list, selected, hydrating } = useList();
   const { setModal } = useModal();
 
   useEffect(() => {
-    setApiName("Model");
-  }, [setApiName]);
+    dispatch({ type: "INIT", payload: "Model" });
+  }, [dispatch]);
 
   useEffect(() => {
-    selectById(id);
-  }, [id, selectById]);
+    console.log("seelcting id", id);
+    id && dispatch({ type: "SELECT_ID", id });
+  }, [id, dispatch]);
 
   return (
     <CCard>
