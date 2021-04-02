@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { CFormGroup, CLabel, CSwitch, CButton } from "@coreui/react";
 import { useForm } from "react-hook-form";
 import snakeCase from "lodash.snakecase";
 
-const Setting = () => {
+const Setting = ({ processing, update, error }) => {
   const { register, handleSubmit, errors, watch, setValue } = useForm();
-  const [processing, setProcessing] = useState(false);
   const requiredRef = useRef();
 
   const name = watch("name");
@@ -14,14 +13,22 @@ const Setting = () => {
   }, [name, setValue]);
 
   const onSubmit = async (data) => {
-    console.log("submit");
-    setProcessing(true);
-    console.log(data);
-    setProcessing(false);
+    const field = {
+      type: "rich-text",
+      id: data.id,
+      name: data.name,
+      validations: {
+        required: data.required,
+      },
+      default: data.default,
+      help: data.help,
+    };
+    update(field);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      {error && <div className="text-danger font-weight-bold">{error}</div>}
       <CFormGroup>
         <CLabel htmlFor="name">Name</CLabel>
         <input

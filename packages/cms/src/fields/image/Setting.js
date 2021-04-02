@@ -15,6 +15,7 @@ const Setting = ({ processing, update, error }) => {
 
   const onSubmit = (data) => {
     const field = {
+      type: "image",
       id: data.id,
       name: data.name,
       validations: {
@@ -28,7 +29,6 @@ const Setting = ({ processing, update, error }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       {error && <div className="text-danger font-weight-bold">{error}</div>}
-      <input type="hidden" name="type" value="image" ref={register} />
       <CFormGroup>
         <CLabel htmlFor="name">Name</CLabel>
         <input

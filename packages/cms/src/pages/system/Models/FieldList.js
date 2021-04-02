@@ -11,7 +11,6 @@ const FieldList = () => {
   const [fields, setFields] = useState([]);
 
   useEffect(() => {
-    // console.log(selected);
     if (selected?.fields) setFields(selected.fields);
     else setFields([]);
   }, [selected, setFields]);
