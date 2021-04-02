@@ -9,7 +9,7 @@ const List = ({ id, name, validations }) => {
   return (
     <ListItem
       id={id}
-      text="Rich Text"
+      text="Slug"
       header={header}
       icon="cil-link"
       iconClass="text-white bg-warning"

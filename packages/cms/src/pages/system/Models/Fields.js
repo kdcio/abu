@@ -3,11 +3,13 @@ import { CCard, CCardBody, CCardHeader } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { Link } from "react-router-dom";
 import { useList, ListProvider } from "context/list";
+import { useModal } from "context/modal";
 import Info from "./Info";
 import FieldList from "./FieldList";
 
 const Fields = () => {
   const { selected } = useList();
+  const { setModal } = useModal();
 
   if (!selected) return <Info />;
 
@@ -35,6 +37,7 @@ const Fields = () => {
           id="addmodel"
           to={`/system/models/add`}
           className="btn btn-success float-right"
+          onClick={() => setModal("addModelField")}
         >
           <CIcon name="cil-plus" /> Add another field
         </Link>

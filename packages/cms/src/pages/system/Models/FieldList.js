@@ -2,10 +2,13 @@ import React, { useEffect } from "react";
 import { CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { useList } from "context/list";
+import { useModal } from "context/modal";
 import FieldInList from "components/system/FieldInList";
 
 const FieldList = () => {
   const { list, setList } = useList();
+  const { setModal } = useModal();
+
   useEffect(() => {
     const getFiels = async () => {
       const fields = [
@@ -75,7 +78,12 @@ const FieldList = () => {
           Fields are columns in your spreadsheets. They define the data type in
           your model.
         </p>
-        <CButton type="button" id="addField" color="primary">
+        <CButton
+          type="button"
+          id="addField"
+          color="primary"
+          onClick={() => setModal("addModelField")}
+        >
           <CIcon name="cil-plus" />
           Add Field
         </CButton>

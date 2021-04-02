@@ -6,6 +6,7 @@ import { ModalProvider } from "context/modal";
 import List from "./List";
 import Form from "./Fields";
 import Add from "./Add";
+import AddField from "./AddField";
 
 import "scss/components/models.scss";
 
@@ -22,6 +23,7 @@ const Models = () => {
           </CCol>
         </CRow>
         <Add />
+        <AddField />
       </ModalProvider>
     </ListProvider>
   );
