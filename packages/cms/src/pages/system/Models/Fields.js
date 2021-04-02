@@ -33,14 +33,16 @@ const Fields = () => {
         <ListProvider>
           <FieldList />
         </ListProvider>
-        <Link
-          id="addmodel"
-          to={`/system/models/add`}
-          className="btn btn-success float-right"
-          onClick={() => setModal("addModelField")}
-        >
-          <CIcon name="cil-plus" /> Add another field
-        </Link>
+        {selected?.fields?.length > 0 && (
+          <Link
+            id="addmodel"
+            to={`/system/models/add`}
+            className="btn btn-success float-right"
+            onClick={() => setModal("addModelField")}
+          >
+            <CIcon name="cil-plus" /> Add another field
+          </Link>
+        )}
       </CCardBody>
     </CCard>
   );

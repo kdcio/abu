@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { useList } from "context/list";
@@ -6,68 +6,13 @@ import { useModal } from "context/modal";
 import FieldInList from "components/system/FieldInList";
 
 const FieldList = () => {
-  const { list, setList } = useList();
+  const { selected } = useList();
   const { setModal } = useModal();
+  const [list, setList] = useState([]);
 
   useEffect(() => {
-    const getFiels = async () => {
-      const fields = [
-        {
-          type: "text",
-          name: "Title",
-          id: "title",
-          validations: {
-            required: true,
-          },
-          default: "",
-          help: "",
-        },
-        {
-          type: "slug",
-          name: "Slug",
-          id: "slug",
-          validations: {
-            required: true,
-            reference: "title",
-            unique: true,
-          },
-          default: "",
-          help: "",
-        },
-        {
-          type: "image",
-          name: "Cover Image",
-          id: "cover_image",
-          validations: {
-            required: true,
-          },
-          help: "",
-        },
-        {
-          type: "rich-text",
-          name: "Description",
-          id: "description",
-          validations: {
-            required: true,
-          },
-          default: "",
-          help: "",
-        },
-        {
-          type: "date",
-          name: "Publish Date",
-          id: "publish_date",
-          validations: {
-            required: true,
-          },
-          default: "",
-          help: "",
-        },
-      ];
-      setList(fields);
-    };
-    getFiels();
-  }, [setList]);
+    if (selected?.fields) setList(selected.fields);
+  }, [selected, setList]);
 
   if (list.length === 0) {
     return (
