@@ -22,10 +22,11 @@ import "scss/components/add-model.scss";
 
 const Add = () => {
   const { modal, setModal } = useModal();
-  const { dispatch } = useList();
+  const { list, dispatch } = useList();
   const collectionRef = useRef();
   const { register, handleSubmit, errors, watch, setValue } = useForm();
   const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState(null);
 
   const name = watch("name");
   useEffect(() => {
@@ -44,7 +45,12 @@ const Add = () => {
 
   const onSubmit = async (data) => {
     setProcessing(true);
-    // TODO: check if id is unique
+    const idx = list.findIndex((item) => item.id === data.id);
+    if (idx >= 0) {
+      setError("Model ID not unique. Please choose a different one.");
+      setProcessing(false);
+      return;
+    }
     try {
       await createModal(data);
       dispatch({ type: "HYDRATE" });
@@ -66,6 +72,7 @@ const Add = () => {
           <CModalTitle>Add Model</CModalTitle>
         </CModalHeader>
         <CModalBody>
+          {error && <div className="text-danger font-weight-bold">{error}</div>}
           <CFormGroup>
             <CLabel htmlFor="name">Name</CLabel>
             <input
