@@ -3,7 +3,7 @@ import React from "react";
 import { CRow, CCol } from "@coreui/react";
 import { ListProvider } from "context/list";
 import List from "./List";
-import Form from "./Form";
+import Form from "./Fields";
 
 import "scss/components/models.scss";
 

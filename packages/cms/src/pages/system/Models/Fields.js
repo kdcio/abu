@@ -6,7 +6,7 @@ import { useList, ListProvider } from "context/list";
 import Info from "./Info";
 import FieldList from "./FieldList";
 
-const Form = () => {
+const Fields = () => {
   const { selected } = useList();
 
   if (!selected) return <Info />;
@@ -36,4 +36,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default Fields;
