@@ -1,0 +1,19 @@
+{
+  "name": "helper",
+  "version": "0.1.0",
+  "description": "Test helpers",
+  "main": "src/index.js",
+  "keywords": [],
+  "author": {
+    "name": "Ian Dela Cruz",
+    "email": "ian@kdcsoftware.com",
+    "url": "https://www.kdcsoftware.com"
+  },
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@serverless/event-mocks": "^1.1.1",
+    "aws-sdk": "^2.876.0",
+    "faker": "^5.5.2"
+  }
+}

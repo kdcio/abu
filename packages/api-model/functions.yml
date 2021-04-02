@@ -1,0 +1,55 @@
+create:
+  handler: src/create.handler
+  events:
+    - http:
+        path: /{busId}
+        method: post
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+get:
+  handler: src/get.handler
+  events:
+    - http:
+        path: /{busId}/{id}
+        method: get
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+list:
+  handler: src/list.handler
+  events:
+    - http:
+        path: /{busId}
+        method: get
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+update:
+  handler: src/update.handler
+  events:
+    - http:
+        path: /{busId}/{id}
+        method: patch
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+remove:
+  handler: src/remove.handler
+  events:
+    - http:
+        path: /{busId}/{id}
+        method: delete
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true

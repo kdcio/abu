@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  manager:
+    container_name: abu-ddb-manager
+    image: taydy/dynamodb-manager
+    ports:
+      - "8063:80"
+    privileged: true
+    restart: always
+    networks:
+      - aws-local
+  dynamodb:
+    container_name: abu-ddb
+    image: amazon/dynamodb-local
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data/
+    volumes:
+      - .dbdata:/home/dynamodblocal/data
+    restart: always
+    ports:
+      - "8062:8000"
+    networks:
+      - aws-local
+
+networks:
+  aws-local:
