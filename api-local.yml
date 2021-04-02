@@ -32,7 +32,7 @@ provider:
     COG_ACCESS_KEY_ID: ${file(./config/${self:provider.stage}.yml):COG_ACCESS_KEY_ID}
     COG_SECRET_ACCESS_KEY: ${file(./config/${self:provider.stage}.yml):COG_SECRET_ACCESS_KEY}
     DDB_REGION: ${file(./config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
-    DDB_ENDPOINT: ${file(./config/${self:provider.stage}.yml):DDB_ENDPOINT, 'https://localhost:8062'}
+    DDB_ENDPOINT: ${file(./config/${self:provider.stage}.yml):DDB_ENDPOINT, 'http://localhost:8062'}
     DDB_TABLE: ${file(./config/${self:provider.stage}.yml):DDB_TABLE, 'abu-local'}
 
 functions: ${file(./functions.js)}

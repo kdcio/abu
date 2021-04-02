@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import {
   CCard,
@@ -13,43 +13,13 @@ import Spinner from "components/Spinner";
 import { useList } from "context/list";
 import { useModal } from "context/modal";
 
-// import list from "api/list";
-
 const Models = () => {
-  const { list, setList, selected, selectByIndex } = useList();
+  const { list, selected, selectByIndex, setApiName, hydrating } = useList();
   const { setModal } = useModal();
-  const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
-    const getModels = async () => {
-      // const models = await list({ apiName: "Models" });
-      const list = [
-        {
-          id: "home",
-          name: "Home Page",
-          collection: false,
-        },
-        {
-          id: "blogs",
-          name: "Blogs",
-          collection: true,
-        },
-        {
-          id: "social",
-          name: "Social Profiles",
-          collection: true,
-        },
-        {
-          id: "about",
-          name: "About Page",
-          collection: false,
-        },
-      ];
-      setList(list);
-      setProcessing(false);
-    };
-    getModels();
-  }, [setList]);
+    setApiName("Model");
+  }, [setApiName]);
 
   return (
     <CCard>
@@ -70,9 +40,9 @@ const Models = () => {
         </div>
       </CCardHeader>
       <CCardBody className="model-list">
-        {processing ? (
+        {hydrating ? (
           <Spinner />
-        ) : (
+        ) : list.length > 0 ? (
           <CListGroup>
             {list.map((model, idx) => (
               <CListGroupItem
@@ -98,6 +68,10 @@ const Models = () => {
               </CListGroupItem>
             ))}
           </CListGroup>
+        ) : (
+          <div className="p-4 text-center">
+            <p>Add your first Model by clicking the plus button above.</p>
+          </div>
         )}
       </CCardBody>
     </CCard>

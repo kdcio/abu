@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+
+import listApi from "api/list";
 
 const ListContext = createContext();
 
@@ -7,6 +9,8 @@ const useList = () => {
 };
 
 const ListProvider = (props) => {
+  const [apiName, setApiName] = useState(null);
+  const [hydrating, setHydrating] = useState(false);
   const [list, setList] = useState([]);
   const [selected, setSelected] = useState(null);
   const [selectedIdx, setSelectedIdx] = useState(null);
@@ -27,6 +31,17 @@ const ListProvider = (props) => {
     setList(newList);
   };
 
+  const hydrate = async () => {
+    setHydrating(true);
+    const res = await listApi({ apiName: "Model" });
+    if (res?.Items) setList(res.Items);
+    setHydrating(false);
+  };
+
+  useEffect(() => {
+    hydrate();
+  }, [apiName]);
+
   return (
     <ListContext.Provider
       value={{
@@ -36,6 +51,9 @@ const ListProvider = (props) => {
         setSelected,
         removeItem,
         selectByIndex,
+        hydrate,
+        setApiName,
+        hydrating,
       }}
     >
       {props.children}
