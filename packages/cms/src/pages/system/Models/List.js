@@ -25,9 +25,12 @@ const Models = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("seelcting id", id);
-    id && dispatch({ type: "SELECT_ID", id });
-  }, [id, dispatch]);
+    if (id && selected && id === selected) {
+      dispatch({ type: "SELECT_ID", id: null });
+    } else if (id !== selected) {
+      dispatch({ type: "SELECT_ID", id });
+    }
+  }, [id, selected, dispatch]);
 
   return (
     <CCard>

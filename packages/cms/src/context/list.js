@@ -30,12 +30,24 @@ const ListProvider = (props) => {
     switch (action.type) {
       case "INIT":
         return { ...initialState, apiName: action.payload };
+      case "HYDRATE":
+        return { ...state, status: "HYDRATE" };
       case "FETCHING":
         return { ...state, hydrating: true };
       case "FETCHED":
-        return { ...state, hydrating: false, list: action.payload };
+        return {
+          ...state,
+          status: "idle",
+          hydrating: false,
+          list: action.payload,
+        };
       case "FETCH_ERROR":
-        return { ...state, hydrating: false, error: action.payload };
+        return {
+          ...state,
+          status: "idle",
+          hydrating: false,
+          error: action.payload,
+        };
       case "SELECT_ID":
         return { ...state, selectedId: action.id };
       case "SELECT":
@@ -60,7 +72,6 @@ const ListProvider = (props) => {
   );
 
   const hydrate = async () => {
-    console.log("hydrating");
     dispatch({ type: "FETCHING" });
     try {
       const res = await listApi({ apiName: "Model" });
@@ -73,7 +84,11 @@ const ListProvider = (props) => {
   };
 
   useEffect(() => {
-    state.selectedId && selectById();
+    state.status === "HYDRATE" && hydrate();
+  }, [state.status, selectById]);
+
+  useEffect(() => {
+    state.selectedId && selectById(state.selectedId);
   }, [state.selectedId, selectById]);
 
   useEffect(() => {

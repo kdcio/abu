@@ -22,7 +22,7 @@ import "scss/components/add-model.scss";
 
 const Add = () => {
   const { modal, setModal } = useModal();
-  const { hydrate } = useList();
+  const { dispatch } = useList();
   const collectionRef = useRef();
   const { register, handleSubmit, errors, watch, setValue } = useForm();
   const [processing, setProcessing] = useState(false);
@@ -47,7 +47,7 @@ const Add = () => {
     // TODO: check if id is unique
     try {
       await createModal(data);
-      await hydrate();
+      dispatch({ type: "HYDRATE" });
       setModal(false);
     } catch (error) {
       console.log(error);
