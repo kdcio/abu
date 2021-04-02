@@ -2,12 +2,65 @@ import React, { useEffect } from "react";
 import { CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { useList } from "context/list";
+import FieldInList from "components/system/FieldInList";
 
 const FieldList = () => {
   const { list, setList } = useList();
   useEffect(() => {
     const getFiels = async () => {
-      const fields = [];
+      const fields = [
+        {
+          type: "text",
+          name: "Title",
+          id: "title",
+          validations: {
+            required: true,
+          },
+          default: "",
+          help: "",
+        },
+        {
+          type: "slug",
+          name: "Slug",
+          id: "slug",
+          validations: {
+            required: true,
+            reference: "title",
+            unique: true,
+          },
+          default: "",
+          help: "",
+        },
+        {
+          type: "image",
+          name: "Cover Image",
+          id: "cover_image",
+          validations: {
+            required: true,
+          },
+          help: "",
+        },
+        {
+          type: "rich-text",
+          name: "Description",
+          id: "description",
+          validations: {
+            required: true,
+          },
+          default: "",
+          help: "",
+        },
+        {
+          type: "date",
+          name: "Publish Date",
+          id: "publish_date",
+          validations: {
+            required: true,
+          },
+          default: "",
+          help: "",
+        },
+      ];
       setList(fields);
     };
     getFiels();
@@ -29,7 +82,13 @@ const FieldList = () => {
       </div>
     );
   }
-  return <div>FieldList</div>;
+  return (
+    <div>
+      {list.map((f) => (
+        <FieldInList key={f.id} {...f} />
+      ))}
+    </div>
+  );
 };
 
 export default FieldList;

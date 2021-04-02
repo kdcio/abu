@@ -1,0 +1,12 @@
+.field-list-item {
+  .card-body {
+    display: flex;
+    align-items: center;
+
+    .item-data {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+  }
+}

@@ -17,6 +17,11 @@ import {
   cilFile,
   cilLibrary,
   cilPuzzle,
+  cilText,
+  cilCalendar,
+  cilImage1,
+  cilShortText,
+  cilLink,
 } from "@coreui/icons";
 
 export const icons = {
@@ -37,4 +42,9 @@ export const icons = {
   cilFile,
   cilLibrary,
   cilPuzzle,
+  cilText,
+  cilCalendar,
+  cilImage1,
+  cilShortText,
+  cilLink,
 };
