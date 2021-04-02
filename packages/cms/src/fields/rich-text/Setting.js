@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { CFormGroup, CLabel, CSwitch, CButton } from "@coreui/react";
 import { useForm } from "react-hook-form";
 import snakeCase from "lodash.snakecase";
@@ -6,6 +6,7 @@ import snakeCase from "lodash.snakecase";
 const Setting = () => {
   const { register, handleSubmit, errors, watch, setValue } = useForm();
   const [processing, setProcessing] = useState(false);
+  const requiredRef = useRef();
 
   const name = watch("name");
   useEffect(() => {
@@ -95,14 +96,18 @@ const Setting = () => {
       </CFormGroup>
       <div className="d-flex">
         <CSwitch
-          id="collection"
-          name="collection"
+          id="required"
+          name="required"
           className={"mx-1"}
           shape={"pill"}
           color={"primary"}
           defaultChecked
+          innerRef={(e) => {
+            register(e);
+            requiredRef.current = e;
+          }}
         />
-        <div className="ml-2 collection-info">
+        <div className="ml-2 required-info">
           <span>Required</span>
         </div>
       </div>
