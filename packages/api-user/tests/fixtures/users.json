@@ -8,9 +8,7 @@
     "given_name": "Peregrin",
     "family_name": "Took",
     "email": "peregrin@took.io",
-    "groups": [
-      "admin"
-    ]
+    "groups": ["admin"]
   },
   {
     "created": "2021-02-12T13:05:14.954Z",
@@ -21,9 +19,7 @@
     "given_name": "Tom",
     "family_name": "Bombadil",
     "email": "tom@bombadil.io",
-    "groups": [
-      "editor"
-    ]
+    "groups": ["editor"]
   },
   {
     "created": "2020-07-11T11:05:14.954Z",
@@ -34,9 +30,7 @@
     "given_name": "Elessar",
     "family_name": "Telcontar",
     "email": "elessar@telcontar.com",
-    "groups": [
-      "editor"
-    ]
+    "groups": ["editor"]
   },
   {
     "created": "2020-06-19T01:05:14.954Z",
@@ -47,9 +41,7 @@
     "given_name": "Samwise",
     "family_name": "Gamgee",
     "email": "samwise@gamgee.net",
-    "groups": [
-      "admin"
-    ]
+    "groups": ["admin"]
   },
   {
     "created": "2020-05-05T01:05:14.954Z",
@@ -60,9 +52,7 @@
     "given_name": "Barliman",
     "family_name": "Butterbur",
     "email": "barliman@butterbur.com",
-    "groups": [
-      "editor"
-    ]
+    "groups": ["editor"]
   },
   {
     "created": "2020-04-04T01:05:14.954Z",
@@ -73,9 +63,7 @@
     "given_name": "Meriadoc",
     "family_name": "Brandybuck",
     "email": "meriadoc@brandybuck.dev",
-    "groups": [
-      "admin"
-    ]
+    "groups": ["admin"]
   },
   {
     "created": "2020-04-01T01:05:14.954Z",
@@ -86,9 +74,7 @@
     "given_name": "Eowyn",
     "family_name": "Telcontar",
     "email": "elessar@telcontar.com",
-    "groups": [
-      "editor"
-    ]
+    "groups": ["editor"]
   },
   {
     "created": "2020-03-29T01:05:14.954Z",
@@ -99,9 +85,7 @@
     "given_name": "Frodo",
     "family_name": "Baggins",
     "email": "frodo@baggins.com",
-    "groups": [
-      "admin"
-    ]
+    "groups": ["admin"]
   },
   {
     "created": "2020-03-19T21:05:14.954Z",
@@ -112,8 +96,6 @@
     "given_name": "Legolas",
     "family_name": "Thranduilion",
     "email": "legolas@thranduilion.elf",
-    "groups": [
-      "editor"
-    ]
+    "groups": ["editor"]
   }
 ]

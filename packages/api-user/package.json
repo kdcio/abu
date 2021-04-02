@@ -1,5 +1,5 @@
 {
-  "name": "api-users",
+  "name": "api-user",
   "version": "0.1.0",
   "description": "API for users data",
   "main": "index.js",

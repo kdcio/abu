@@ -5,7 +5,7 @@ API.configure({
   endpoints: [
     {
       name: "Users",
-      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/users`,
+      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/user`,
       custom_header: async () => {
         const user = await Auth.currentSession();
         return {

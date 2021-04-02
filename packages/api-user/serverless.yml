@@ -1,4 +1,4 @@
-service: abu-api-users
+service: abu-api-user
 
 plugins:
   - serverless-bundle
