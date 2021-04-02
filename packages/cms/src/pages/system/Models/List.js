@@ -9,17 +9,24 @@ import {
   CButton,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import { useHistory, useParams } from "react-router-dom";
 import Spinner from "components/Spinner";
 import { useList } from "context/list";
 import { useModal } from "context/modal";
 
 const Models = () => {
-  const { list, selected, selectByIndex, setApiName, hydrating } = useList();
+  const { id } = useParams();
+  const history = useHistory();
+  const { list, selected, selectById, setApiName, hydrating } = useList();
   const { setModal } = useModal();
 
   useEffect(() => {
     setApiName("Model");
   }, [setApiName]);
+
+  useEffect(() => {
+    selectById(id);
+  }, [id, selectById]);
 
   return (
     <CCard>
@@ -49,7 +56,7 @@ const Models = () => {
                 key={model.id}
                 action
                 active={selected?.id === model.id}
-                onClick={() => selectByIndex(idx)}
+                onClick={() => history.push(`/system/models/${model.id}`)}
               >
                 <div className="model-item">
                   {model.collection ? (

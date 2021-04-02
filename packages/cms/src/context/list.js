@@ -25,6 +25,13 @@ const ListProvider = (props) => {
     }
   };
 
+  const selectById = (id) => {
+    const idx = list.findIndex((item) => item.id === id);
+    if (idx < 0) return;
+    setSelectedIdx(idx);
+    setSelected(list[idx]);
+  };
+
   const removeItem = (idx) => {
     const newList = [...list];
     newList.splice(idx, 1);
@@ -51,6 +58,7 @@ const ListProvider = (props) => {
         setSelected,
         removeItem,
         selectByIndex,
+        selectById,
         hydrate,
         setApiName,
         hydrating,
