@@ -6,16 +6,18 @@ import {
   CCardHeader,
   CListGroup,
   CListGroupItem,
+  CButton,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { Link } from "react-router-dom";
 import Spinner from "components/Spinner";
 import { useList } from "context/list";
+import { useModal } from "context/modal";
 
 // import list from "api/list";
 
 const Models = () => {
   const { list, setList, selected, selectByIndex } = useList();
+  const { setModal } = useModal();
   const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
@@ -56,13 +58,15 @@ const Models = () => {
           Models
         </span>
         <div className="card-header-actions">
-          <Link
-            id="addmodel"
-            to={`/system/models/add`}
-            className="btn btn-primary btn-sm float-right"
+          <CButton
+            type="button"
+            color="primary"
+            id="addModel"
+            className="float-right"
+            onClick={() => setModal("addModel")}
           >
             <CIcon name="cil-plus" />
-          </Link>
+          </CButton>
         </div>
       </CCardHeader>
       <CCardBody className="model-list">

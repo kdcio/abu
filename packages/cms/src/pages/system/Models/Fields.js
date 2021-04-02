@@ -21,9 +21,9 @@ const Fields = () => {
           <Link
             id="addmodel"
             to={`/system/models/add`}
-            className="btn btn-primary btn-sm float-right"
+            className="btn btn-info btn-sm float-right"
           >
-            <CIcon name="cil-pencil" /> Edit
+            <CIcon name="cil-pencil" /> Edit Model
           </Link>
         </div>
       </CCardHeader>
@@ -31,6 +31,13 @@ const Fields = () => {
         <ListProvider>
           <FieldList />
         </ListProvider>
+        <Link
+          id="addmodel"
+          to={`/system/models/add`}
+          className="btn btn-success float-right"
+        >
+          <CIcon name="cil-plus" /> Add another field
+        </Link>
       </CCardBody>
     </CCard>
   );

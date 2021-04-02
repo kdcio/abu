@@ -1,24 +1,23 @@
 import React from "react";
-import Suspense from "../Suspense";
 
-const DateField = React.lazy(() => import("fields/date/List"));
-const ImageField = React.lazy(() => import("fields/image/List"));
-const RichTextField = React.lazy(() => import("fields/rich-text/List"));
-const SlugField = React.lazy(() => import("fields/slug/List"));
-const TextField = React.lazy(() => import("fields/text/List"));
+import DateField from "fields/date/List";
+import ImageField from "fields/image/List";
+import RichTextField from "fields/rich-text/List";
+import SlugField from "fields/slug/List";
+import TextField from "fields/text/List";
 
 const FieldInList = (field) => {
   switch (field.type) {
     case "date":
-      return <Suspense Component={DateField} {...field} />;
+      return <DateField {...field} />;
     case "image":
-      return <Suspense Component={ImageField} {...field} />;
+      return <ImageField {...field} />;
     case "rich-text":
-      return <Suspense Component={RichTextField} {...field} />;
+      return <RichTextField {...field} />;
     case "slug":
-      return <Suspense Component={SlugField} {...field} />;
+      return <SlugField {...field} />;
     case "text":
-      return <Suspense Component={TextField} {...field} />;
+      return <TextField {...field} />;
     default:
       break;
   }
