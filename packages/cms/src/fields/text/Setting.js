@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CFormGroup, CLabel, CSwitch, CButton } from "@coreui/react";
 import { useForm } from "react-hook-form";
+import snakeCase from "lodash.snakecase";
 
 const Setting = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, watch, setValue } = useForm();
   const [processing, setProcessing] = useState(false);
+
+  const name = watch("name");
+  useEffect(() => {
+    setValue("id", snakeCase(name));
+  }, [name, setValue]);
 
   const onSubmit = async (data) => {
     console.log("submit");
@@ -47,7 +53,7 @@ const Setting = () => {
         />
         <small className="form-text text-muted">
           This will be automatically generated based on name and will be used in
-          API endpoints.
+          API endpoints. This needs to be unique in the model.
         </small>
         {errors.id && (
           <div className="invalid-feedback">Please provide id.</div>
