@@ -12,9 +12,13 @@ const ListProvider = (props) => {
   const [selectedIdx, setSelectedIdx] = useState(null);
 
   const selectByIndex = (idx) => {
-    setSelectedIdx(idx);
-    if (idx === selectedIdx) setSelectedIdx(null);
-    else setSelected(list[idx] || null);
+    if (idx === selectedIdx) {
+      setSelectedIdx(null);
+      setSelected(null);
+    } else {
+      setSelectedIdx(idx);
+      setSelected(list[idx] || null);
+    }
   };
 
   const removeItem = (idx) => {
