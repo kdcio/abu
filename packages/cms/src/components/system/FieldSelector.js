@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CRow, CCol } from "@coreui/react";
+import { useSelect } from "context/select";
 
 import DateField from "fields/date/Select";
 import ImageField from "fields/image/Select";
@@ -7,9 +8,20 @@ import RichTextField from "fields/rich-text/Select";
 import SlugField from "fields/slug/Select";
 import TextField from "fields/text/Select";
 
+import FieldSetting from "./FieldSetting";
+
 const FieldSelector = () => {
+  const { selected, setSelected } = useSelect();
+
+  useEffect(() => {
+    setSelected(null);
+  }, [setSelected]);
+
+  if (selected) return <FieldSetting type={selected} />;
+
   return (
     <>
+      <h5 className="mb-2">Choose field type</h5>
       <CRow>
         <CCol>
           <TextField />

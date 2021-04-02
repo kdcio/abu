@@ -4,7 +4,7 @@ import SelectorItem from "components/system/SelectorItem";
 const Select = () => {
   return (
     <SelectorItem
-      id="image"
+      id="rich-text"
       text="Multi-line text with formating"
       header="Rich Text"
       icon="cil-short-text"

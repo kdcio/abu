@@ -69,7 +69,6 @@ const FieldList = () => {
     getFiels();
   }, [setList]);
 
-  console.log("fieldlist", list);
   if (list.length === 0) {
     return (
       <div className="text-center">
