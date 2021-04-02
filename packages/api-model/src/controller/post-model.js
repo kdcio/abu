@@ -6,6 +6,11 @@ const makePostModel = ({ create, parser, response }) => {
       throw new Error("Unauthorized");
     }
 
+    const groups = request?.authorizer?.claims?.["cognito:groups"];
+    if (!groups || groups.indexOf("admin") < 0) {
+      throw new Error("Forbidden: only admins can perform this action");
+    }
+
     const data = await create({ ...request.body });
     return response.CREATED({ body: data });
   };

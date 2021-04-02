@@ -21,6 +21,7 @@ provider:
   runtime: nodejs12.x
   memorySize: 256
   timeout: 30
+  lambdaHashingVersion: 20201221
   environment:
     TZ: ${file(../../config/${self:provider.stage}.yml):TZ, 'Asia/Singapore'}
     STAGE: ${self:provider.stage}
@@ -29,17 +30,19 @@ provider:
     DDB_REGION: ${file(../../config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
     DDB_ENDPOINT: ${file(../../config/${self:provider.stage}.yml):DDB_ENDPOINT, ''}
     DDB_TABLE: ${file(../../config/${self:provider.stage}.yml):DDB_TABLE, 'getbayad-local'}
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:Query
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource:
-        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}"
-        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}/*"
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}/*"
 
 functions: ${file(./functions.yml)}
 

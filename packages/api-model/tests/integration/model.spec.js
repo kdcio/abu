@@ -29,7 +29,6 @@ describe("Model", () => {
   ].forEach(({ model }) => {
     it(`should create model`, async () => {
       const event = makeFakeEvent({
-        requestContext: { authorizer: { claims: { sub: "tester" } } },
         path: "/",
         headers: { "Content-Type": "application/json" },
         httpMethod: "POST",
@@ -59,28 +58,75 @@ describe("Model", () => {
     });
   });
 
-  // it(`should not create model if user is not allowed in business`, async () => {
-  //   const userId = "3";
-  //   const busId = "1";
-  //   const cus = genModel();
-  //   const event = makeFakeEvent({
-  //     requestContext: { authorizer: { claims: { sub: userId } } },
-  //     path: '/',
-  //     pathParameters: { busId },
-  //     headers: { "Content-Type": "application/json" },
-  //     httpMethod: "POST",
-  //     body: JSON.stringify(cus),
-  //   });
+  it(`should throw missing id`, async () => {
+    const model = genModel();
+    const { id, ...data } = model;
+    const event = makeFakeEvent({
+      path: "/",
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "POST",
+      body: JSON.stringify(data),
+    });
 
-  //   const response = await create(event);
-  //   expect(response.statusCode).toEqual(403);
-  //   expect(response.isBase64Encoded).toBe(false);
-  // });
+    const response = await create(event);
+    expect(response.statusCode).toEqual(400);
+    expect(response.isBase64Encoded).toBe(false);
+    const json = JSON.parse(response.body);
+    expect(json.message).toBe("Missing id");
+  });
+
+  it(`should throw missing name`, async () => {
+    const model = genModel();
+    const { name, ...data } = model;
+    const event = makeFakeEvent({
+      path: "/",
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "POST",
+      body: JSON.stringify(data),
+    });
+
+    const response = await create(event);
+    expect(response.statusCode).toEqual(400);
+    expect(response.isBase64Encoded).toBe(false);
+    const json = JSON.parse(response.body);
+    expect(json.message).toBe("Missing name");
+  });
+
+  it(`should not create model if user is not logged in`, async () => {
+    const model = genModel();
+    const event = makeFakeEvent({
+      requestContext: { authorizer: {} },
+      path: "/",
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "POST",
+      body: JSON.stringify(model),
+    });
+
+    const response = await create(event);
+    expect(response.statusCode).toEqual(401);
+    expect(response.isBase64Encoded).toBe(false);
+  });
+
+  it(`should not create model if user is not admin`, async () => {
+    const model = genModel();
+    const event = makeFakeEvent({
+      requestContext: {
+        authorizer: { claims: { sub: "tester", "cognito:groups": ["editor"] } },
+      },
+      path: "/",
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "POST",
+      body: JSON.stringify(model),
+    });
+
+    const response = await create(event);
+    expect(response.statusCode).toEqual(403);
+    expect(response.isBase64Encoded).toBe(false);
+  });
 
   it(`should get model`, async () => {
     const model = models[faker.datatype.number({ max: models.length - 1 })];
     const event = makeFakeEvent({
-      requestContext: { authorizer: { claims: { sub: "tester" } } },
       path: `/${model.id}`,
       pathParameters: { id: model.id },
       headers: { "Content-Type": "application/json" },
@@ -98,27 +144,24 @@ describe("Model", () => {
     expect(json.fields).toEqual(model.fields);
   });
 
-  // it(`should not get model if user is not allowed to business`, async () => {
-  //   const userId = "1";
-  //   const busId = "2";
-  //   const cus = userCus["2"][0];
-  //   const event = makeFakeEvent({
-  //     requestContext: { authorizer: { claims: { sub: userId } } },
-  //     path: `/${model.id}`,
-  //     pathParameters: { id: model.id },
-  //     headers: { "Content-Type": "application/json" },
-  //     httpMethod: "GET",
-  //   });
+  it(`should not get model if user is not logged in`, async () => {
+    const model = models[faker.datatype.number({ max: models.length - 1 })];
+    const event = makeFakeEvent({
+      requestContext: { authorizer: {} },
+      path: `/${model.id}`,
+      pathParameters: { id: model.id },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "GET",
+    });
 
-  //   const response = await get(event);
-  //   expect(response.statusCode).toEqual(403);
-  //   expect(response.isBase64Encoded).toBe(false);
-  // });
+    const response = await get(event);
+    expect(response.statusCode).toEqual(401);
+    expect(response.isBase64Encoded).toBe(false);
+  });
 
   it(`should return 404 for invalid model`, async () => {
     const id = "invalid-434534";
     const event = makeFakeEvent({
-      requestContext: { authorizer: { claims: { sub: "tester" } } },
       path: `/${id}`,
       pathParameters: { id },
       headers: { "Content-Type": "application/json" },
@@ -132,7 +175,6 @@ describe("Model", () => {
 
   it(`should list models`, async () => {
     const event = makeFakeEvent({
-      requestContext: { authorizer: { claims: { sub: "tester" } } },
       path: "/",
       headers: { "Content-Type": "application/json" },
       httpMethod: "GET",
@@ -146,26 +188,23 @@ describe("Model", () => {
     expect(json.Count).toBe(models.length);
   });
 
-  // it(`should not list models if user is not allowed in business`, async () => {
-  //   const userId = "1";
-  //   const busId = "3";
-  //   const event = makeFakeEvent({
-  //     requestContext: { authorizer: { claims: { sub: userId } } },
-  //     path: "/",
-  //     headers: { "Content-Type": "application/json" },
-  //     httpMethod: "GET",
-  //   });
+  it(`should not list models if user is not logged in`, async () => {
+    const event = makeFakeEvent({
+      requestContext: { authorizer: {} },
+      path: "/",
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "GET",
+    });
 
-  //   const response = await list(event);
-  //   expect(response.statusCode).toEqual(403);
-  //   expect(response.isBase64Encoded).toBe(false);
-  // });
+    const response = await list(event);
+    expect(response.statusCode).toEqual(401);
+    expect(response.isBase64Encoded).toBe(false);
+  });
 
   it(`should update model`, async () => {
     const model = models[faker.datatype.number({ max: models.length - 1 })];
     const newName = `${model.name} updated`;
     const event = makeFakeEvent({
-      requestContext: { authorizer: { claims: { sub: "tester" } } },
       path: `/${model.id}`,
       pathParameters: { id: model.id },
       headers: { "Content-Type": "application/json" },
@@ -194,32 +233,51 @@ describe("Model", () => {
     expect(Item.fields).toEqual(model.fields);
   });
 
-  // it(`should not update model if user is not allowed in business`, async () => {
-  //   const userId = "2";
-  //   const busId = "3";
-  //   const cus = userCus[userId][0];
-  //   const newName = `${cus.cusName} updated`;
-  //   const event = makeFakeEvent({
-  //     requestContext: { authorizer: { claims: { sub: userId } } },
-  //     path: `/${model.id}`,
-  //     pathParameters: { id: model.id },
-  //     headers: { "Content-Type": "application/json" },
-  //     httpMethod: "PATCH",
-  //     body: JSON.stringify({
-  //       ...cus,
-  //       cusName: newName,
-  //     }),
-  //   });
+  it(`should not update model if user is not logged in`, async () => {
+    const model = models[faker.datatype.number({ max: models.length - 1 })];
+    const newName = `${model.name} updated`;
+    const event = makeFakeEvent({
+      requestContext: { authorizer: {} },
+      path: `/${model.id}`,
+      pathParameters: { id: model.id },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "PATCH",
+      body: JSON.stringify({
+        ...model,
+        name: newName,
+      }),
+    });
 
-  //   const response = await update(event);
-  //   expect(response.statusCode).toEqual(403);
-  //   expect(response.isBase64Encoded).toBe(false);
-  // });
+    const response = await update(event);
+    expect(response.statusCode).toEqual(401);
+    expect(response.isBase64Encoded).toBe(false);
+  });
+
+  it(`should not update model if user is not admin`, async () => {
+    const model = models[faker.datatype.number({ max: models.length - 1 })];
+    const newName = `${model.name} updated`;
+    const event = makeFakeEvent({
+      requestContext: {
+        authorizer: { claims: { sub: "tester", "cognito:groups": ["editor"] } },
+      },
+      path: `/${model.id}`,
+      pathParameters: { id: model.id },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "PATCH",
+      body: JSON.stringify({
+        ...model,
+        name: newName,
+      }),
+    });
+
+    const response = await update(event);
+    expect(response.statusCode).toEqual(403);
+    expect(response.isBase64Encoded).toBe(false);
+  });
 
   it(`should delete model`, async () => {
     const model = models[faker.datatype.number({ max: models.length - 1 })];
     const event = makeFakeEvent({
-      requestContext: { authorizer: { claims: { sub: "tester" } } },
       path: `/${model.id}`,
       pathParameters: { id: model.id },
       headers: { "Content-Type": "application/json" },
@@ -242,31 +300,46 @@ describe("Model", () => {
     expect(res).not.toHaveProperty("Item");
   });
 
-  // it(`should not delete model if user is not allowed to business`, async () => {
-  //   const userId = "3";
-  //   const busId = "2";
-  //   const cus = userCus["2"][0];
-  //   const event = makeFakeEvent({
-  //     requestContext: { authorizer: { claims: { sub: userId } } },
-  //     path: `/${model.id}`,
-  //     pathParameters: { id: model.id },
-  //     headers: { "Content-Type": "application/json" },
-  //     httpMethod: "DELETE",
-  //   });
+  it(`should not delete model if user is not logged in`, async () => {
+    const model = models[faker.datatype.number({ max: models.length - 1 })];
+    const event = makeFakeEvent({
+      requestContext: { authorizer: {} },
+      path: `/${model.id}`,
+      pathParameters: { id: model.id },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "DELETE",
+    });
 
-  //   const response = await remove(event);
-  //   expect(response.statusCode).toEqual(403);
-  //   expect(response.isBase64Encoded).toBe(false);
+    const response = await remove(event);
+    expect(response.statusCode).toEqual(401);
+    expect(response.isBase64Encoded).toBe(false);
+  });
 
-  //   const params = {
-  //     TableName: tableName,
-  //     Key: {
-  //       pk: `BUS#${busId}`,
-  //       sk: "META",
-  //     },
-  //   };
+  it(`should not delete model if user is not admin`, async () => {
+    const model = models[faker.datatype.number({ max: models.length - 1 })];
+    const event = makeFakeEvent({
+      requestContext: {
+        authorizer: { claims: { sub: "tester", "cognito:groups": ["editor"] } },
+      },
+      path: `/${model.id}`,
+      pathParameters: { id: model.id },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "DELETE",
+    });
 
-  //   const res = await ddb.get(params).promise();
-  //   expect(res).toHaveProperty("Item");
-  // });
+    const response = await remove(event);
+    expect(response.statusCode).toEqual(403);
+    expect(response.isBase64Encoded).toBe(false);
+
+    const params = {
+      TableName: tableName,
+      Key: {
+        pk: `MOD#${model.id}`,
+        sk: "META",
+      },
+    };
+
+    const res = await ddb.get(params).promise();
+    expect(res).toHaveProperty("Item");
+  });
 });

@@ -28,7 +28,9 @@ describe("Remove Model", () => {
         event: {
           requestContext: {
             identity: {},
-            authorizer: { claims: { sub: "tester" } },
+            authorizer: {
+              claims: { sub: "tester", "cognito:groups": ["admin"] },
+            },
           },
           path: "/",
         },
