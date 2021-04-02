@@ -12,6 +12,7 @@ import {
   CLabel,
   CSwitch,
 } from "@coreui/react";
+import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useList } from "context/list";
 import { useModal } from "context/modal";
@@ -21,6 +22,7 @@ import create from "api/create";
 import "scss/components/add-model.scss";
 
 const Add = () => {
+  const history = useHistory();
   const { modal, setModal } = useModal();
   const { list, dispatch } = useList();
   const collectionRef = useRef();
@@ -54,6 +56,7 @@ const Add = () => {
     try {
       await createModal(data);
       dispatch({ type: "HYDRATE" });
+      history.push(`/system/models/${data.id}`);
       setModal(false);
     } catch (error) {
       console.log(error);
