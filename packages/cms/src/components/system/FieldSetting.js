@@ -11,7 +11,7 @@ import { useModal } from "context/modal";
 import update from "../../api/update";
 
 const FieldSetting = ({ type }) => {
-  const { selected: model } = useList();
+  const { selected: model, dispatch } = useList();
   const { setModal } = useModal();
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
@@ -27,7 +27,7 @@ const FieldSetting = ({ type }) => {
       if (newModel.fields) newModel.fields.push(data);
       else newModel.fields = [data];
       await updateModel(newModel);
-      // TODO: update selected
+      dispatch({ type: "UPDATE_SELECTED", payload: newModel });
       setModal(false);
     } catch (err) {
       console.log(err);

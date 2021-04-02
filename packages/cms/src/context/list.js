@@ -52,6 +52,8 @@ const ListProvider = (props) => {
         return { ...state, selectedId: action.id };
       case "SELECT":
         return { ...state, selected: action.payload, selectedIdx: action.idx };
+      case "UPDATE_SELECTED":
+        return { ...state, selected: action.payload };
       default:
         return state;
     }
