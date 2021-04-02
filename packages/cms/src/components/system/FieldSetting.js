@@ -21,7 +21,15 @@ const FieldSetting = ({ type }) => {
 
   const onSubmit = async (data) => {
     setProcessing(true);
-    // TODO: check if id is unique
+    if (model?.fields?.length > 0) {
+      const idx = model.fields.findIndex((item) => item.id === data.id);
+      if (idx >= 0) {
+        setError("Field ID not unique. Please choose a different one.");
+        setProcessing(false);
+        return;
+      }
+    }
+
     try {
       const newModel = { ...model };
       if (newModel.fields) newModel.fields.push(data);

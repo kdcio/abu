@@ -28,6 +28,7 @@ const Setting = ({ processing, update, error }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      {error && <div className="text-danger font-weight-bold">{error}</div>}
       <CFormGroup>
         <CLabel htmlFor="name">Name</CLabel>
         <input
