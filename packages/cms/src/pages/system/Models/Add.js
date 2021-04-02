@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import snakeCase from "lodash.snakecase";
 
 import {
   CButton,
@@ -11,33 +12,70 @@ import {
   CLabel,
   CSwitch,
 } from "@coreui/react";
+import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useList } from "context/list";
 import { useModal } from "context/modal";
+
+import create from "api/create";
 
 import "scss/components/add-model.scss";
 
 const Add = () => {
+  const history = useHistory();
   const { modal, setModal } = useModal();
-  const { register, handleSubmit, errors } = useForm();
+  const { list, dispatch } = useList();
+  const collectionRef = useRef();
+  const { register, handleSubmit, errors, watch, setValue } = useForm();
   const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState(null);
+
+  const name = watch("name");
+  useEffect(() => {
+    setValue("id", snakeCase(name));
+  }, [name, setValue]);
+
+  const createModal = async ({ name, id, collection }) =>
+    await create({
+      apiName: "Model",
+      data: {
+        name,
+        id,
+        collection,
+      },
+    });
 
   const onSubmit = async (data) => {
     setProcessing(true);
-    console.log(data);
+    const idx = list.findIndex((item) => item.id === data.id);
+    if (idx >= 0) {
+      setError("Model ID not unique. Please choose a different one.");
+      setProcessing(false);
+      return;
+    }
+    try {
+      await createModal(data);
+      dispatch({ type: "HYDRATE" });
+      history.push(`/system/models/${data.id}`);
+      setModal(false);
+    } catch (error) {
+      console.log(error);
+    }
     setProcessing(false);
   };
 
   return (
-    <CModal
-      show={modal === "addModel"}
-      onClose={() => setModal(false)}
-      closeOnBackdrop={false}
-    >
-      <CModalHeader closeButton>
-        <CModalTitle>Add Model</CModalTitle>
-      </CModalHeader>
-      <CModalBody>
-        <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      <CModal
+        show={modal === "addModel"}
+        onClose={() => setModal(false)}
+        closeOnBackdrop={false}
+      >
+        <CModalHeader closeButton>
+          <CModalTitle>Add Model</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          {error && <div className="text-danger font-weight-bold">{error}</div>}
           <CFormGroup>
             <CLabel htmlFor="name">Name</CLabel>
             <input
@@ -84,6 +122,10 @@ const Add = () => {
               shape={"pill"}
               color={"primary"}
               defaultChecked
+              innerRef={(e) => {
+                register(e);
+                collectionRef.current = e;
+              }}
             />
             <div className="ml-2 collection-info">
               <span>Collections</span>
@@ -95,14 +137,14 @@ const Add = () => {
               </small>
             </div>
           </div>
-        </form>
-      </CModalBody>
-      <CModalFooter>
-        <CButton color="primary" block>
-          Save
-        </CButton>
-      </CModalFooter>
-    </CModal>
+        </CModalBody>
+        <CModalFooter>
+          <CButton type="submit" color="primary" block>
+            Save
+          </CButton>
+        </CModalFooter>
+      </CModal>
+    </form>
   );
 };
 

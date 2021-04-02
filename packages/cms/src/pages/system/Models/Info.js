@@ -1,8 +1,12 @@
 import React from "react";
-import { CCard, CCardBody } from "@coreui/react";
+import { CCard, CCardBody, CButton } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 import { Link } from "react-router-dom";
+import { useModal } from "context/modal";
 
 const Info = () => {
+  const { setModal } = useModal();
+
   return (
     <CCard>
       <CCardBody>
@@ -17,6 +21,17 @@ const Info = () => {
           <Link to="/">adding content</Link>. In spreadhseet terms, that would
           be equivalent to adding rows in your sheet.
         </p>
+        <div className="d-flex justify-content-center">
+          <CButton
+            type="button"
+            color="primary"
+            id="addModel"
+            className=""
+            onClick={() => setModal("addModel")}
+          >
+            <CIcon name="cil-plus" /> Add Model
+          </CButton>
+        </div>
       </CCardBody>
     </CCard>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import {
   CCard,
@@ -9,47 +9,28 @@ import {
   CButton,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import { useHistory, useParams } from "react-router-dom";
 import Spinner from "components/Spinner";
 import { useList } from "context/list";
 import { useModal } from "context/modal";
 
-// import list from "api/list";
-
 const Models = () => {
-  const { list, setList, selected, selectByIndex } = useList();
+  const { id } = useParams();
+  const history = useHistory();
+  const { dispatch, list, selected, hydrating } = useList();
   const { setModal } = useModal();
-  const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
-    const getModels = async () => {
-      // const models = await list({ apiName: "Models" });
-      const list = [
-        {
-          id: "home",
-          name: "Home Page",
-          collection: false,
-        },
-        {
-          id: "blogs",
-          name: "Blogs",
-          collection: true,
-        },
-        {
-          id: "social",
-          name: "Social Profiles",
-          collection: true,
-        },
-        {
-          id: "about",
-          name: "About Page",
-          collection: false,
-        },
-      ];
-      setList(list);
-      setProcessing(false);
-    };
-    getModels();
-  }, [setList]);
+    dispatch({ type: "INIT", payload: "Model" });
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (id && selected && id === selected) {
+      dispatch({ type: "SELECT_ID", id: null });
+    } else if (id !== selected) {
+      dispatch({ type: "SELECT_ID", id });
+    }
+  }, [id, selected, dispatch]);
 
   return (
     <CCard>
@@ -70,16 +51,16 @@ const Models = () => {
         </div>
       </CCardHeader>
       <CCardBody className="model-list">
-        {processing ? (
+        {hydrating ? (
           <Spinner />
-        ) : (
+        ) : list.length > 0 ? (
           <CListGroup>
             {list.map((model, idx) => (
               <CListGroupItem
                 key={model.id}
                 action
                 active={selected?.id === model.id}
-                onClick={() => selectByIndex(idx)}
+                onClick={() => history.push(`/system/models/${model.id}`)}
               >
                 <div className="model-item">
                   {model.collection ? (
@@ -98,6 +79,10 @@ const Models = () => {
               </CListGroupItem>
             ))}
           </CListGroup>
+        ) : (
+          <div className="p-4 text-center">
+            <p>Add your first Model by clicking the plus button above.</p>
+          </div>
         )}
       </CCardBody>
     </CCard>

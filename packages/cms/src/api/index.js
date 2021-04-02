@@ -13,5 +13,15 @@ API.configure({
         };
       },
     },
+    {
+      name: "Model",
+      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/model`,
+      custom_header: async () => {
+        const user = await Auth.currentSession();
+        return {
+          Authorization: `Bearer ${user.getIdToken().getJwtToken()}`,
+        };
+      },
+    },
   ],
 });

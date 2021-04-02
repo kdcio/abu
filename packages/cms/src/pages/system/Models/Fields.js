@@ -2,7 +2,7 @@ import React from "react";
 import { CCard, CCardBody, CCardHeader } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { Link } from "react-router-dom";
-import { useList, ListProvider } from "context/list";
+import { useList } from "context/list";
 import { useModal } from "context/modal";
 import Info from "./Info";
 import FieldList from "./FieldList";
@@ -30,17 +30,17 @@ const Fields = () => {
         </div>
       </CCardHeader>
       <CCardBody>
-        <ListProvider>
-          <FieldList />
-        </ListProvider>
-        <Link
-          id="addmodel"
-          to={`/system/models/add`}
-          className="btn btn-success float-right"
-          onClick={() => setModal("addModelField")}
-        >
-          <CIcon name="cil-plus" /> Add another field
-        </Link>
+        <FieldList />
+        {selected?.fields?.length > 0 && (
+          <Link
+            id="addmodel"
+            to={`/system/models/add`}
+            className="btn btn-success float-right"
+            onClick={() => setModal("addModelField")}
+          >
+            <CIcon name="cil-plus" /> Add another field
+          </Link>
+        )}
       </CCardBody>
     </CCard>
   );

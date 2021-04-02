@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { CFormGroup, CLabel, CSwitch, CButton } from "@coreui/react";
 import { useForm } from "react-hook-form";
 import snakeCase from "lodash.snakecase";
 
-const Setting = () => {
+const Setting = ({ processing, update, error }) => {
   const { register, handleSubmit, errors, watch, setValue } = useForm();
-  const [processing, setProcessing] = useState(false);
+  const requiredRef = useRef();
 
   const name = watch("name");
   useEffect(() => {
@@ -13,14 +13,22 @@ const Setting = () => {
   }, [name, setValue]);
 
   const onSubmit = async (data) => {
-    console.log("submit");
-    setProcessing(true);
-    console.log(data);
-    setProcessing(false);
+    const field = {
+      type: "slug",
+      id: data.id,
+      name: data.name,
+      validations: {
+        required: data.required,
+      },
+      reference: data.reference,
+      help: data.help,
+    };
+    update(field);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      {error && <div className="text-danger font-weight-bold">{error}</div>}
       <CFormGroup>
         <CLabel htmlFor="name">Name</CLabel>
         <input
@@ -60,20 +68,23 @@ const Setting = () => {
         )}
       </CFormGroup>
       <CFormGroup>
-        <CLabel htmlFor="default">Reference field</CLabel>
+        <CLabel htmlFor="reference">Reference field</CLabel>
         <input
           type="text"
           className={`form-control form-control-lg ${
-            errors.default && "is-invalid"
+            errors.reference && "is-invalid"
           }`}
-          id="default"
-          name="default"
+          id="reference"
+          name="reference"
           placeholder=""
-          ref={register}
+          ref={register({ required: true })}
           disabled={processing}
         />
-        {errors.default && (
-          <div className="invalid-feedback">{errors.default.message}</div>
+        <small className="form-text text-muted">
+          Make sure you've added the referenced field before adding this.
+        </small>
+        {errors.reference && (
+          <div className="invalid-feedback">{errors.reference.message}</div>
         )}
       </CFormGroup>
       <CFormGroup>
@@ -95,12 +106,16 @@ const Setting = () => {
       </CFormGroup>
       <div className="d-flex">
         <CSwitch
-          id="collection"
-          name="collection"
+          id="required"
+          name="required"
           className={"mx-1"}
           shape={"pill"}
           color={"primary"}
           defaultChecked
+          innerRef={(e) => {
+            register(e);
+            requiredRef.current = e;
+          }}
         />
         <div className="ml-2 collection-info">
           <span>Required</span>

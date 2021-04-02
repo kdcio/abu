@@ -45,7 +45,7 @@ const routes = [
     groups: [GRP_ADMIN],
   },
   {
-    path: "/system/models",
+    path: "/system/models/:id?",
     component: Models,
     groups: [GRP_ADMIN],
   },

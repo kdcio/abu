@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { CFormGroup, CLabel, CSwitch, CButton } from "@coreui/react";
 import { useForm } from "react-hook-form";
 import snakeCase from "lodash.snakecase";
 
-const Setting = () => {
+const Setting = ({ processing, update, error }) => {
   const { register, handleSubmit, errors, watch, setValue } = useForm();
-  const [processing, setProcessing] = useState(false);
+  const todayRef = useRef();
+  const requiredRef = useRef();
 
   const name = watch("name");
   useEffect(() => {
@@ -13,14 +14,22 @@ const Setting = () => {
   }, [name, setValue]);
 
   const onSubmit = async (data) => {
-    console.log("submit");
-    setProcessing(true);
-    console.log(data);
-    setProcessing(false);
+    const field = {
+      type: "date",
+      id: data.id,
+      name: data.name,
+      validations: {
+        required: data.required,
+      },
+      today: data.today,
+      help: data.help,
+    };
+    update(field);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      {error && <div className="text-danger font-weight-bold">{error}</div>}
       <CFormGroup>
         <CLabel htmlFor="name">Name</CLabel>
         <input
@@ -78,14 +87,18 @@ const Setting = () => {
       </CFormGroup>
       <div className="d-flex mb-3">
         <CSwitch
-          id="default"
-          name="default"
+          id="today"
+          name="today"
           className={"mx-1"}
           shape={"pill"}
           color={"primary"}
           defaultChecked
+          innerRef={(e) => {
+            register(e);
+            todayRef.current = e;
+          }}
         />
-        <div className="ml-2 collection-info">
+        <div className="ml-2 today-info">
           <span>Set default to today</span>
         </div>
       </div>
@@ -97,8 +110,12 @@ const Setting = () => {
           shape={"pill"}
           color={"primary"}
           defaultChecked
+          innerRef={(e) => {
+            register(e);
+            requiredRef.current = e;
+          }}
         />
-        <div className="ml-2 collection-info">
+        <div className="ml-2 required-info">
           <span>Required</span>
         </div>
       </div>
