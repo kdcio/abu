@@ -1,0 +1,19 @@
+.field-selector-item {
+  height: calc(100% - 10px);
+  margin-bottom: 10px;
+  cursor: pointer;
+
+  .card-body {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    text-align: center;
+
+    .item-data {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+  }
+}

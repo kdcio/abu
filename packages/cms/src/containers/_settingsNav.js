@@ -11,7 +11,7 @@ const navigation = [
     name: "Models",
     to: "/system/models",
     exact: false,
-    icon: "cil-pencil",
+    icon: "cil-puzzle",
     groups: [GRP_ADMIN],
   },
   {
