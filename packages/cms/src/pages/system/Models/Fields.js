@@ -2,13 +2,13 @@ import React from "react";
 import { CCard, CCardBody, CCardHeader } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { Link } from "react-router-dom";
-import { useList } from "context/models";
+import { useModels } from "context/models";
 import { useModal } from "context/modal";
 import Info from "./Info";
 import FieldList from "./FieldList";
 
 const Fields = () => {
-  const { selected } = useList();
+  const { selected } = useModels();
   const { setModal } = useModal();
 
   if (!selected) return <Info />;

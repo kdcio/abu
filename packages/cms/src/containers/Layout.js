@@ -4,7 +4,7 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Content from "./Content";
 import Footer from "./Footer";
-import { ListProvider } from "context/models";
+import { ModelsProvider } from "context/models";
 import { SidebarProvider } from "context/sidebar";
 
 // initialize API
@@ -13,7 +13,7 @@ import "api";
 const Layout = () => {
   return (
     <div className="c-app c-default-layout">
-      <ListProvider>
+      <ModelsProvider>
         <SidebarProvider>
           <Router>
             <Sidebar />
@@ -26,7 +26,7 @@ const Layout = () => {
             </div>
           </Router>
         </SidebarProvider>
-      </ListProvider>
+      </ModelsProvider>
     </div>
   );
 };

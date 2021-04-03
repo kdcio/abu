@@ -6,12 +6,12 @@ import RichTextField from "fields/rich-text/Setting";
 import SlugField from "fields/slug/Setting";
 import TextField from "fields/text/Setting";
 
-import { useList } from "context/models";
+import { useModels } from "context/models";
 import { useModal } from "context/modal";
 import update from "../../api/update";
 
 const FieldSetting = ({ type }) => {
-  const { selected: model, dispatch } = useList();
+  const { selected: model, dispatch } = useModels();
   const { setModal } = useModal();
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);

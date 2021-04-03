@@ -10,7 +10,7 @@ import listApi from "api/list";
 
 const ListContext = createContext();
 
-const useList = () => {
+const useModels = () => {
   return useContext(ListContext);
 };
 
@@ -25,7 +25,7 @@ const initialState = {
   hydrating: false,
 };
 
-const ListProvider = (props) => {
+const ModelsProvider = (props) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
       case "HYDRATE":
@@ -99,4 +99,4 @@ const ListProvider = (props) => {
   );
 };
 
-export { ListProvider, useList };
+export { ModelsProvider, useModels };
