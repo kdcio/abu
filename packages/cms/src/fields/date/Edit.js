@@ -11,7 +11,6 @@ const Edit = ({ name, id, validations, help, today }) => {
   const initial = today ? dateFormatInput(new Date()) : null;
 
   useEffect(() => {
-    console.log(data);
     data?.data?.[id] && setValue(id, data.data[id]);
   }, [id, data, setValue]);
 

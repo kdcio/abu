@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { CFormGroup, CLabel } from "@coreui/react";
 import { useFormContext } from "react-hook-form";
 import { useData } from "context/data";
 
 const Edit = ({ name, id, validations, help, default: defaultValue }) => {
   const { data } = useData();
-  const { register, errors, formState } = useFormContext();
+  const { register, errors, formState, setValue } = useFormContext();
   const { isSubmitting } = formState;
-  const [initial, setInitial] = useState(defaultValue);
 
   useEffect(() => {
-    data?.data?.[id] && setInitial(data.data[id]);
-  }, [id, data, setInitial]);
+    data?.data?.[id] && setValue(id, data.data[id]);
+  }, [id, data, setValue]);
 
   return (
     <CFormGroup>
@@ -25,7 +24,7 @@ const Edit = ({ name, id, validations, help, default: defaultValue }) => {
         name={id}
         placeholder=""
         ref={register({ required: validations.required })}
-        defaultValue={initial}
+        defaultValue={defaultValue || ""}
         disabled={isSubmitting}
       />
       {errors[id] && (
