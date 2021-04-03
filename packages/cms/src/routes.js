@@ -51,7 +51,7 @@ const routes = [
   },
   { path: "/system/apps", component: Apps, groups: [GRP_ADMIN] },
   {
-    path: "/content",
+    path: "/content/:id?",
     component: Content,
     groups: [GRP_ADMIN, GRP_EDITOR],
   },
