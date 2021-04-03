@@ -3,7 +3,7 @@ import response from "@kdcio/api-gw-resp";
 import debug from "debug";
 import model from "model/lib/entities/Model";
 import makeHttpDelete from "./controller/delete";
-import makeDBDelete from "./use-cases/remove";
+import makeDBDelete from "./use-cases/delete";
 
 export const handler = async (event) => {
   debug("lambda:event")(JSON.stringify(event));

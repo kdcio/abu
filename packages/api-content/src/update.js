@@ -3,13 +3,13 @@ import response from "@kdcio/api-gw-resp";
 import debug from "debug";
 import model from "model/lib/entities/Model";
 import makePatchModel from "./controller/patch";
-import makePatch from "./use-cases/patch";
+import makeUpdate from "./use-cases/update";
 
 export const handler = async (event) => {
   debug("lambda:event")(JSON.stringify(event));
   try {
-    const patch = makePatch({ model });
-    const patchModel = makePatchModel({ patch, parser, response });
+    const update = makeUpdate({ model });
+    const patchModel = makePatchModel({ update, parser, response });
     const res = await patchModel({ event });
     return res;
   } catch (error) {
