@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   CCard,
   CCardBody,
@@ -10,12 +10,30 @@ import { useForm, FormProvider } from "react-hook-form";
 import FieldEdit from "components/FieldEdit";
 import { useModels } from "context/models";
 
+import create from "api/create";
+
 const Single = () => {
   const { selected: model } = useModels();
   const methods = useForm();
+  const [error, setError] = useState(null);
+
+  const createSingle = async ({ data }) =>
+    create({
+      apiName: "Content",
+      path: `/${model.id}`,
+      data: {
+        id: model.id,
+        data,
+      },
+    });
 
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      await createSingle({ data });
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -28,6 +46,9 @@ const Single = () => {
             </h3>
           </CCardHeader>
           <CCardBody>
+            {error && (
+              <div className="text-danger font-weight-bold">{error}</div>
+            )}
             {model?.fields?.map((field) => (
               <FieldEdit key={field.id} {...field} />
             ))}
