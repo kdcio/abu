@@ -8,6 +8,8 @@ import { ModelsProvider } from "context/models";
 import { SidebarProvider } from "context/sidebar";
 import { ToasterProvider } from "context/toaster";
 
+import "scss/components/empty-img.scss";
+
 // initialize API
 import "api";
 
