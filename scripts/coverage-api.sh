@@ -11,7 +11,8 @@ npm exec -- istanbul-merge \
   packages/cognito/coverage/coverage-final.json \
   packages/model/coverage/coverage-final.json \
   packages/api-user/coverage/coverage-final.json \
-  packages/api-model/coverage/coverage-final.json
+  packages/api-model/coverage/coverage-final.json \
+  packages/api-content/coverage/coverage-final.json
 
 echo "Converting report to html..."
 npm exec -- istanbul report --include coverage/coverage.json --dir coverage/html html
