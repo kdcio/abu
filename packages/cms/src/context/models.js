@@ -14,10 +14,10 @@ const useList = () => {
   return useContext(ListContext);
 };
 
+const API_NAME = "Model";
 const initialState = {
   status: "idle",
   error: null,
-  apiName: null,
   list: [],
   selected: null,
   selectedId: null,
@@ -28,8 +28,6 @@ const initialState = {
 const ListProvider = (props) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
-      case "INIT":
-        return { ...initialState, apiName: action.payload };
       case "HYDRATE":
         return { ...state, status: "HYDRATE" };
       case "FETCHING":
@@ -59,10 +57,6 @@ const ListProvider = (props) => {
     }
   }, initialState);
 
-  const setApiName = (apiName) => {
-    dispatch({ type: "INIT", payload: apiName });
-  };
-
   const selectById = useCallback(
     (id) => {
       const list = state.list;
@@ -73,40 +67,33 @@ const ListProvider = (props) => {
     [dispatch, state.list]
   );
 
-  const hydrate = async () => {
+  const hydrate = useCallback(async () => {
     dispatch({ type: "FETCHING" });
     try {
-      const res = await listApi({ apiName: "Model" });
+      const res = await listApi({ apiName: API_NAME });
       let data = [];
       if (res?.Items) data = res.Items;
       dispatch({ type: "FETCHED", payload: data });
     } catch (error) {
       dispatch({ type: "FETCH_ERROR", payload: error.message });
     }
-  };
+  }, []);
 
   useEffect(() => {
     state.status === "HYDRATE" && hydrate();
-  }, [state.status, selectById]);
+  }, [state.status, selectById, hydrate]);
 
   useEffect(() => {
     state.selectedId && selectById(state.selectedId);
   }, [state.selectedId, selectById]);
 
   useEffect(() => {
-    state.apiName && hydrate();
-  }, [state.apiName]);
+    // run on mount
+    hydrate();
+  }, [hydrate]);
 
   return (
-    <ListContext.Provider
-      value={{
-        selectById,
-        hydrate,
-        setApiName,
-        dispatch,
-        ...state,
-      }}
-    >
+    <ListContext.Provider value={{ dispatch, ...state }}>
       {props.children}
     </ListContext.Provider>
   );

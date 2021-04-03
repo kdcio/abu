@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { useList } from "context/list";
+import { useList } from "context/models";
 import { useModal } from "context/modal";
 import FieldInList from "components/system/FieldInList";
 

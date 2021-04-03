@@ -6,7 +6,7 @@ import RichTextField from "fields/rich-text/Setting";
 import SlugField from "fields/slug/Setting";
 import TextField from "fields/text/Setting";
 
-import { useList } from "context/list";
+import { useList } from "context/models";
 import { useModal } from "context/modal";
 import update from "../../api/update";
 

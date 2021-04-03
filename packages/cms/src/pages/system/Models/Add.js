@@ -14,7 +14,7 @@ import {
 } from "@coreui/react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useList } from "context/list";
+import { useList } from "context/models";
 import { useModal } from "context/modal";
 
 import create from "api/create";
