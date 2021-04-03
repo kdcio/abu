@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CFormGroup,
   CLabel,
@@ -9,11 +9,18 @@ import {
 import { useFormContext } from "react-hook-form";
 import kebabCase from "utils/kebabCase";
 import { useModels } from "context/models";
+import { useData } from "context/data";
 
 const Edit = ({ name, id, validations, help, reference }) => {
+  const { data } = useData();
   const { selected: model } = useModels();
   const { register, errors, formState, watch, setValue } = useFormContext();
   const { isSubmitting } = formState;
+  const [initial, setInitial] = useState();
+
+  useEffect(() => {
+    data?.data?.[id] && setInitial(data.data[id]);
+  }, [id, data, setInitial]);
 
   const title = watch(reference);
   useEffect(() => {
@@ -36,10 +43,10 @@ const Edit = ({ name, id, validations, help, reference }) => {
           name={id}
           placeholder=""
           ref={register({ required: validations.required })}
+          defaultValue={initial}
           disabled={isSubmitting}
         />
       </CInputGroup>
-
       {errors[id] && (
         <div className="invalid-feedback">This field is required.</div>
       )}

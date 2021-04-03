@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CFormGroup, CLabel } from "@coreui/react";
 import { useFormContext } from "react-hook-form";
 import { dateFormatInput } from "utils/dateFormat";
+import { useData } from "context/data";
 
 const Edit = ({ name, id, validations, help, today }) => {
-  const { register, errors, formState } = useFormContext();
+  const { data } = useData();
+  const { register, errors, formState, setValue } = useFormContext();
   const { isSubmitting } = formState;
+  const initial = today ? dateFormatInput(new Date()) : null;
 
-  let defaultValue = null;
-  if (today) {
-    defaultValue = dateFormatInput(new Date());
-  }
+  useEffect(() => {
+    console.log(data);
+    data?.data?.[id] && setValue(id, data.data[id]);
+  }, [id, data, setValue]);
 
   return (
     <CFormGroup>
@@ -23,7 +26,7 @@ const Edit = ({ name, id, validations, help, today }) => {
         id={id}
         name={id}
         ref={register({ required: validations.required })}
-        defaultValue={defaultValue}
+        defaultValue={initial}
         disabled={isSubmitting}
       />
       {errors[id] && (

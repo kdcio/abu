@@ -3,6 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 import Suspense from "components/Suspense";
 import Spinner from "components/Spinner";
 import { useModels } from "context/models";
+import { DataProvider } from "context/data";
 
 const Collection = React.lazy(() => import("./Collection"));
 const Single = React.lazy(() => import("./Single"));
@@ -26,7 +27,9 @@ const Content = () => {
   return selected.collection ? (
     <Suspense Component={Collection} />
   ) : (
-    <Suspense Component={Single} />
+    <DataProvider>
+      <Suspense Component={Single} />
+    </DataProvider>
   );
 };
 

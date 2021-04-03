@@ -6,6 +6,7 @@ import { useFileReader } from "utils/useFileReader";
 
 import "scss/components/image-edit.scss";
 
+// TODO: Fina a way to validate
 const Edit = ({ name, id, validations, help }) => {
   const [image, setImage] = useState(null);
   const { register, errors, setValue } = useFormContext();
@@ -24,8 +25,8 @@ const Edit = ({ name, id, validations, help }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   useEffect(() => {
-    register({ name: id }, { required: validations.required });
-  }, [id, register, validations.required]);
+    register({ name: id });
+  }, [id, register]);
 
   return (
     <CFormGroup>
