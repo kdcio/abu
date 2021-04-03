@@ -1,7 +1,10 @@
 import React from "react";
 import { CFooter } from "@coreui/react";
+import { useToaster } from "context/toaster";
 
 const Footer = () => {
+  const { renderToast } = useToaster();
+
   return (
     <CFooter fixed={false}>
       <div>
@@ -24,6 +27,7 @@ const Footer = () => {
           AbuCMS
         </a>
       </div>
+      {renderToast()}
     </CFooter>
   );
 };

@@ -6,6 +6,7 @@ import Content from "./Content";
 import Footer from "./Footer";
 import { ModelsProvider } from "context/models";
 import { SidebarProvider } from "context/sidebar";
+import { ToasterProvider } from "context/toaster";
 
 // initialize API
 import "api";
@@ -13,20 +14,22 @@ import "api";
 const Layout = () => {
   return (
     <div className="c-app c-default-layout">
-      <ModelsProvider>
-        <SidebarProvider>
-          <Router>
-            <Sidebar />
-            <div className="c-wrapper">
-              <Header />
-              <div className="c-body">
-                <Content />
+      <ToasterProvider>
+        <ModelsProvider>
+          <SidebarProvider>
+            <Router>
+              <Sidebar />
+              <div className="c-wrapper">
+                <Header />
+                <div className="c-body">
+                  <Content />
+                </div>
+                <Footer />
               </div>
-              <Footer />
-            </div>
-          </Router>
-        </SidebarProvider>
-      </ModelsProvider>
+            </Router>
+          </SidebarProvider>
+        </ModelsProvider>
+      </ToasterProvider>
     </div>
   );
 };
