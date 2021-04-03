@@ -1,7 +1,7 @@
 import parser from "@kdcio/api-gw-req";
 import response from "@kdcio/api-gw-resp";
 import debug from "debug";
-import model from "model/lib/entities/Model";
+import model from "model/lib/entities/Content";
 import makeBrowse from "./controller/browse";
 import makeList from "./use-cases/list";
 

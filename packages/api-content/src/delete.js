@@ -1,7 +1,7 @@
 import parser from "@kdcio/api-gw-req";
 import response from "@kdcio/api-gw-resp";
 import debug from "debug";
-import model from "model/lib/entities/Model";
+import model from "model/lib/entities/Content";
 import makeHttpDelete from "./controller/delete";
 import makeDBDelete from "./use-cases/delete";
 
