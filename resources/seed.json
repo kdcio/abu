@@ -1,0 +1,187 @@
+[
+  {
+    "_ct": "2021-04-03T02:09:01.926Z",
+    "pk2": "MOD",
+    "_md": "2021-04-03T02:09:01.926Z",
+    "sk": "META",
+    "sk2": "About page",
+    "collection": false,
+    "pk": "MOD#about_page",
+    "fields": [
+      {
+        "name": "Title",
+        "help": null,
+        "default": null,
+        "id": "title",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      },
+      {
+        "name": "Subtitle",
+        "help": null,
+        "default": null,
+        "id": "subtitle",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      },
+      {
+        "name": "Photo",
+        "help": null,
+        "id": "photo",
+        "validations": {
+          "required": true
+        },
+        "type": "image"
+      },
+      {
+        "name": "Bio",
+        "help": null,
+        "default": null,
+        "id": "bio",
+        "validations": {
+          "required": true
+        },
+        "type": "rich-text"
+      }
+    ],
+    "_et": "Model"
+  },
+  {
+    "_ct": "2021-04-03T02:11:50.476Z",
+    "pk2": "MOD",
+    "_md": "2021-04-03T02:11:50.476Z",
+    "sk": "META",
+    "sk2": "Blog",
+    "collection": true,
+    "pk": "MOD#blog",
+    "fields": [
+      {
+        "name": "Title",
+        "help": null,
+        "default": null,
+        "id": "title",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      },
+      {
+        "name": "Slug",
+        "reference": "title",
+        "help": "Unique link",
+        "id": "slug",
+        "validations": {
+          "required": true
+        },
+        "type": "slug"
+      },
+      {
+        "name": "Cover Image",
+        "help": null,
+        "id": "cover_image",
+        "validations": {
+          "required": true
+        },
+        "type": "image"
+      },
+      {
+        "name": "Excerpt",
+        "help": "Short excerpt which will appear in the blog list below the title",
+        "default": null,
+        "id": "excerpt",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      },
+      {
+        "name": "Body",
+        "help": null,
+        "default": null,
+        "id": "body",
+        "validations": {
+          "required": true
+        },
+        "type": "rich-text"
+      },
+      {
+        "name": "Tags",
+        "help": "Comma separated values",
+        "default": null,
+        "id": "tags",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      }
+    ],
+    "_et": "Model"
+  },
+  {
+    "_ct": "2021-04-03T02:10:53.502Z",
+    "pk2": "MOD",
+    "_md": "2021-04-03T02:10:53.502Z",
+    "sk": "META",
+    "sk2": "Home",
+    "collection": false,
+    "pk": "MOD#home",
+    "fields": [
+      {
+        "name": "Intro",
+        "help": null,
+        "default": null,
+        "id": "intro",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      },
+      {
+        "name": "Cover Image",
+        "help": null,
+        "id": "cover_image",
+        "validations": {
+          "required": true
+        },
+        "type": "image"
+      }
+    ],
+    "_et": "Model"
+  },
+  {
+    "_ct": "2021-04-03T02:16:52.836Z",
+    "pk2": "MOD",
+    "_md": "2021-04-03T02:16:52.836Z",
+    "sk": "META",
+    "sk2": "Social Profile",
+    "collection": true,
+    "pk": "MOD#social_profile",
+    "fields": [
+      {
+        "name": "Profile Type",
+        "help": null,
+        "default": null,
+        "id": "profile_type",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      },
+      {
+        "name": "URL",
+        "help": "Link to your social profile",
+        "default": null,
+        "id": "url",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      }
+    ],
+    "_et": "Model"
+  }
+]
