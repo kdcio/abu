@@ -8,7 +8,7 @@ const Content = new Entity({
     id: { sortKey: true, prefix: 'CON#' },
     pk2: { default: (data) => `MOD#${data.modelId}#CON` },
     sk2: { default: (data) => data.created() },
-    fields: { type: 'list', required: false },
+    data: { type: 'map', required: false },
   },
   table,
 });

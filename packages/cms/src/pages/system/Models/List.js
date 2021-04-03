@@ -11,18 +11,14 @@ import {
 import CIcon from "@coreui/icons-react";
 import { useHistory, useParams } from "react-router-dom";
 import Spinner from "components/Spinner";
-import { useList } from "context/list";
+import { useModels } from "context/models";
 import { useModal } from "context/modal";
 
 const Models = () => {
   const { id } = useParams();
   const history = useHistory();
-  const { dispatch, list, selected, hydrating } = useList();
+  const { dispatch, list, selected, hydrating } = useModels();
   const { setModal } = useModal();
-
-  useEffect(() => {
-    dispatch({ type: "INIT", payload: "Model" });
-  }, [dispatch]);
 
   useEffect(() => {
     if (id && selected && id === selected) {

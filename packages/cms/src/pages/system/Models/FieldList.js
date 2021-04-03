@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { useList } from "context/list";
+import { useModels } from "context/models";
 import { useModal } from "context/modal";
 import FieldInList from "components/system/FieldInList";
 
 const FieldList = () => {
-  const { selected } = useList();
+  const { selected } = useModels();
   const { setModal } = useModal();
   const [fields, setFields] = useState([]);
 

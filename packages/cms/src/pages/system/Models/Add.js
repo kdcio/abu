@@ -14,7 +14,7 @@ import {
 } from "@coreui/react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useList } from "context/list";
+import { useModels } from "context/models";
 import { useModal } from "context/modal";
 
 import create from "api/create";
@@ -24,7 +24,7 @@ import "scss/components/add-model.scss";
 const Add = () => {
   const history = useHistory();
   const { modal, setModal } = useModal();
-  const { list, dispatch } = useList();
+  const { list, dispatch } = useModels();
   const collectionRef = useRef();
   const { register, handleSubmit, errors, watch, setValue } = useForm();
   const [processing, setProcessing] = useState(false);

@@ -8,6 +8,7 @@ const UsersAdd = React.lazy(() => import("./pages/system/Users/Add"));
 const Models = React.lazy(() => import("./pages/system/Models"));
 const Apps = React.lazy(() => import("./pages/system/Apps"));
 const Content = React.lazy(() => import("./pages/Content"));
+const ContentForm = React.lazy(() => import("./pages/Content/Collection/Form"));
 
 const routes = [
   {
@@ -51,7 +52,12 @@ const routes = [
   },
   { path: "/system/apps", component: Apps, groups: [GRP_ADMIN] },
   {
-    path: "/content",
+    path: "/content/:id/:action/:cid?",
+    component: ContentForm,
+    groups: [GRP_ADMIN, GRP_EDITOR],
+  },
+  {
+    path: "/content/:id",
     component: Content,
     groups: [GRP_ADMIN, GRP_EDITOR],
   },

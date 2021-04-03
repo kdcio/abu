@@ -4,7 +4,11 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Content from "./Content";
 import Footer from "./Footer";
+import { ModelsProvider } from "context/models";
 import { SidebarProvider } from "context/sidebar";
+import { ToasterProvider } from "context/toaster";
+
+import "scss/components/empty-img.scss";
 
 // initialize API
 import "api";
@@ -12,18 +16,22 @@ import "api";
 const Layout = () => {
   return (
     <div className="c-app c-default-layout">
-      <SidebarProvider>
-        <Router>
-          <Sidebar />
-          <div className="c-wrapper">
-            <Header />
-            <div className="c-body">
-              <Content />
-            </div>
-            <Footer />
-          </div>
-        </Router>
-      </SidebarProvider>
+      <ToasterProvider>
+        <ModelsProvider>
+          <SidebarProvider>
+            <Router>
+              <Sidebar />
+              <div className="c-wrapper">
+                <Header />
+                <div className="c-body">
+                  <Content />
+                </div>
+                <Footer />
+              </div>
+            </Router>
+          </SidebarProvider>
+        </ModelsProvider>
+      </ToasterProvider>
     </div>
   );
 };
