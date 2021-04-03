@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CModalFooter,
-  CButton,
-} from "@coreui/react";
+import { CCard, CCardBody, CCardHeader, CButton } from "@coreui/react";
 import { useForm, FormProvider } from "react-hook-form";
 import FieldEdit from "components/FieldEdit";
 import { useModels } from "context/models";
@@ -68,9 +62,14 @@ const Single = () => {
       <form onSubmit={methods.handleSubmit(onSubmit)} autoComplete="off">
         <CCard>
           <CCardHeader>
-            <h3 id="singleTitle" className="mb-0">
+            <span id="singleTitle" className="h3 mb-0">
               Editing {model.name}
-            </h3>
+            </span>
+            <div className="card-header-actions">
+              <CButton type="submit" color="primary" block>
+                Save
+              </CButton>
+            </div>
           </CCardHeader>
           <CCardBody>
             {error && (
@@ -80,11 +79,6 @@ const Single = () => {
               <FieldEdit key={field.id} {...field} />
             ))}
           </CCardBody>
-          <CModalFooter>
-            <CButton type="submit" color="primary" block>
-              Save
-            </CButton>
-          </CModalFooter>
         </CCard>
       </form>
     </FormProvider>
