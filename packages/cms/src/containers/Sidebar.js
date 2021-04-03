@@ -35,6 +35,7 @@ const Sidebar = () => {
         _tag: "CSidebarNavItem",
         name: model.name,
         to: `/content/${model.id}`,
+        exact: false,
         icon: (
           <CIcon
             name={model.collection ? "cil-library" : "cil-file"}

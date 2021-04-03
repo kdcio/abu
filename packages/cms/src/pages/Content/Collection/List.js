@@ -86,7 +86,7 @@ const List = () => {
               </thead>
               <tbody>
                 {list.map((item, idx) => (
-                  <tr key={item.sub}>
+                  <tr key={item.id}>
                     <td>Show first text field here</td>
                     <td>{item.created}</td>
                     <td className="text-center">
@@ -97,7 +97,7 @@ const List = () => {
                         variant="ghost"
                         className="edit-btn"
                         onClick={() =>
-                          history.push(`/content/${model.id}/edit/${item.sub}`)
+                          history.push(`/content/${model.id}/edit/${item.id}`)
                         }
                       >
                         <CIcon name="cil-pen-alt" />
@@ -108,7 +108,7 @@ const List = () => {
                         color="danger"
                         variant="ghost"
                         className="delete-btn"
-                        onClick={() => removeContent(item.sub, idx)}
+                        onClick={() => removeContent(item.id, idx)}
                       >
                         <CIcon name="cil-trash" />
                       </CButton>
