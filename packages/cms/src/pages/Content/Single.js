@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CButton,
-  // CToast,
-  // CToastBody,
-  // CToaster,
-} from "@coreui/react";
+import { CCard, CCardBody, CCardHeader, CButton } from "@coreui/react";
 import { useForm, FormProvider } from "react-hook-form";
 import FieldEdit from "components/FieldEdit";
 import { useModels } from "context/models";
@@ -94,17 +86,6 @@ const Single = () => {
           </CCardBody>
         </CCard>
       </form>
-      {/* <CToaster position="top-right" key="toaster">
-        <CToast
-          key={"toast"}
-          show={true}
-          autohide={5000}
-          fade={true}
-          color="success"
-        >
-          <CToastBody>Saved successfully!</CToastBody>
-        </CToast>
-      </CToaster> */}
     </FormProvider>
   );
 };
