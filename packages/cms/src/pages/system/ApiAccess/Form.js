@@ -25,11 +25,10 @@ import { useModels } from "context/models";
 const Form = () => {
   const { id } = useParams();
   const { list: models } = useModels();
-  const { register, handleSubmit, errors, watch } = useForm();
-  const [processing, setProcessing] = useState(true);
+  const { register, handleSubmit, errors } = useForm();
+  const [processing, setProcessing] = useState(false);
 
-  const password = useRef({});
-  password.current = watch("password", "");
+  const switchRef = useRef([]);
 
   // const updateUser = async ({ firstName, lastName, group }) => {
   //   const data = {};
@@ -132,33 +131,33 @@ const Form = () => {
                   Write
                 </CCol>
               </CRow>
-              {models.map((model) => (
+              {models.map((model, idx) => (
                 <CRow key={model.id} className="form-group">
                   <CCol xs={4}>{model.name}</CCol>
                   <CCol xs={4} className="text-center">
                     <CSwitch
-                      id="collection"
-                      name="collection"
+                      id={`read-${model.id}`}
+                      name={`read[${model.id}]`}
                       className={"mx-1"}
                       shape={"pill"}
                       color={"primary"}
-                      // innerRef={(e) => {
-                      //   register(e);
-                      //   collectionRef.current = e;
-                      // }}
+                      innerRef={(e) => {
+                        register(e);
+                        switchRef.current[idx * 2] = e;
+                      }}
                     />
                   </CCol>
                   <CCol xs={4} className="text-center">
                     <CSwitch
-                      id="collection"
-                      name="collection"
+                      id={`write-${model.id}`}
+                      name={`write[${model.id}]`}
                       className={"mx-1"}
                       shape={"pill"}
                       color={"primary"}
-                      // innerRef={(e) => {
-                      //   register(e);
-                      //   collectionRef.current = e;
-                      // }}
+                      innerRef={(e) => {
+                        register(e);
+                        switchRef.current[idx * 2 + 1] = e;
+                      }}
                     />
                   </CCol>
                 </CRow>
