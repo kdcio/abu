@@ -14,19 +14,24 @@ import {
   CInput,
   CInputGroupAppend,
 } from "@coreui/react";
-import { useParams, Link } from "react-router-dom";
+import { useHistory, useParams, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import CIcon from "@coreui/icons-react";
 import { useModels } from "context/models";
+import { useToaster } from "context/toaster";
 
+import create from "api/create";
 // import get from "api/get";
 // import update from "api/update";
 
 const Form = () => {
   const { id } = useParams();
   const { list: models } = useModels();
+  const history = useHistory();
+  const { addToast } = useToaster();
   const { register, handleSubmit, errors } = useForm();
   const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState(null);
 
   const switchRef = useRef([]);
 
@@ -56,13 +61,17 @@ const Form = () => {
 
   const onSubmit = async (data) => {
     setProcessing(true);
-    console.log(JSON.stringify(data));
-    // const proms = [];
-    // proms.push(updateUser(data));
-    // proms.push(changePassword(data));
-    // await Promise.all(proms);
-    setProcessing(false);
-    // history.push("/system/api_access");
+    try {
+      await create({ apiName: "Access", data });
+      addToast({
+        message: "API Access saved successfully!",
+        color: "success",
+      });
+      history.push("/system/api_access");
+    } catch (err) {
+      setError(err);
+      setProcessing(false);
+    }
   };
 
   // useEffect(() => {
@@ -92,6 +101,11 @@ const Form = () => {
           </h3>
         </CCardHeader>
         <CCardBody>
+          {error && (
+            <p className="text-danger text-center">
+              <strong>{error}</strong>
+            </p>
+          )}
           <CRow>
             <CCol sm={6}>
               <CFormGroup>
