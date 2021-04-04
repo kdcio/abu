@@ -19,8 +19,14 @@ const renameFunctions = (serviceName, basePath, funcs) => {
   return functions;
 };
 
+const getDirectories = (source) =>
+  fs
+    .readdirSync(source, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory() && dirent.name.match(/^api-/))
+    .map(({ name }) => name.replace("api-", ""));
+
 module.exports = () => {
-  const services = ["user", "model", "content", "access"];
+  const services = getDirectories("packages");
 
   let functions = {};
   services.forEach((serviceName) => {
