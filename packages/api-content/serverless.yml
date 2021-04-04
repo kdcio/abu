@@ -5,10 +5,8 @@ plugins:
   - serverless-offline
 
 custom:
-  serverless-offline:
-    httpPort: 9021
-    noPrependStageInUrl: true
-    useChildProcesses: true
+  BucketName: ${file(./config/${self:provider.stage}.yml):S3_BUCKET, 'local'}
+  BucketResizePrefix: ${file(./config/${self:provider.stage}.yml):S3_BUCKET_PREFIX, 'uploads'}
 
 package:
   individually: true
@@ -43,8 +41,23 @@ provider:
           Resource:
             - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}"
             - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}/*"
+        - Effect: Allow
+          Action:
+            - "s3:*"
+          Resource:
+            - "arn:aws:s3:::${self:custom.BucketName}"
+            - "arn:aws:s3:::${self:custom.BucketName}/*"
 
-functions: ${file(./functions.yml)}
+functions:
+  - ${file(./functions.yml)}
+  - resize:
+      handler: src/resize.handler
+      events:
+        - s3:
+            bucket: ${self:custom.BucketName}
+            event: s3:ObjectCreated:*
+            rules:
+              - prefix: ${self:custom.BucketResizePrefix}/
 
 resources:
   Resources:

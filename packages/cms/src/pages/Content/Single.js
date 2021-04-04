@@ -6,6 +6,8 @@ import { useModels } from "context/models";
 import { useData } from "context/data";
 import { useToaster } from "context/toaster";
 
+import uploadImage from "fields/image/submit";
+
 import create from "api/create";
 import get from "api/get";
 
@@ -26,8 +28,19 @@ const Single = () => {
       },
     });
 
+  const submitImages = async (data) => {
+    const fields = model.fields.filter((f) => f.type === "image");
+    const proms = [];
+    for (let idx = 0; idx < fields.length; idx += 1) {
+      const key = fields[idx].id;
+      proms.push(uploadImage({ model, file: data[key] }));
+    }
+    await Promise.all(proms);
+  };
+
   const onSubmit = async (data) => {
     try {
+      await submitImages(data);
       await createSingle({ data });
       addToast({
         message: `${model.name} saved successfully!`,

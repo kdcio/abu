@@ -4,16 +4,24 @@ variablesResolutionMode: 20210219
 
 package:
   individually: true
+  excludeDevDependencies: true
 
 plugins:
   - serverless-bundle
+  - serverless-s3-local
   - serverless-offline
 
 custom:
+  BucketName: ${file(./config/${self:provider.stage}.yml):S3_BUCKET, 'local'}
+  BucketResizePrefix: ${file(./config/${self:provider.stage}.yml):S3_BUCKET_PREFIX, 'uploads'}
   serverless-offline:
     httpPort: 8061
     noPrependStageInUrl: true
     useChildProcesses: true
+  s3:
+    port: 8064
+    directory: ./.s3-local
+    # cors: resources/s3-cors.xml
 
 provider:
   name: aws
@@ -34,8 +42,28 @@ provider:
     DDB_REGION: ${file(./config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
     DDB_ENDPOINT: ${file(./config/${self:provider.stage}.yml):DDB_ENDPOINT, 'http://localhost:8062'}
     DDB_TABLE: ${file(./config/${self:provider.stage}.yml):DDB_TABLE, 'abu-local'}
+    S3_BUCKET: ${self:custom.BucketName}
+    S3_BUCKET_PREFIX: ${self:custom.BucketResizePrefix}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - "s3:*"
+          Resource:
+            - "arn:aws:s3:::${self:custom.BucketName}"
+            - "arn:aws:s3:::${self:custom.BucketName}/*"
 
-functions: ${file(./functions.js)}
+functions:
+  - ${file(./functions.js)}
+  - resize:
+      handler: packages/api-content/src/resize.handler
+      events:
+        - s3:
+            bucket: ${self:custom.BucketName}
+            event: s3:ObjectCreated:*
+            rules:
+              - prefix: ${self:custom.BucketResizePrefix}/
 
 resources:
   Resources:

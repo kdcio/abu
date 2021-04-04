@@ -16,6 +16,7 @@ const renameFunctions = (serviceName, basePath, funcs) => {
     }
     functions[`${serviceName}-${k}`] = funcs[k];
   });
+  console.log(JSON.stringify(functions["content-resize"], null, 2));
   return functions;
 };
 
