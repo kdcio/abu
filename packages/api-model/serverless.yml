@@ -1,4 +1,4 @@
-service: getbayad-api-user
+service: abu-api-model
 
 plugins:
   - serverless-bundle
@@ -29,7 +29,7 @@ provider:
     DEBUG: ${file(../../config/${self:provider.stage}.yml):DEBUG, 'lambda:event,lambda:error'}
     DDB_REGION: ${file(../../config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
     DDB_ENDPOINT: ${file(../../config/${self:provider.stage}.yml):DDB_ENDPOINT, ''}
-    DDB_TABLE: ${file(../../config/${self:provider.stage}.yml):DDB_TABLE, 'getbayad-local'}
+    DDB_TABLE: ${file(../../config/${self:provider.stage}.yml):DDB_TABLE, 'abu-local'}
   iam:
     role:
       statements:
