@@ -16,8 +16,8 @@ const navigation = [
   },
   {
     _tag: "CSidebarNavItem",
-    name: "Apps",
-    to: "/system/apps",
+    name: "API Access",
+    to: "/system/api_access",
     exact: false,
     icon: "cil-applications",
     groups: [GRP_ADMIN],
