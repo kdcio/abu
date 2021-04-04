@@ -28,7 +28,8 @@
     "@kdcio/api-gw-req": "^1.2.0",
     "@kdcio/api-gw-resp": "^1.7.1",
     "debug": "^4.3.1",
-    "model": "*"
+    "model": "*",
+    "uuid": "^8.3.2"
   },
   "jest": {
     "collectCoverageFrom": [

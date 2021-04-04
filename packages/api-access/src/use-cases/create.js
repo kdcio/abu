@@ -1,7 +1,8 @@
-const makeCreate = ({ model }) => {
+const makeCreate = ({ model, uuid }) => {
   const create = async ({ ...data }) => {
     const id = new Date().valueOf();
-    await model.put({ ...data, id });
+    const key = uuid();
+    await model.put({ ...data, id, key });
     return { id };
   };
   return create;
