@@ -108,17 +108,19 @@ const Form = () => {
                   <div className="invalid-feedback">Please provide name.</div>
                 )}
               </CFormGroup>
-              <CFormGroup>
-                <CLabel htmlFor="api-key">API Key</CLabel>
-                <CInputGroup>
-                  <CInput type="text" id="api-key" name="api-key" readOnly />
-                  <CInputGroupAppend>
-                    <CButton type="button" color="info">
-                      Copy
-                    </CButton>
-                  </CInputGroupAppend>
-                </CInputGroup>
-              </CFormGroup>
+              {id && (
+                <CFormGroup>
+                  <CLabel htmlFor="api-key">API Key</CLabel>
+                  <CInputGroup>
+                    <CInput type="text" id="api-key" name="api-key" readOnly />
+                    <CInputGroupAppend>
+                      <CButton type="button" color="info">
+                        Copy
+                      </CButton>
+                    </CInputGroupAppend>
+                  </CInputGroup>
+                </CFormGroup>
+              )}
             </CCol>
             <CCol sm={6}>
               <h5 className="mb-3">Permissions</h5>
