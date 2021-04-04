@@ -67,6 +67,7 @@ const Form = () => {
         message: "API Access saved successfully!",
         color: "success",
       });
+      // TODO: redirect to edit to show key
       history.push("/system/api_access");
     } catch (err) {
       setError(err);
