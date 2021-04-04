@@ -13,7 +13,6 @@ import { useHistory, Link } from "react-router-dom";
 import Spinner from "components/Spinner";
 import { useModels } from "context/models";
 import { ReactComponent as EmptydImg } from "assets/svg/empty.svg";
-import getPreviewField from "utils/previewField";
 
 import listApi from "api/list";
 import remove from "api/remove";
@@ -23,7 +22,6 @@ const List = () => {
   const history = useHistory();
   const [processing, setProcessing] = useState(true);
   const [list, setList] = useState([]);
-  const [previewField, setPreviewField] = useState(null);
 
   useEffect(() => {
     const getList = async () => {
@@ -33,7 +31,6 @@ const List = () => {
       setProcessing(false);
     };
     getList();
-    setPreviewField(getPreviewField(model.fields || []));
   }, [model]);
 
   const removeContent = async (id, idx) => {
@@ -82,7 +79,7 @@ const List = () => {
             <table className="table table-hover table-outline mb-0 d-none d-sm-table">
               <thead className="thead-light">
                 <tr>
-                  <th>Preview</th>
+                  <th>Name</th>
                   <th>Last update</th>
                   <th className="text-center">Actions</th>
                 </tr>
@@ -90,7 +87,7 @@ const List = () => {
               <tbody>
                 {list.map((item, idx) => (
                   <tr key={item.id}>
-                    <td>{item?.data?.[previewField] || item.id}</td>
+                    <td>{item?.data?.["name"] || item.id}</td>
                     <td>{item.created}</td>
                     <td className="text-center">
                       <CButton
