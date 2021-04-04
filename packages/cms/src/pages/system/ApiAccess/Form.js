@@ -56,7 +56,7 @@ const Form = () => {
 
   const onSubmit = async (data) => {
     setProcessing(true);
-    console.log(data);
+    console.log(JSON.stringify(data));
     // const proms = [];
     // proms.push(updateUser(data));
     // proms.push(changePassword(data));

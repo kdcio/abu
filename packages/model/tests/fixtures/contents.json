@@ -2,49 +2,25 @@
   {
     "modelId": "home",
     "id": "home",
-    "fields": [
-      {
-        "type": "text",
-        "id": "title",
-        "value": "Hello"
-      },
-      {
-        "type": "text",
-        "id": "footer",
-        "value": "all rights reserved"
-      }
-    ]
+    "data": {
+      "title": "Hello",
+      "footer": "all rights reserved"
+    }
   },
   {
     "modelId": "blog",
     "id": "auto-gen-1",
-    "fields": [
-      {
-        "type": "text",
-        "id": "title",
-        "value": "First blog"
-      },
-      {
-        "type": "rich-text",
-        "id": "description",
-        "value": "lorem ipsum dolor"
-      }
-    ]
+    "data": {
+      "title": "First blog",
+      "description": "lorem ipsum dolor"
+    }
   },
   {
     "modelId": "blog",
     "id": "auto-gen-2",
-    "fields": [
-      {
-        "type": "text",
-        "id": "title",
-        "value": "Second blog"
-      },
-      {
-        "type": "rich-text",
-        "id": "description",
-        "value": "dolor lorem ipsum"
-      }
-    ]
+    "data": {
+      "title": "Second blog",
+      "description": "dolor lorem ipsum"
+    }
   }
 ]
