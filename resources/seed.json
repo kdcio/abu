@@ -60,10 +60,10 @@
     "pk": "MOD#blog",
     "fields": [
       {
-        "name": "Title",
+        "name": "Name",
         "help": null,
         "default": null,
-        "id": "title",
+        "id": "name",
         "validations": {
           "required": true
         },
@@ -71,7 +71,7 @@
       },
       {
         "name": "Slug",
-        "reference": "title",
+        "reference": "name",
         "help": "Unique link",
         "id": "slug",
         "validations": {
@@ -162,10 +162,10 @@
     "pk": "MOD#social_profile",
     "fields": [
       {
-        "name": "Profile Type",
-        "help": null,
+        "name": "Name",
+        "help": "Profile type",
         "default": null,
-        "id": "profile_type",
+        "id": "name",
         "validations": {
           "required": true
         },

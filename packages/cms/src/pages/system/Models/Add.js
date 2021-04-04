@@ -35,15 +35,31 @@ const Add = () => {
     setValue("id", snakeCase(name));
   }, [name, setValue]);
 
-  const createModal = async ({ name, id, collection }) =>
-    await create({
+  const createModal = async ({ name, id, collection }) => {
+    const fields = [];
+    if (collection) {
+      fields.push({
+        id: "name",
+        name: "Name",
+        type: "text",
+        validations: {
+          required: true,
+        },
+        help: "",
+        default: "",
+      });
+    }
+
+    return create({
       apiName: "Model",
       data: {
         name,
         id,
         collection,
+        fields,
       },
     });
+  };
 
   const onSubmit = async (data) => {
     setProcessing(true);
