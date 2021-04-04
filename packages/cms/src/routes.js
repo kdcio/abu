@@ -6,7 +6,8 @@ const UsersList = React.lazy(() => import("./pages/system/Users"));
 const UsersForm = React.lazy(() => import("./pages/system/Users/Form"));
 const UsersAdd = React.lazy(() => import("./pages/system/Users/Add"));
 const Models = React.lazy(() => import("./pages/system/Models"));
-const Apps = React.lazy(() => import("./pages/system/Apps"));
+const ApiAccess = React.lazy(() => import("./pages/system/ApiAccess"));
+const ApiAccessForm = React.lazy(() => import("./pages/system/ApiAccess/Form"));
 const Content = React.lazy(() => import("./pages/Content"));
 const ContentForm = React.lazy(() => import("./pages/Content/Collection/Form"));
 
@@ -50,7 +51,16 @@ const routes = [
     component: Models,
     groups: [GRP_ADMIN],
   },
-  { path: "/system/apps", component: Apps, groups: [GRP_ADMIN] },
+  {
+    path: "/system/api_access/:action/:id?",
+    component: ApiAccessForm,
+    groups: [GRP_ADMIN],
+  },
+  {
+    path: "/system/api_access",
+    component: ApiAccess,
+    groups: [GRP_ADMIN],
+  },
   {
     path: "/content/:id/:action/:cid?",
     component: ContentForm,
