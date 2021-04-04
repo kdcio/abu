@@ -7,6 +7,11 @@ plugins:
 custom:
   BucketName: ${file(./config/${self:provider.stage}.yml):S3_BUCKET, 'local'}
   BucketResizePrefix: ${file(./config/${self:provider.stage}.yml):S3_BUCKET_PREFIX, 'uploads'}
+  bundle:
+    caching: false
+    packagerOptions:
+      scripts:
+        - rm -rf node_modules/sharp && npm install --arch=x64 --platform=linux sharp
 
 package:
   individually: true

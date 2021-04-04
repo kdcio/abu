@@ -22,6 +22,11 @@ custom:
     port: 8064
     directory: ./.s3-local
     cors: resources/s3-cors.xml
+  bundle:
+    caching: false
+    packagerOptions:
+      scripts:
+        - rm -rf node_modules/sharp && npm install --arch=x64 --platform=linux sharp
 
 provider:
   name: aws
