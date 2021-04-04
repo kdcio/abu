@@ -88,7 +88,7 @@ const List = () => {
                 {list.map((item, idx) => (
                   <tr key={item.id}>
                     <td>{item?.data?.["name"] || item.id}</td>
-                    <td>{item.created}</td>
+                    <td>{item.modified}</td>
                     <td className="text-center">
                       <CButton
                         type="button"
