@@ -21,6 +21,10 @@
     {
       "AttributeName": "sk2",
       "AttributeType": "S"
+    },
+    {
+      "AttributeName": "pk3",
+      "AttributeType": "S"
     }
   ],
   "KeySchema": [
@@ -44,6 +48,18 @@
         {
           "AttributeName": "sk2",
           "KeyType": "RANGE"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "ALL"
+      }
+    },
+    {
+      "IndexName": "GSI2",
+      "KeySchema": [
+        {
+          "AttributeName": "pk3",
+          "KeyType": "HASH"
         }
       ],
       "Projection": {

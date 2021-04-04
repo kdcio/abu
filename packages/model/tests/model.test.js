@@ -1,9 +1,11 @@
 import { start } from 'helper';
 import Model from '../src/entities/Model';
 import Content from '../src/entities/Content';
+import ApiAccess from '../src/entities/ApiAccess';
 
 import models from './fixtures/models.json';
 import contents from './fixtures/contents.json';
+import apiAccesses from './fixtures/api-access.json';
 
 describe('Model', () => {
   beforeAll(async () => {
@@ -28,6 +30,20 @@ describe('Model', () => {
     await Promise.all(proms);
 
     const res = await Content.query('MOD#home#CON', { index: 'GSI' });
+    expect(res.Items).toHaveLength(1);
+  });
+
+  it(`should save api access`, async () => {
+    const proms = [];
+    apiAccesses.forEach((d) => {
+      proms.push(ApiAccess.put({ ...d }));
+    });
+    await Promise.all(proms);
+
+    let res = await ApiAccess.query('API', { index: 'GSI' });
+    expect(res.Items).toHaveLength(5);
+
+    res = await ApiAccess.query('KEY#random-3', { index: 'GSI2' });
     expect(res.Items).toHaveLength(1);
   });
 });

@@ -1,0 +1,87 @@
+[
+  {
+    "id": "1",
+    "name": "Read Only",
+    "key": "random-1",
+    "read": {
+      "about_page": true,
+      "blog": true,
+      "home": true,
+      "social_profile": true
+    },
+    "write": {
+      "about_page": false,
+      "blog": false,
+      "home": false,
+      "social_profile": false
+    }
+  },
+  {
+    "id": "2",
+    "name": "Write Only",
+    "key": "random-2",
+    "read": {
+      "about_page": false,
+      "blog": false,
+      "home": false,
+      "social_profile": false
+    },
+    "write": {
+      "about_page": true,
+      "blog": true,
+      "home": true,
+      "social_profile": true
+    }
+  },
+  {
+    "id": "3",
+    "name": "Full Access",
+    "key": "random-3",
+    "read": {
+      "about_page": true,
+      "blog": true,
+      "home": true,
+      "social_profile": true
+    },
+    "write": {
+      "about_page": true,
+      "blog": true,
+      "home": true,
+      "social_profile": true
+    }
+  },
+  {
+    "id": "4",
+    "name": "Blog Full Access",
+    "key": "random-4",
+    "read": {
+      "about_page": false,
+      "blog": true,
+      "home": false,
+      "social_profile": false
+    },
+    "write": {
+      "about_page": false,
+      "blog": true,
+      "home": false,
+      "social_profile": false
+    }
+  },
+  {
+    "id": "5",
+    "name": "Page Read Access",
+    "key": "random-5",
+    "read": {
+      "about_page": true,
+      "blog": false,
+      "home": true,
+      "social_profile": false
+    },
+    "write": {
+      "about_page": false,
+      "blog": false,
+      "home": false,
+      "social_profile": false
+    }
+  }
+]

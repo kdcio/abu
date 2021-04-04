@@ -9,6 +9,7 @@ const createTable = () => {
     sortKey: 'sk',
     indexes: {
       GSI: { partitionKey: 'pk2', sortKey: 'sk2' },
+      GSI2: { partitionKey: 'pk3' },
     },
     DocumentClient,
   });
