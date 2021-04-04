@@ -10,7 +10,7 @@ const makeS3 = () => {
       s3ForcePathStyle: true,
       accessKeyId: "S3RVER", // This specific key is required when working offline
       secretAccessKey: "S3RVER",
-      endpoint: new AWS.Endpoint("http://localhost:4569"),
+      endpoint: new AWS.Endpoint("http://localhost:8064"),
     });
   }
   return new S3({ signatureVersion: "v4", region: REGION });

@@ -21,7 +21,7 @@ custom:
   s3:
     port: 8064
     directory: ./.s3-local
-    # cors: resources/s3-cors.xml
+    cors: resources/s3-cors.xml
 
 provider:
   name: aws
