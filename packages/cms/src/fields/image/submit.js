@@ -29,6 +29,7 @@ const submit = async ({ model, file }) => {
   const { url, targets } = await getUrl(model.id, file);
   console.log(url, targets);
   await upload(url, file);
+  return targets;
 };
 
 export default submit;

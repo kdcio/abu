@@ -35,13 +35,19 @@ const Single = () => {
       const key = fields[idx].id;
       proms.push(uploadImage({ model, file: data[key] }));
     }
-    await Promise.all(proms);
+    const res = await Promise.all(proms);
+    const imageData = {};
+    for (let idx = 0; idx < fields.length; idx += 1) {
+      const key = fields[idx].id;
+      imageData[key] = res[idx];
+    }
+    return imageData;
   };
 
   const onSubmit = async (data) => {
     try {
-      await submitImages(data);
-      await createSingle({ data });
+      const imageData = await submitImages(data);
+      await createSingle({ data: { ...data, ...imageData } });
       addToast({
         message: `${model.name} saved successfully!`,
         color: "success",
@@ -54,7 +60,7 @@ const Single = () => {
 
   useEffect(() => {
     let cancel = false;
-    const getUser = async () => {
+    const getData = async () => {
       try {
         const res = await get({
           apiName: "Content",
@@ -68,7 +74,7 @@ const Single = () => {
       }
     };
 
-    if (model?.id) getUser();
+    if (model?.id) getData();
     else setData({});
     return () => {
       cancel = true;

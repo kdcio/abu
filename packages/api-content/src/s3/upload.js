@@ -8,7 +8,7 @@ const generateKey = (timestamp, source) => {
 };
 
 const getSignedUrl = async ({ filename, type }) => {
-  const { S3_BUCKET } = process.env;
+  const { S3_BUCKET, S3_BASE_URL } = process.env;
   const timestamp = +new Date();
   const file = path.parse(filename);
 
@@ -49,7 +49,11 @@ const getSignedUrl = async ({ filename, type }) => {
   const url = await s3.getSignedUrl("putObject", params);
   return {
     url,
-    targets,
+    targets: Object.keys(targets).reduce((acc, k) => {
+      console.log(k, targets[k], acc);
+      acc[k] = `${S3_BASE_URL}/${targets[k]}`;
+      return acc;
+    }, {}),
   };
 };
 
