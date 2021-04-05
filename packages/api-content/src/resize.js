@@ -20,7 +20,7 @@ const processObject = async (rec) => {
     Object.keys(data.Metadata).forEach((key) => {
       if (!key.match(/^opt-(.*)/)) return;
       const options = JSON.parse(data.Metadata[key]);
-      proms.push(resize({ data, options }));
+      proms.push(resize({ key, data, options }));
     });
     await Promise.all(proms);
   } catch (error) {

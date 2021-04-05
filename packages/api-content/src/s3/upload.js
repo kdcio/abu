@@ -14,8 +14,7 @@ const getSignedUrl = async ({ filename, type }) => {
 
   const targets = {
     thumb: `thumb/${timestamp}-${file.name}.webp`,
-    medium: `medium/${timestamp}-${file.name}.webp`,
-    large: `large/${timestamp}-${file.name}.webp`,
+    orig: `orig/${timestamp}-${file.base}`,
   };
 
   const Metadata = {
@@ -24,15 +23,8 @@ const getSignedUrl = async ({ filename, type }) => {
       format: "webp",
       target: targets.thumb,
     }),
-    "opt-medium": JSON.stringify({
-      width: 500,
-      format: "webp",
-      target: targets.medium,
-    }),
-    "opt-large": JSON.stringify({
-      width: 1080,
-      format: "webp",
-      target: targets.large,
+    "opt-orig": JSON.stringify({
+      target: targets.orig,
     }),
   };
 
