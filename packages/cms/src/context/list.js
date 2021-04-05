@@ -21,7 +21,7 @@ const initialState = {
   modelId: null,
   cache: [],
   list: [],
-  limit: 5,
+  limit: 10,
   hydrating: false,
   curPage: 0,
   cursor: null,
