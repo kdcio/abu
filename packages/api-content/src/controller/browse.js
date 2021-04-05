@@ -22,7 +22,10 @@ const makeBrowse = ({ list, parser, response }) => {
       throw new Error("Missing model id");
     }
 
-    const data = await list({ modelId });
+    const { query } = request;
+    const { lastKey, limit } = query;
+
+    const data = await list({ modelId, lastKey, limit });
     return response.OK({ body: data });
   };
   return browse;
