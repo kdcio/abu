@@ -13,10 +13,10 @@ const makeListAll = ({ model }) => {
       allItems = [
         ...allItems,
         ...Items.map(({ id, created, modified, data }) => ({
+          ...data,
           id,
           created,
           modified,
-          name: data.name,
         })),
       ];
 
