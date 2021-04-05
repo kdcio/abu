@@ -24,7 +24,7 @@ const initialState = {
   limit: 5,
   hydrating: false,
   curPage: 0,
-  lastKey: null,
+  cursor: null,
 };
 
 const ListProvider = (props) => {
@@ -44,7 +44,7 @@ const ListProvider = (props) => {
           list: action.payload,
           cache: [...state.cache, ...action.payload],
           curPage: state.curPage + action.pageInc,
-          lastKey: action.lastKey,
+          cursor: action.cursor,
         };
       case "FETCH_ERROR":
         return {
@@ -71,7 +71,7 @@ const ListProvider = (props) => {
           ...state,
           status: "NO_MORE",
           hydrating: false,
-          lastKey: null,
+          cursor: null,
         };
       default:
         return state;
@@ -79,11 +79,11 @@ const ListProvider = (props) => {
   }, initialState);
 
   const hydrate = useCallback(
-    async (lastKey, pageInc) => {
+    async (cursor, pageInc) => {
       dispatch({ type: "FETCHING" });
       try {
         const qs = { limit: state.limit };
-        if (lastKey) qs.lastKey = JSON.stringify(lastKey);
+        if (cursor) qs.cursor = JSON.stringify(cursor);
         const res = await listApi({
           apiName: API_NAME,
           path: `/${state.modelId}`,
@@ -95,7 +95,7 @@ const ListProvider = (props) => {
           dispatch({
             type: "FETCHED",
             payload: data,
-            lastKey: res.lastKey ? res.lastKey : null,
+            cursor: res.cursor ? res.cursor : null,
             pageInc,
           });
         } else {
@@ -122,7 +122,7 @@ const ListProvider = (props) => {
   const nextPage = () => {
     const { curPage, limit, cache } = state;
     if (curPage === cache.length / limit - 1) {
-      hydrate(state.lastKey, 1);
+      hydrate(state.cursor, 1);
       return;
     }
     const newPage = curPage + 1;
@@ -140,7 +140,7 @@ const ListProvider = (props) => {
       return false;
     console.log("here 1");
     if (
-      !state.lastKey &&
+      !state.cursor &&
       state.curPage === Math.floor(state.cache.length / state.limit)
     )
       return false;

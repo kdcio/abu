@@ -23,9 +23,9 @@ const makeBrowse = ({ list, parser, response }) => {
     }
 
     const { query } = request;
-    const { lastKey, limit } = query;
+    const { limit, cursor } = query;
 
-    const data = await list({ modelId, lastKey, limit });
+    const data = await list({ modelId, limit, cursor });
     return response.OK({ body: data });
   };
   return browse;
