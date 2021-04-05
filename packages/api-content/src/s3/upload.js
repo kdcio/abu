@@ -19,7 +19,7 @@ const getSignedUrl = async ({ filename, type }) => {
 
   const Metadata = {
     "opt-thumb": JSON.stringify({
-      width: 200,
+      width: 400,
       format: "webp",
       target: targets.thumb,
     }),
