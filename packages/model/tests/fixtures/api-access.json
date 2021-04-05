@@ -2,7 +2,7 @@
   {
     "id": "1",
     "name": "Read Only",
-    "key": "random-1",
+    "key": "0f851da755f548668a094693779b8bc8",
     "read": {
       "about_page": true,
       "blog": true,
@@ -19,7 +19,7 @@
   {
     "id": "2",
     "name": "Write Only",
-    "key": "random-2",
+    "key": "eecdbced8ed14b4db9e9705242fe0270",
     "read": {
       "about_page": false,
       "blog": false,
@@ -36,7 +36,7 @@
   {
     "id": "3",
     "name": "Full Access",
-    "key": "random-3",
+    "key": "d5c20ecf93f14fb68fd8f80e4e1eaa51",
     "read": {
       "about_page": true,
       "blog": true,
@@ -53,7 +53,7 @@
   {
     "id": "4",
     "name": "Blog Full Access",
-    "key": "random-4",
+    "key": "441c7fa752b14de789b8530e2eecfb90",
     "read": {
       "about_page": false,
       "blog": true,
@@ -70,7 +70,7 @@
   {
     "id": "5",
     "name": "Page Read Access",
-    "key": "random-5",
+    "key": "395fa1419f474d4485030eedfd9ba33a",
     "read": {
       "about_page": true,
       "blog": false,
