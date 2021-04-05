@@ -131,21 +131,17 @@ const ListProvider = (props) => {
   };
 
   const isNextEnabled = useCallback(() => {
-    console.log(state);
-
     if (
       state.curPage === Math.floor(state.cache.length / state.limit) - 1 &&
       state.status === "NO_MORE"
     )
       return false;
-    console.log("here 1");
     if (
       !state.cursor &&
       state.curPage === Math.floor(state.cache.length / state.limit)
     )
       return false;
 
-    console.log("here 2");
     return state.curPage < Math.ceil(state.cache.length / state.limit);
   }, [state]);
 
