@@ -1,3 +1,10 @@
 import List from "./List";
+import { ListProvider } from "context/list";
 
-export default List;
+const Index = () => (
+  <ListProvider>
+    <List />
+  </ListProvider>
+);
+
+export default Index;

@@ -7,33 +7,37 @@ import {
   CCardBody,
   CCardHeader,
   CButton,
+  CCardFooter,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { useHistory, Link } from "react-router-dom";
 import Spinner from "components/Spinner";
 import { useModels } from "context/models";
+import { useList } from "context/list";
 import { ReactComponent as EmptydImg } from "assets/svg/empty.svg";
 
-import listApi from "api/list";
 import remove from "api/remove";
 
 const List = () => {
   const { selected: model } = useModels();
   const history = useHistory();
-  const [processing, setProcessing] = useState(true);
-  const [list, setList] = useState([]);
+  const [processing, setProcessing] = useState(false);
+  const {
+    dispatch,
+    list,
+    hydrating,
+    prevPage,
+    nextPage,
+    isNextEnabled,
+    isPrevEnabled,
+    reset,
+  } = useList();
 
   useEffect(() => {
-    const getList = async () => {
-      const res = await listApi({ apiName: "Content", path: `/${model.id}` });
-      if (res?.Items) setList(res.Items);
-      else setList([]);
-      setProcessing(false);
-    };
-    getList();
-  }, [model]);
+    dispatch({ type: "INIT", modelId: model.id });
+  }, [model.id, dispatch]);
 
-  const removeContent = async (id, idx) => {
+  const removeContent = async (id) => {
     if (
       !window.confirm(
         "Are you sure to delete this item? This cannot be undone."
@@ -42,9 +46,7 @@ const List = () => {
       return;
     setProcessing(true);
     await remove({ apiName: "Content", id, path: `/${model.id}/` });
-    const newList = [...list];
-    newList.splice(idx, 1);
-    setList(newList);
+    reset();
     setProcessing(false);
   };
 
@@ -67,7 +69,7 @@ const List = () => {
         </CRow>
       </CCardHeader>
       <CCardBody>
-        {processing ? (
+        {processing || hydrating ? (
           <Spinner />
         ) : list.length === 0 ? (
           <div className="text-center">
@@ -120,6 +122,24 @@ const List = () => {
           </div>
         )}
       </CCardBody>
+      <CCardFooter>
+        {isPrevEnabled() && (
+          <CButton type="button" size="sm" color="info" onClick={prevPage}>
+            &#171; Previus
+          </CButton>
+        )}
+        {isNextEnabled() && (
+          <CButton
+            type="button"
+            size="sm"
+            color="info"
+            className="float-right"
+            onClick={nextPage}
+          >
+            Next &#187;
+          </CButton>
+        )}
+      </CCardFooter>
     </CCard>
   );
 };

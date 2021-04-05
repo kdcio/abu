@@ -8,10 +8,10 @@ import {
 
 import listApi from "api/list";
 
-const ListContext = createContext();
+const ModelsContext = createContext();
 
 const useModels = () => {
-  return useContext(ListContext);
+  return useContext(ModelsContext);
 };
 
 const API_NAME = "Model";
@@ -93,9 +93,9 @@ const ModelsProvider = (props) => {
   }, [hydrate]);
 
   return (
-    <ListContext.Provider value={{ dispatch, ...state }}>
+    <ModelsContext.Provider value={{ dispatch, ...state }}>
       {props.children}
-    </ListContext.Provider>
+    </ModelsContext.Provider>
   );
 };
 

@@ -33,6 +33,10 @@ provider:
     DDB_REGION: ${file(../../config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
     DDB_ENDPOINT: ${file(../../config/${self:provider.stage}.yml):DDB_ENDPOINT, ''}
     DDB_TABLE: ${file(../../config/${self:provider.stage}.yml):DDB_TABLE, 'abu-local'}
+    S3_BUCKET: ${self:custom.BucketName}
+    S3_BUCKET_PREFIX: ${self:custom.BucketResizePrefix}
+    S3_BASE_URL: ${file(./config/${self:provider.stage}.yml):S3_BASE_URL, 'http://localhost:8064/local'}
+    PAGINATION_SECRET: ${file(./config/${self:provider.stage}.yml):PAGINATION_SECRET, 'some-random-key'}
   iam:
     role:
       statements:
