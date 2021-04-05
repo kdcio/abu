@@ -1,7 +1,7 @@
 {
-  "name": "api-model",
+  "name": "api-admin-user",
   "version": "0.1.0",
-  "description": "API for model data",
+  "description": "API for users data",
   "main": "index.js",
   "scripts": {
     "start": "sls offline -s dev",
@@ -21,21 +21,15 @@
   },
   "private": true,
   "license": "UNLICENSED",
-  "devDependencies": {
-    "helper": "*"
-  },
   "dependencies": {
     "@kdcio/api-gw-req": "^1.2.0",
     "@kdcio/api-gw-resp": "^1.7.1",
-    "debug": "^4.3.1",
-    "model": "*"
+    "cognito": "*",
+    "debug": "^4.3.1"
   },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.js"
-    ],
-    "setupFilesAfterEnv": [
-      "./tests/setup.js"
     ]
   }
 }

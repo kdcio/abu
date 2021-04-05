@@ -1,7 +1,7 @@
 {
-  "name": "api-access",
+  "name": "api-admin-model",
   "version": "0.1.0",
-  "description": "API for access",
+  "description": "API for model data",
   "main": "index.js",
   "scripts": {
     "start": "sls offline -s dev",
@@ -28,8 +28,7 @@
     "@kdcio/api-gw-req": "^1.2.0",
     "@kdcio/api-gw-resp": "^1.7.1",
     "debug": "^4.3.1",
-    "model": "*",
-    "uuid": "^8.3.2"
+    "model": "*"
   },
   "jest": {
     "collectCoverageFrom": [

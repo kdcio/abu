@@ -10,7 +10,12 @@ const renameFunctions = (serviceName, basePath, funcs) => {
     if (func.events) {
       func.events = func.events.map((e) => {
         if (!e.http) return e;
-        e.http.path = `${serviceName}${e.http.path}`;
+        if (serviceName.match(/admin/)) {
+          e.http.path = `${serviceName.replace("-", "/")}${e.http.path}`;
+        } else {
+          e.http.path = `${serviceName}${e.http.path}`;
+        }
+
         return e;
       });
     }

@@ -1,5 +1,5 @@
 {
-  "name": "api-content",
+  "name": "api-admin-content",
   "version": "0.1.0",
   "description": "API for content data",
   "main": "index.js",

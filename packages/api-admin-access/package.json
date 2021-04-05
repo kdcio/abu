@@ -1,7 +1,7 @@
 {
-  "name": "api-user",
+  "name": "api-admin-access",
   "version": "0.1.0",
-  "description": "API for users data",
+  "description": "API for access",
   "main": "index.js",
   "scripts": {
     "start": "sls offline -s dev",
@@ -21,15 +21,22 @@
   },
   "private": true,
   "license": "UNLICENSED",
+  "devDependencies": {
+    "helper": "*"
+  },
   "dependencies": {
     "@kdcio/api-gw-req": "^1.2.0",
     "@kdcio/api-gw-resp": "^1.7.1",
-    "cognito": "*",
-    "debug": "^4.3.1"
+    "debug": "^4.3.1",
+    "model": "*",
+    "uuid": "^8.3.2"
   },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.js"
+    ],
+    "setupFilesAfterEnv": [
+      "./tests/setup.js"
     ]
   }
 }

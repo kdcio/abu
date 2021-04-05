@@ -1,4 +1,4 @@
-service: abu-api-user
+service: abu-api-admin-access
 
 plugins:
   - serverless-bundle
@@ -27,8 +27,22 @@ provider:
     STAGE: ${self:provider.stage}
     NODE_ENV: ${self:provider.stage}
     DEBUG: ${file(../../config/${self:provider.stage}.yml):DEBUG, 'lambda:event,lambda:error'}
-    COG_POOL_ID:
-      Fn::ImportValue: AbuCognitoUserPoolId-${self:provider.stage}
+    DDB_REGION: ${file(../../config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
+    DDB_ENDPOINT: ${file(../../config/${self:provider.stage}.yml):DDB_ENDPOINT, ''}
+    DDB_TABLE: ${file(../../config/${self:provider.stage}.yml):DDB_TABLE, 'abu-local'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}/*"
 
 functions: ${file(./functions.yml)}
 
@@ -45,4 +59,4 @@ resources:
           Ref: ApiGatewayRestApi
         Type: COGNITO_USER_POOLS
         ProviderARNs:
-          - Fn::ImportValue: AbuCognitoUserPoolArn-${self:provider.stage}
+          - Fn::ImportValue: CognitoUserPoolArn-${self:provider.stage}

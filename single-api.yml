@@ -64,7 +64,7 @@ provider:
 functions:
   - ${file(./functions.js)}
   - resize:
-      handler: packages/api-content/src/resize.handler
+      handler: packages/api-admin-content/src/resize.handler
       events:
         - s3:
             bucket: ${self:custom.BucketName}
