@@ -4,22 +4,10 @@ const makeGet = ({ read, parser, response }) => {
 
     // At this point, the lambda authorizer have checked
     // the API key and have given the user authority to
-    // perform this action
+    // perform this action including the validity of the
+    // model id. authorizer should contain info about model.
 
-    let modelId = null;
-    if (request?.params?.modelId) {
-      modelId = request.params.modelId;
-    } else {
-      throw new Error("Missing model id");
-    }
-
-    let id = null;
-    if (request?.params?.id) {
-      id = request.params.id;
-    } else {
-      throw new Error("Missing id");
-    }
-
+    const { modelId, id } = request.params;
     const data = await read({ modelId, id });
     return response.OK({ body: data });
   };

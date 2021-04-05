@@ -5,7 +5,9 @@ const makeBrowse = ({ list, listAll, parser, response }) => {
     // At this point, the lambda authorizer have checked
     // the API key and have given the user authority to
     // perform this action including the validity of the
-    // model id
+    // model id. authorizer should contain info about model.
+    // TODO: This endpoint should not be available for
+    // non - collections.
 
     const { modelId } = request.params;
     const { query } = request;
