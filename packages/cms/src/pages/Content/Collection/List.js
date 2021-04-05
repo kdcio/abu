@@ -30,13 +30,14 @@ const List = () => {
     nextPage,
     isNextEnabled,
     isPrevEnabled,
+    reset,
   } = useList();
 
   useEffect(() => {
     dispatch({ type: "INIT", modelId: model.id });
   }, [model.id, dispatch]);
 
-  const removeContent = async (id, idx) => {
+  const removeContent = async (id) => {
     if (
       !window.confirm(
         "Are you sure to delete this item? This cannot be undone."
@@ -45,9 +46,7 @@ const List = () => {
       return;
     setProcessing(true);
     await remove({ apiName: "Content", id, path: `/${model.id}/` });
-    const newList = [...list];
-    newList.splice(idx, 1);
-    // setList(newList);
+    reset();
     setProcessing(false);
   };
 

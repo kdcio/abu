@@ -19,7 +19,7 @@ const initialState = {
   status: "IDLE",
   error: null,
   modelId: null,
-  pages: [],
+  cache: [],
   list: [],
   limit: 5,
   hydrating: false,
@@ -42,7 +42,7 @@ const ListProvider = (props) => {
           status: "IDLE",
           hydrating: false,
           list: action.payload,
-          pages: [...state.pages, ...action.payload],
+          cache: [...state.cache, ...action.payload],
           curPage: state.curPage + action.pageInc,
           lastKey: action.lastKey,
         };
@@ -60,6 +60,8 @@ const ListProvider = (props) => {
           list: action.list,
           curPage: action.newPage,
         };
+      case "RESET":
+        return { ...initialState, modelId: state.modelId, status: "HYDRATE" };
       default:
         return state;
     }
@@ -91,32 +93,36 @@ const ListProvider = (props) => {
     [state.modelId, state.limit]
   );
 
+  const reset = () => {
+    dispatch({ type: "RESET" });
+  };
+
   const prevPage = () => {
-    const { curPage, limit, pages } = state;
+    const { curPage, limit, cache } = state;
     const newPage = curPage - 1;
-    const list = pages.slice(newPage * limit, newPage * limit + limit);
+    const list = cache.slice(newPage * limit, newPage * limit + limit);
     dispatch({ type: "SET_PAGE", list, newPage });
   };
 
   const nextPage = () => {
-    const { curPage, limit, pages } = state;
-    if (curPage === pages.length / limit - 1) {
+    const { curPage, limit, cache } = state;
+    if (curPage === cache.length / limit - 1) {
       hydrate(state.lastKey, 1);
       return;
     }
     const newPage = curPage + 1;
-    const list = pages.slice(newPage * limit, newPage * limit + limit);
+    const list = cache.slice(newPage * limit, newPage * limit + limit);
     dispatch({ type: "SET_PAGE", list, newPage });
   };
 
   const isNextEnabled = useCallback(() => {
     if (
       !state.lastKey &&
-      state.curPage === Math.floor(state.pages.length / state.limit)
+      state.curPage === Math.floor(state.cache.length / state.limit)
     )
       return false;
 
-    return state.curPage < Math.ceil(state.pages.length / state.limit);
+    return state.curPage < Math.ceil(state.cache.length / state.limit);
   }, [state]);
 
   const isPrevEnabled = () => state.curPage > 0;
@@ -124,6 +130,10 @@ const ListProvider = (props) => {
   useEffect(() => {
     state.modelId && hydrate(null, 0);
   }, [state.modelId, hydrate]);
+
+  useEffect(() => {
+    state.status === "HYDRATE" && hydrate(null, 0);
+  }, [state.status, hydrate]);
 
   return (
     <ListContext.Provider
@@ -133,6 +143,7 @@ const ListProvider = (props) => {
         nextPage,
         isNextEnabled,
         isPrevEnabled,
+        reset,
         ...state,
       }}
     >
