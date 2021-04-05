@@ -61,7 +61,18 @@ const ListProvider = (props) => {
           curPage: action.newPage,
         };
       case "RESET":
-        return { ...initialState, modelId: state.modelId, status: "HYDRATE" };
+        return {
+          ...initialState,
+          modelId: state.modelId,
+          status: "HYDRATE",
+        };
+      case "NO_MORE":
+        return {
+          ...state,
+          status: "NO_MORE",
+          hydrating: false,
+          lastKey: null,
+        };
       default:
         return state;
     }
@@ -79,13 +90,17 @@ const ListProvider = (props) => {
           qs,
         });
         let data = [];
-        if (res?.Items) data = res.Items;
-        dispatch({
-          type: "FETCHED",
-          payload: data,
-          lastKey: res.lastKey ? res.lastKey : null,
-          pageInc,
-        });
+        if (res?.Items?.length > 0) {
+          data = res.Items;
+          dispatch({
+            type: "FETCHED",
+            payload: data,
+            lastKey: res.lastKey ? res.lastKey : null,
+            pageInc,
+          });
+        } else {
+          dispatch({ type: "NO_MORE" });
+        }
       } catch (error) {
         dispatch({ type: "FETCH_ERROR", payload: error.message });
       }
@@ -116,12 +131,21 @@ const ListProvider = (props) => {
   };
 
   const isNextEnabled = useCallback(() => {
+    console.log(state);
+
+    if (
+      state.curPage === Math.floor(state.cache.length / state.limit) - 1 &&
+      state.status === "NO_MORE"
+    )
+      return false;
+    console.log("here 1");
     if (
       !state.lastKey &&
       state.curPage === Math.floor(state.cache.length / state.limit)
     )
       return false;
 
+    console.log("here 2");
     return state.curPage < Math.ceil(state.cache.length / state.limit);
   }, [state]);
 
