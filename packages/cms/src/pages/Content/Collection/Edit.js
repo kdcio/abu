@@ -9,6 +9,8 @@ import { useModels } from "context/models";
 import { useToaster } from "context/toaster";
 import { useData } from "context/data";
 
+import uploadImage from "fields/image/submit";
+
 import update from "api/update";
 import get from "api/get";
 
@@ -20,17 +22,43 @@ const Edit = () => {
   const methods = useForm();
   const [error, setError] = useState(null);
 
-  const updateContent = async ({ data }) =>
-    update({
+  const updateContent = async ({ data }) => {
+    const modelData = model.fields.reduce((acc, f) => {
+      acc[f.id] = data[f.id];
+      return acc;
+    }, {});
+
+    return update({
       apiName: "Content",
       id: cid,
       path: `/${model.id}/`,
-      data: { data },
+      data: { data: modelData },
     });
+  };
+
+  // TODO: duplicate function in Single
+  const submitImages = async (data) => {
+    const fields = model.fields.filter(
+      (f) => f.type === "image" && data[f.id] instanceof File
+    );
+    const proms = [];
+    for (let idx = 0; idx < fields.length; idx += 1) {
+      const key = fields[idx].id;
+      proms.push(uploadImage({ model, file: data[key] }));
+    }
+    const res = await Promise.all(proms);
+    const imageData = {};
+    for (let idx = 0; idx < fields.length; idx += 1) {
+      const key = fields[idx].id;
+      imageData[key] = res[idx];
+    }
+    return imageData;
+  };
 
   const onSubmit = async (data) => {
     try {
-      await updateContent({ data });
+      const imageData = await submitImages(data);
+      await updateContent({ data: { ...data, ...imageData } });
       addToast({
         message: `${model.name} saved successfully!`,
         color: "success",

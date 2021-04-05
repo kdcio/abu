@@ -9,6 +9,17 @@ create:
           authorizerId:
             Ref: ApiGatewayAuthorizer
         cors: true
+upload:
+  handler: src/upload.handler
+  events:
+    - http:
+        path: /{modelId}/upload
+        method: GET
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
 read:
   handler: src/read.handler
   events:

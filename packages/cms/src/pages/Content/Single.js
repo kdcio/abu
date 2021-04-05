@@ -6,6 +6,8 @@ import { useModels } from "context/models";
 import { useData } from "context/data";
 import { useToaster } from "context/toaster";
 
+import uploadImage from "fields/image/submit";
+
 import create from "api/create";
 import get from "api/get";
 
@@ -16,19 +18,43 @@ const Single = () => {
   const methods = useForm();
   const [error, setError] = useState(null);
 
-  const createSingle = async ({ data }) =>
-    create({
+  const createSingle = async ({ data }) => {
+    const modelData = model.fields.reduce((acc, f) => {
+      acc[f.id] = data[f.id];
+      return acc;
+    }, {});
+    return create({
       apiName: "Content",
       path: `/${model.id}`,
       data: {
         id: model.id,
-        data,
+        data: modelData,
       },
     });
+  };
+
+  const submitImages = async (data) => {
+    const fields = model.fields.filter(
+      (f) => f.type === "image" && data[f.id] instanceof File
+    );
+    const proms = [];
+    for (let idx = 0; idx < fields.length; idx += 1) {
+      const key = fields[idx].id;
+      proms.push(uploadImage({ model, file: data[key] }));
+    }
+    const res = await Promise.all(proms);
+    const imageData = {};
+    for (let idx = 0; idx < fields.length; idx += 1) {
+      const key = fields[idx].id;
+      imageData[key] = res[idx];
+    }
+    return imageData;
+  };
 
   const onSubmit = async (data) => {
     try {
-      await createSingle({ data });
+      const imageData = await submitImages(data);
+      await createSingle({ data: { ...data, ...imageData } });
       addToast({
         message: `${model.name} saved successfully!`,
         color: "success",
@@ -41,7 +67,7 @@ const Single = () => {
 
   useEffect(() => {
     let cancel = false;
-    const getUser = async () => {
+    const getData = async () => {
       try {
         const res = await get({
           apiName: "Content",
@@ -55,7 +81,7 @@ const Single = () => {
       }
     };
 
-    if (model?.id) getUser();
+    if (model?.id) getData();
     else setData({});
     return () => {
       cancel = true;
