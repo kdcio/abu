@@ -3,11 +3,13 @@ import { CFormGroup, CLabel } from "@coreui/react";
 import { useFormContext } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
 import { useFileReader } from "utils/useFileReader";
+import { useData } from "context/data";
 
 import "scss/components/image-edit.scss";
 
 // TODO: Fina a way to validate
 const Edit = ({ name, id, validations, help }) => {
+  const { data } = useData();
   const [image, setImage] = useState(null);
   const { register, errors, setValue } = useFormContext();
   const [{ error, loading }, setFile] = useFileReader({
@@ -27,6 +29,14 @@ const Edit = ({ name, id, validations, help }) => {
   useEffect(() => {
     register({ name: id });
   }, [id, register]);
+
+  useEffect(() => {
+    if (data?.data?.[id]) {
+      const val = data?.data[id];
+      setValue(id, val);
+      setImage(val?.thumb);
+    }
+  }, [id, data, setValue, setImage]);
 
   return (
     <CFormGroup>
