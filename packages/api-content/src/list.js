@@ -4,6 +4,7 @@ import debug from "debug";
 import model from "model/lib/entities/Content";
 import makeBrowse from "./controller/browse";
 import makeList from "./use-cases/list";
+import makeListAll from "./use-cases/list-all";
 import encrypt from "./lib/encrypt";
 import decrypt from "./lib/decrypt";
 
@@ -11,7 +12,8 @@ export const handler = async (event) => {
   debug("lambda:event")(JSON.stringify(event));
   try {
     const list = makeList({ model, encrypt, decrypt });
-    const browse = makeBrowse({ list, parser, response });
+    const listAll = makeListAll({ model });
+    const browse = makeBrowse({ list, listAll, parser, response });
     const res = await browse({ event });
     return res;
   } catch (error) {

@@ -7,10 +7,16 @@ import {
   genSocial,
 } from "helper";
 import { handler as create } from "../../src/create";
+import { handler as list } from "../../src/list";
 
 let ddb;
 let tableName;
-const models = [];
+const contents = {
+  about_page: [],
+  blog: [],
+  home: [],
+  social_profile: [],
+};
 
 describe("Content", () => {
   beforeAll(async () => {
@@ -26,13 +32,21 @@ describe("Content", () => {
     { content: genSocial(), modelId: "social_profile" },
     { content: genBlog(), modelId: "blog" },
     { content: genHome(), modelId: "home" },
+    { content: genSocial(), modelId: "social_profile" },
     { content: genBlog(), modelId: "blog" },
     { content: genBlog(), modelId: "blog" },
     { content: genSocial(), modelId: "social_profile" },
     { content: genBlog(), modelId: "blog" },
-    { content: genSocial(), modelId: "social_profile" },
+    { content: genBlog(), modelId: "blog" },
     { content: genBlog(), modelId: "blog" },
     { content: genSocial(), modelId: "social_profile" },
+    { content: genBlog(), modelId: "blog" },
+    { content: genBlog(), modelId: "blog" },
+    { content: genBlog(), modelId: "blog" },
+    { content: genSocial(), modelId: "social_profile" },
+    { content: genBlog(), modelId: "blog" },
+    { content: genBlog(), modelId: "blog" },
+    { content: genBlog(), modelId: "blog" },
   ].forEach(({ content, modelId }) => {
     it(`should create ${modelId}`, async () => {
       const event = makeFakeEvent({
@@ -70,7 +84,56 @@ describe("Content", () => {
       }
       expect(Item.data).toEqual(expected);
 
-      // models.push({ ...model });
+      contents[modelId].push({ ...expected });
     });
+  });
+
+  it("should list blogs with pagination", async () => {
+    let event = makeFakeEvent({
+      path: "/",
+      pathParameters: { modelId: "blog" },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "GET",
+    });
+
+    let response = await list(event);
+    expect(response.statusCode).toEqual(200);
+    expect(response.isBase64Encoded).toBe(false);
+    let json = JSON.parse(response.body);
+    expect(json).toHaveProperty("cursor");
+    expect(json.Items).toHaveLength(10);
+
+    // second page
+    event = makeFakeEvent({
+      path: "/",
+      pathParameters: { modelId: "blog" },
+      queryStringParameters: { cursor: json.cursor },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "GET",
+    });
+
+    response = await list(event);
+    expect(response.statusCode).toEqual(200);
+    expect(response.isBase64Encoded).toBe(false);
+    json = JSON.parse(response.body);
+    expect(json).toHaveProperty("cursor");
+    expect(json.Items).toHaveLength(6);
+  });
+
+  it("should list all blogs", async () => {
+    let event = makeFakeEvent({
+      path: "/",
+      pathParameters: { modelId: "blog" },
+      queryStringParameters: { all: "true" },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "GET",
+    });
+
+    let response = await list(event);
+    expect(response.statusCode).toEqual(200);
+    expect(response.isBase64Encoded).toBe(false);
+    let json = JSON.parse(response.body);
+    expect(json).not.toHaveProperty("cursor");
+    expect(json.Items).toHaveLength(16);
   });
 });
