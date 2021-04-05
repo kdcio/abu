@@ -18,15 +18,20 @@ const Single = () => {
   const methods = useForm();
   const [error, setError] = useState(null);
 
-  const createSingle = async ({ data }) =>
-    create({
+  const createSingle = async ({ data }) => {
+    const modelData = model.fields.reduce((acc, f) => {
+      acc[f.id] = data[f.id];
+      return acc;
+    }, {});
+    return create({
       apiName: "Content",
       path: `/${model.id}`,
       data: {
         id: model.id,
-        data,
+        data: modelData,
       },
     });
+  };
 
   const submitImages = async (data) => {
     const fields = model.fields.filter(
