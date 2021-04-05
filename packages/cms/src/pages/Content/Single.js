@@ -29,7 +29,9 @@ const Single = () => {
     });
 
   const submitImages = async (data) => {
-    const fields = model.fields.filter((f) => f.type === "image");
+    const fields = model.fields.filter(
+      (f) => f.type === "image" && data[f.id] instanceof File
+    );
     const proms = [];
     for (let idx = 0; idx < fields.length; idx += 1) {
       const key = fields[idx].id;
