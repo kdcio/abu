@@ -1,7 +1,7 @@
 {
-  "name": "api-access",
+  "name": "api-admin-content",
   "version": "0.1.0",
-  "description": "API for access",
+  "description": "API for content data",
   "main": "index.js",
   "scripts": {
     "start": "sls offline -s dev",
@@ -29,7 +29,7 @@
     "@kdcio/api-gw-resp": "^1.7.1",
     "debug": "^4.3.1",
     "model": "*",
-    "uuid": "^8.3.2"
+    "sharp": "^0.28.0"
   },
   "jest": {
     "collectCoverageFrom": [

@@ -3175,6 +3175,13 @@
     "@babel/runtime" "^7.12.13"
     tslib "^2.1.0"
 
+"@kdcio/aws-policy@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@kdcio/aws-policy/-/aws-policy-0.3.0.tgz#72ca644170618418793a4d6036fd218556473788"
+  integrity sha512-VOEMzqILuDophsZqjx/xLYw+CQoz/lYXV23gWenm8kYzgqTInV0pH3YhPLYgNb4nUM6mTdQccBrXNOAQoAWWqg==
+  dependencies:
+    "@babel/runtime" "^7.12.1"
+
 "@koa/router@^9.0.0":
   version "9.4.0"
   resolved "https://registry.yarnpkg.com/@koa/router/-/router-9.4.0.tgz#734b64c0ae566eb5af752df71e4143edc4748e48"

@@ -1,52 +1,38 @@
-service: abu-api
-
-variablesResolutionMode: 20210219
-
-package:
-  individually: true
-  excludeDevDependencies: true
+service: abu-api-admin-content
 
 plugins:
   - serverless-bundle
-  - serverless-s3-local
   - serverless-offline
 
 custom:
   BucketName: ${file(./config/${self:provider.stage}.yml):S3_BUCKET, 'local'}
   BucketResizePrefix: ${file(./config/${self:provider.stage}.yml):S3_BUCKET_PREFIX, 'uploads'}
-  serverless-offline:
-    httpPort: 8061
-    noPrependStageInUrl: true
-    useChildProcesses: true
-  s3:
-    port: 8064
-    directory: ./.s3-local
-    cors: resources/s3-cors.xml
   bundle:
     caching: false
     packagerOptions:
       scripts:
         - rm -rf node_modules/sharp && npm install --arch=x64 --platform=linux sharp
 
+package:
+  individually: true
+
 provider:
   name: aws
+  stage: ${opt:stage, 'local'}
+  region: ${file(../../config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
+  profile: ${file(../../config/${self:provider.stage}.yml):PROFILE, 'default'}
   runtime: nodejs12.x
-  memorySize: 128
-  stage: dev
-  region: ap-southeast-1
-  profile: default
+  memorySize: 256
+  timeout: 30
   lambdaHashingVersion: 20201221
   environment:
-    TZ: ${file(./config/${self:provider.stage}.yml):TZ, 'Asia/Singapore'}
+    TZ: ${file(../../config/${self:provider.stage}.yml):TZ, 'Asia/Singapore'}
     STAGE: ${self:provider.stage}
     NODE_ENV: ${self:provider.stage}
-    DEBUG: ${file(./config/${self:provider.stage}.yml):DEBUG, 'lambda:event,lambda:error'}
-    COG_POOL_ID: ${file(./config/${self:provider.stage}.yml):COG_POOL_ID}
-    COG_ACCESS_KEY_ID: ${file(./config/${self:provider.stage}.yml):COG_ACCESS_KEY_ID}
-    COG_SECRET_ACCESS_KEY: ${file(./config/${self:provider.stage}.yml):COG_SECRET_ACCESS_KEY}
-    DDB_REGION: ${file(./config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
-    DDB_ENDPOINT: ${file(./config/${self:provider.stage}.yml):DDB_ENDPOINT, 'http://localhost:8062'}
-    DDB_TABLE: ${file(./config/${self:provider.stage}.yml):DDB_TABLE, 'abu-local'}
+    DEBUG: ${file(../../config/${self:provider.stage}.yml):DEBUG, 'lambda:event,lambda:error'}
+    DDB_REGION: ${file(../../config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
+    DDB_ENDPOINT: ${file(../../config/${self:provider.stage}.yml):DDB_ENDPOINT, ''}
+    DDB_TABLE: ${file(../../config/${self:provider.stage}.yml):DDB_TABLE, 'abu-local'}
     S3_BUCKET: ${self:custom.BucketName}
     S3_BUCKET_PREFIX: ${self:custom.BucketResizePrefix}
     S3_BASE_URL: ${file(./config/${self:provider.stage}.yml):S3_BASE_URL, 'http://localhost:8064/local'}
@@ -56,15 +42,25 @@ provider:
       statements:
         - Effect: Allow
           Action:
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}/*"
+        - Effect: Allow
+          Action:
             - "s3:*"
           Resource:
             - "arn:aws:s3:::${self:custom.BucketName}"
             - "arn:aws:s3:::${self:custom.BucketName}/*"
 
 functions:
-  - ${file(./functions.js)}
+  - ${file(./functions.yml)}
   - resize:
-      handler: packages/api-content/src/resize.handler
+      handler: src/resize.handler
       events:
         - s3:
             bucket: ${self:custom.BucketName}
@@ -85,4 +81,4 @@ resources:
           Ref: ApiGatewayRestApi
         Type: COGNITO_USER_POOLS
         ProviderARNs:
-          - Fn::ImportValue: AbuCognitoUserPoolArn-${self:provider.stage}
+          - Fn::ImportValue: CognitoUserPoolArn-${self:provider.stage}

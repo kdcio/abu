@@ -1,4 +1,4 @@
-service: abu-api-access
+service: abu-api-admin-model
 
 plugins:
   - serverless-bundle

@@ -1,0 +1,36 @@
+{
+  "name": "authorizer",
+  "version": "0.1.0",
+  "description": "AbuCMS authorizer for content API",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src --out-dir lib",
+    "build:watch": "yarn build --watch",
+    "lint": "eslint src --ext .js",
+    "test": "jest --collect-coverage",
+    "test:watch": "yarn test --watch"
+  },
+  "keywords": [
+    "api",
+    "gateway"
+  ],
+  "author": {
+    "name": "Ian Dela Cruz",
+    "email": "ian@kdcsoftware.com",
+    "url": "https://www.kdcsoftware.com"
+  },
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@babel/runtime": "^7.13.10",
+    "@kdcio/aws-policy": "^0.3.0",
+    "aws-sdk": "^2.876.0",
+    "debug": "^4.3.1",
+    "model": "*"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
+  }
+}

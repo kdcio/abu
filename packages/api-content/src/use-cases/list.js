@@ -24,7 +24,7 @@ const makeList = ({ model, encrypt, decrypt }) => {
         id,
         created,
         modified,
-        data: { name: data.name },
+        name: data.name,
       })),
       cursor: lastKey,
     };

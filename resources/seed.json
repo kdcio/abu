@@ -183,5 +183,115 @@
       }
     ],
     "_et": "Model"
+  },
+  {
+    "_ct": "2021-04-05T20:13:09.392Z",
+    "read": {
+      "about_page": true,
+      "blog": true,
+      "social_profile": true,
+      "home": true
+    },
+    "pk2": "API",
+    "_md": "2021-04-05T20:13:09.392Z",
+    "sk": "META",
+    "pk3": "KEY#0f851da755f548668a094693779b8bc8",
+    "pk": "API#1",
+    "sk2": "Read Only",
+    "write": {
+      "about_page": false,
+      "blog": false,
+      "social_profile": false,
+      "home": false
+    },
+    "_et": "ApiAccess"
+  },
+  {
+    "_ct": "2021-04-05T20:13:09.393Z",
+    "read": {
+      "about_page": false,
+      "blog": false,
+      "social_profile": false,
+      "home": false
+    },
+    "pk2": "API",
+    "_md": "2021-04-05T20:13:09.393Z",
+    "sk": "META",
+    "pk3": "KEY#eecdbced8ed14b4db9e9705242fe0270",
+    "pk": "API#2",
+    "sk2": "Write Only",
+    "write": {
+      "about_page": true,
+      "blog": true,
+      "social_profile": true,
+      "home": true
+    },
+    "_et": "ApiAccess"
+  },
+  {
+    "_ct": "2021-04-05T20:13:09.394Z",
+    "read": {
+      "about_page": true,
+      "blog": true,
+      "social_profile": true,
+      "home": true
+    },
+    "pk2": "API",
+    "_md": "2021-04-05T20:13:09.394Z",
+    "sk": "META",
+    "pk3": "KEY#d5c20ecf93f14fb68fd8f80e4e1eaa51",
+    "pk": "API#3",
+    "sk2": "Full Access",
+    "write": {
+      "about_page": true,
+      "blog": true,
+      "social_profile": true,
+      "home": true
+    },
+    "_et": "ApiAccess"
+  },
+  {
+    "_ct": "2021-04-05T20:13:09.395Z",
+    "read": {
+      "about_page": false,
+      "blog": true,
+      "social_profile": false,
+      "home": false
+    },
+    "pk2": "API",
+    "_md": "2021-04-05T20:13:09.395Z",
+    "sk": "META",
+    "pk3": "KEY#441c7fa752b14de789b8530e2eecfb90",
+    "pk": "API#4",
+    "sk2": "Blog Full Access",
+    "write": {
+      "about_page": false,
+      "blog": true,
+      "social_profile": false,
+      "home": false
+    },
+    "_et": "ApiAccess"
+  },
+  {
+    "_ct": "2021-04-05T20:13:09.396Z",
+    "read": {
+      "about_page": true,
+      "blog": false,
+      "social_profile": false,
+      "home": true
+    },
+    "pk2": "API",
+    "_md": "2021-04-05T20:13:09.396Z",
+    "sk": "META",
+    "pk3": "KEY#395fa1419f474d4485030eedfd9ba33a",
+    "pk": "API#5",
+    "sk2": "Page Read Access",
+    "write": {
+      "about_page": false,
+      "blog": false,
+      "social_profile": false,
+      "home": false
+    },
+    "_et": "ApiAccess"
   }
 ]

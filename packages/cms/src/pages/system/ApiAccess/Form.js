@@ -65,6 +65,14 @@ const Form = () => {
     }
   };
 
+  const copyValue = () => {
+    navigator.clipboard.writeText(key);
+    addToast({
+      message: "API Key copied to your clipboard",
+      color: "secondary",
+    });
+  };
+
   useEffect(() => {
     const getAccess = async () => {
       const res = await get({ apiName: "Access", id });
@@ -121,7 +129,7 @@ const Form = () => {
                       value={key}
                     />
                     <CInputGroupAppend>
-                      <CButton type="button" color="info">
+                      <CButton type="button" color="info" onClick={copyValue}>
                         Copy
                       </CButton>
                     </CInputGroupAppend>

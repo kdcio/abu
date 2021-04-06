@@ -1,7 +1,7 @@
 const makeCreate = ({ model }) => {
-  const create = async ({ id: inId, ...data }) => {
-    const id = inId || new Date().valueOf();
-    await model.put({ ...data, id });
+  const create = async ({ modelId, id: inId, ...data }) => {
+    const id = inId || new Date().valueOf().toString();
+    await model.put({ modelId, id, data });
     return { id };
   };
   return create;

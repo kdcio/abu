@@ -1,31 +1,21 @@
-const makeBrowse = ({ list, parser, response }) => {
+const makeBrowse = ({ list, listAll, parser, response }) => {
   const browse = async ({ event }) => {
     const request = parser(event);
 
-    if (!request?.authorizer?.claims?.sub) {
-      throw new Error("Unauthorized");
-    }
+    // At this point, the lambda authorizer have checked
+    // the API key and have given the user authority to
+    // perform this action including the validity of the
+    // model id. authorizer should contain info about model.
+    // TODO: This endpoint should not be available for
+    // non - collections.
 
-    const allowsGroups = ["admin", "editor"];
-    const groups = request?.authorizer?.claims?.["cognito:groups"] || [];
-    const filteredGroup = allowsGroups.filter((g) => groups.includes(g));
-    if (filteredGroup.length < 0) {
-      throw new Error(
-        "Forbidden: only admins and editors can perform this action"
-      );
-    }
-
-    let modelId = null;
-    if (request?.params?.modelId) {
-      modelId = request.params.modelId;
-    } else {
-      throw new Error("Missing model id");
-    }
-
+    const { modelId } = request.params;
     const { query } = request;
-    const { limit, cursor } = query;
+    const { limit, cursor, all } = query;
 
-    const data = await list({ modelId, limit, cursor });
+    const data = all
+      ? await listAll({ modelId })
+      : await list({ modelId, limit, cursor });
     return response.OK({ body: data });
   };
   return browse;

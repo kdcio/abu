@@ -1,7 +1,7 @@
 {
   "name": "api-content",
   "version": "0.1.0",
-  "description": "API for content data",
+  "description": "API for content data consumed by 3rd party",
   "main": "index.js",
   "scripts": {
     "start": "sls offline -s dev",
@@ -27,6 +27,7 @@
   "dependencies": {
     "@kdcio/api-gw-req": "^1.2.0",
     "@kdcio/api-gw-resp": "^1.7.1",
+    "authorizer": "*",
     "debug": "^4.3.1",
     "model": "*",
     "sharp": "^0.28.0"

@@ -43,7 +43,9 @@ describe('Model', () => {
     let res = await ApiAccess.query('API', { index: 'GSI' });
     expect(res.Items).toHaveLength(5);
 
-    res = await ApiAccess.query('KEY#random-3', { index: 'GSI2' });
+    res = await ApiAccess.query('KEY#d5c20ecf93f14fb68fd8f80e4e1eaa51', {
+      index: 'GSI2',
+    });
     expect(res.Items).toHaveLength(1);
   });
 });

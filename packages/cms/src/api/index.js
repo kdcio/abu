@@ -5,7 +5,7 @@ API.configure({
   endpoints: [
     {
       name: "Users",
-      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/user`,
+      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/admin/user`,
       custom_header: async () => {
         const user = await Auth.currentSession();
         return {
@@ -15,7 +15,7 @@ API.configure({
     },
     {
       name: "Model",
-      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/model`,
+      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/admin/model`,
       custom_header: async () => {
         const user = await Auth.currentSession();
         return {
@@ -25,7 +25,7 @@ API.configure({
     },
     {
       name: "Content",
-      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/content`,
+      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/admin/content`,
       custom_header: async () => {
         const user = await Auth.currentSession();
         return {
@@ -35,7 +35,7 @@ API.configure({
     },
     {
       name: "Access",
-      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/access`,
+      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/admin/access`,
       custom_header: async () => {
         const user = await Auth.currentSession();
         return {
