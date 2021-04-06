@@ -91,6 +91,38 @@ resources:
                 - Fn::GetAtt:
                     - CognitoUserPool
                     - Arn
+    CognitoUser:
+      Type: AWS::IAM::User
+      Properties:
+        Policies:
+          - PolicyName: cognito-access
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - cognito-idp:AdminDeleteUser
+                    - cognito-idp:ListUsersInGroup
+                    - cognito-idp:ListGroups
+                    - cognito-idp:AdminCreateUser
+                    - cognito-idp:AdminSetUserPassword
+                    - cognito-idp:AdminRemoveUserFromGroup
+                    - cognito-idp:AdminAddUserToGroup
+                    - cognito-idp:AdminListGroupsForUser
+                    - cognito-idp:AdminUpdateUserAttributes
+                    - cognito-idp:AdminGetUser
+                    - cognito-idp:ListUsers
+                  Resource:
+                    Fn::GetAtt:
+                      - CognitoUserPool
+                      - Arn
+
+    CognitoUserAccessKey:
+      Type: AWS::IAM::AccessKey
+      Properties:
+        UserName:
+          Ref: CognitoUser
+
   Outputs:
     AbuCognitoUserPoolArn:
       Value:
@@ -104,3 +136,15 @@ resources:
         Ref: CognitoUserPool
       Export:
         Name: AbuCognitoUserPoolId-${self:custom.currentStage}
+    CognitoUserAccessKey:
+      Value:
+        Ref: CognitoUserAccessKey
+      Export:
+        Name: AbuCognitoUserAccessKey-${self:custom.currentStage}
+    CognitoUserSecretKey:
+      Value:
+        Fn::GetAtt:
+          - CognitoUserAccessKey
+          - SecretAccessKey
+      Export:
+        Name: AbuCognitoUserSecretKey-${self:custom.currentStage}
