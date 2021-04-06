@@ -10,7 +10,7 @@
   "scripts": {
     "prepare": "husky install",
     "setup": "./scripts/setup-cog.sh",
-    "setup:local": "yarn workspace res setup:local",
+    "setup:local": "./scripts/setup-local.sh",
     "start:cms": "yarn workspace cms start",
     "start:api": "sls offline start -c single-api.yml",
     "build:api": "./scripts/build-api.sh",

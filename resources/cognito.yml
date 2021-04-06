@@ -65,9 +65,9 @@ resources:
           - profile
           - aws.cognito.signin.user.admin
         CallbackURLs:
-          - http://localhost:8060
+          - ${file(../config/${self:provider.stage}.yml):OAUTH_CALLBACK, "http://localhost:8060"}
         LogoutURLs:
-          - http://localhost:8060
+          - ${file(../config/${self:provider.stage}.yml):OAUTH_CALLBACK, "http://localhost:8060"}
         UserPoolId:
           Ref: CognitoUserPool
     CognitoUserPoolClientDomain:

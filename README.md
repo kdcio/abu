@@ -33,14 +33,10 @@ Serverless Headless CMS. Deployed in AWS infrastructure.
 
    `PROFILE` is used by AWS CLI to indentify who you are. Here's how you configure [named profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
 
-3. Create `packages/cms/.env` and add the following:
+3. Run setup script
 
-   ```env
-   REACT_APP_AUTH_AWS_REGION=ap-southeast-1
-   REACT_APP_AUTH_POOL_ID=ap-southeast-1_xxxxxxxxx
-   REACT_APP_AUTH_CLIENT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxx
-   REACT_APP_AUTH_OAUTH_DOMAIN=xxx-dev.auth.ap-southeast-1.amazoncognito.com
-   REACT_APP_AUTH_OAUTH_SIGNIN=http://localhost:8060
-   REACT_APP_AUTH_OAUTH_SIGNOUT=http://localhost:8060
-   REACT_APP_API_ENDPOINT=http://localhost:8061
+   ```bash
+   yarn setup:local your@email.com
    ```
+
+   A temporary password will be sent to your email.

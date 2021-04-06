@@ -24,7 +24,7 @@ STAGE=$1
 EMAIL=$2
 
 echo -e "\n${BLUE}Setting up cognito...${NC}\n"
-# yarn workspace res setup:cog $STAGE
+yarn workspace res setup:cog $STAGE
 
 cd "$(dirname "$0")"
 source ./pool-id.sh
@@ -57,22 +57,20 @@ COG_SECRET=$(echo "$EXP_LIST" | grep $COG_USER_SECRET_KEY | awk 'END {print $4}'
 echo "COG_ACCESS_KEY_ID: $COG_ACCESS" >> ../config/$STAGE.yml
 echo "COG_SECRET_ACCESS_KEY: $COG_SECRET" >> ../config/$STAGE.yml
 
+echo -e "\n${BLUE}Creating cognito groups...${NC}\n"
+# Create cognito admin group
+aws cognito-idp create-group \
+    --profile $PROFILE \
+    --region $REGION \
+    --user-pool-id $POOL_ID \
+    --group-name admin
+# Create cognito editor group
+aws cognito-idp create-group \
+    --profile $PROFILE \
+    --region $REGION \
+    --user-pool-id $POOL_ID \
+    --group-name editor
 
-
-# echo -e "\n${BLUE}Creating cognito groups...${NC}\n"
-# # Create cognito admin group
-# aws cognito-idp create-group \
-#     --profile $PROFILE \
-#     --region $REGION \
-#     --user-pool-id $POOL_ID \
-#     --group-name admin
-# # Create cognito editor group
-# aws cognito-idp create-group \
-#     --profile $PROFILE \
-#     --region $REGION \
-#     --user-pool-id $POOL_ID \
-#     --group-name editor
-
-# ./create-user.sh $STAGE $EMAIL admin
+./create-user.sh $STAGE $EMAIL admin
 
 echo -e "${GREEN}Setup Cognito Success!!!${NC}\n"
