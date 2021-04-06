@@ -29,8 +29,21 @@ echo -e "\n${BLUE}Setting up cognito...${NC}\n"
 cd "$(dirname "$0")"
 source ./pool-id.sh
 
-# Write POOL_ID to config
+# Get Cognito pool client id
+COG_POOL_CLIENT_ID_KEY="AbuCognitoUserPoolClientId-$STAGE"
+COG_POOL_CLIENT_ID=$(echo "$EXP_LIST" | grep $COG_POOL_CLIENT_ID_KEY | awk 'END {print $4}')
+
+# Get Cognito pool client domain
+COG_POOL_CLIENT_DOMAIN_KEY="AbuCognitoUserPoolClientDomain-$STAGE"
+COG_POOL_CLIENT_DOMAIN=$(echo "$EXP_LIST" | grep $COG_POOL_CLIENT_DOMAIN_KEY | awk 'END {print $4}')
+
+# Write Cognito info to config
 echo "COG_POOL_ID: $POOL_ID" >> ../config/$STAGE.yml
+# Write Cognito info to cms .env
+echo "REACT_APP_AUTH_AWS_REGION=$REGION" >> ../packages/cms/.env
+echo "REACT_APP_AUTH_POOL_ID=$POOL_ID" >> ../packages/cms/.env
+echo "REACT_APP_AUTH_CLIENT_ID=$COG_POOL_CLIENT_ID" >> ../packages/cms/.env
+echo "REACT_APP_AUTH_OAUTH_DOMAIN=$COG_POOL_CLIENT_DOMAIN.auth.$REGION.amazoncognito.com" >> ../packages/cms/.env
 
 # Get Cognito user access key
 COG_USER_ACCESS_KEY="AbuCognitoUserAccessKey-$STAGE"
@@ -43,6 +56,8 @@ COG_SECRET=$(echo "$EXP_LIST" | grep $COG_USER_SECRET_KEY | awk 'END {print $4}'
 # Write cognito user credentials to config
 echo "COG_ACCESS_KEY_ID: $COG_ACCESS" >> ../config/$STAGE.yml
 echo "COG_SECRET_ACCESS_KEY: $COG_SECRET" >> ../config/$STAGE.yml
+
+
 
 # echo -e "\n${BLUE}Creating cognito groups...${NC}\n"
 # # Create cognito admin group

@@ -136,6 +136,16 @@ resources:
         Ref: CognitoUserPool
       Export:
         Name: AbuCognitoUserPoolId-${self:custom.currentStage}
+    AbuCognitoUserPoolClientId:
+      Value:
+        Ref: CognitoUserPoolClient
+      Export:
+        Name: AbuCognitoUserPoolClientId-${self:custom.currentStage}
+    AbuCognitoUserPoolClientDomain:
+      Value:
+        Ref: CognitoUserPoolClientDomain
+      Export:
+        Name: AbuCognitoUserPoolClientDomain-${self:custom.currentStage}
     CognitoUserAccessKey:
       Value:
         Ref: CognitoUserAccessKey
