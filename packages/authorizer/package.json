@@ -31,9 +31,6 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.js"
-    ],
-    "setupFilesAfterEnv": [
-      "./tests/setup.js"
     ]
   }
 }
