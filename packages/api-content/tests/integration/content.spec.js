@@ -9,6 +9,7 @@ import {
 import { handler as create } from "../../src/create";
 import { handler as list } from "../../src/list";
 import { handler as read } from "../../src/read";
+import { handler as remove } from "../../src/delete";
 
 let ddb;
 let tableName;
@@ -167,5 +168,32 @@ describe("Content", () => {
     expect(json).not.toHaveProperty("pk3");
     expect(json).not.toHaveProperty("sk");
     expect(json).not.toHaveProperty("sk2");
+  });
+
+  it("should delete a blog", async () => {
+    const blog = contents.blog[9];
+    const event = makeFakeEvent({
+      path: "/",
+      pathParameters: { modelId: "blog", id: blog.id },
+      queryStringParameters: { all: "true" },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "DELETE",
+    });
+
+    const response = await remove(event);
+    expect(response.statusCode).toEqual(204);
+    expect(response.isBase64Encoded).toBe(false);
+
+    const sk = `CON#${blog.id}`;
+    const params = {
+      TableName: tableName,
+      Key: {
+        pk: `MOD#blog`,
+        sk,
+      },
+    };
+
+    const res = await ddb.get(params).promise();
+    expect(res).not.toHaveProperty("Item");
   });
 });
