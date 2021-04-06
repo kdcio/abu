@@ -1,13 +1,12 @@
+authorizer:
+  handler: src/authorizer.handler
 create:
   handler: src/create.handler
   events:
     - http:
         path: /{modelId}
         method: post
-        authorizer:
-          type: COGNITO_USER_POOLS
-          authorizerId:
-            Ref: ApiGatewayAuthorizer
+        authorizer: authorizer
         cors: true
 read:
   handler: src/read.handler
@@ -15,10 +14,7 @@ read:
     - http:
         path: /{modelId}/{id}
         method: get
-        authorizer:
-          type: COGNITO_USER_POOLS
-          authorizerId:
-            Ref: ApiGatewayAuthorizer
+        authorizer: authorizer
         cors: true
 list:
   handler: src/list.handler
@@ -26,10 +22,7 @@ list:
     - http:
         path: /{modelId}
         method: get
-        authorizer:
-          type: COGNITO_USER_POOLS
-          authorizerId:
-            Ref: ApiGatewayAuthorizer
+        authorizer: authorizer
         cors: true
 update:
   handler: src/update.handler
@@ -37,18 +30,12 @@ update:
     - http:
         path: /{modelId}/{id}
         method: put
-        authorizer:
-          type: COGNITO_USER_POOLS
-          authorizerId:
-            Ref: ApiGatewayAuthorizer
+        authorizer: authorizer
         cors: true
     - http:
         path: /{modelId}/{id}
         method: patch
-        authorizer:
-          type: COGNITO_USER_POOLS
-          authorizerId:
-            Ref: ApiGatewayAuthorizer
+        authorizer: authorizer
         cors: true
 delete:
   handler: src/delete.handler
@@ -56,8 +43,5 @@ delete:
     - http:
         path: /{modelId}/{id}
         method: delete
-        authorizer:
-          type: COGNITO_USER_POOLS
-          authorizerId:
-            Ref: ApiGatewayAuthorizer
+        authorizer: authorizer
         cors: true

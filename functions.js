@@ -15,6 +15,9 @@ const renameFunctions = (serviceName, basePath, funcs) => {
         } else {
           e.http.path = `${serviceName}${e.http.path}`;
         }
+        if (e.http.authorizer === "authorizer") {
+          e.http.authorizer = `${serviceName}-authorizer`;
+        }
 
         return e;
       });

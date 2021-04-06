@@ -1,0 +1,4 @@
+GET http://localhost:8061/content/blog?all=true
+Authorization: 0f851da755f548668a094693779b8bc8
+
+
