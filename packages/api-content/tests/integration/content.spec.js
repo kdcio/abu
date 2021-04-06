@@ -171,6 +171,23 @@ describe("Content", () => {
     expect(json).not.toHaveProperty("sk2");
   });
 
+  it("should throw content not found", async () => {
+    const event = makeFakeEvent({
+      path: "/",
+      pathParameters: { modelId: "blog", id: "fake-id" },
+      queryStringParameters: { all: "true" },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "GET",
+    });
+
+    const response = await read(event);
+    expect(response.statusCode).toEqual(404);
+    expect(response.isBase64Encoded).toBe(false);
+
+    const json = JSON.parse(response.body);
+    expect(json.message).toBe("Content not found");
+  });
+
   it("should delete a blog", async () => {
     const blog = contents.blog[9];
     const event = makeFakeEvent({
