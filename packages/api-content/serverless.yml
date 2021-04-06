@@ -59,14 +59,6 @@ provider:
 
 functions:
   - ${file(./functions.yml)}
-  - resize:
-      handler: src/resize.handler
-      events:
-        - s3:
-            bucket: ${self:custom.BucketName}
-            event: s3:ObjectCreated:*
-            rules:
-              - prefix: ${self:custom.BucketResizePrefix}/
 
 resources:
   Resources:
