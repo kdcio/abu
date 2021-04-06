@@ -10,6 +10,7 @@ import { handler as create } from "../../src/create";
 import { handler as list } from "../../src/list";
 import { handler as read } from "../../src/read";
 import { handler as remove } from "../../src/delete";
+import { handler as update } from "../../src/update";
 
 let ddb;
 let tableName;
@@ -195,5 +196,34 @@ describe("Content", () => {
 
     const res = await ddb.get(params).promise();
     expect(res).not.toHaveProperty("Item");
+  });
+
+  it("should update a blog", async () => {
+    const blog = contents.blog[9];
+    const { id, ...content } = blog;
+    const event = makeFakeEvent({
+      path: "/",
+      pathParameters: { modelId: "blog", id },
+      queryStringParameters: { all: "true" },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "PUT",
+      body: JSON.stringify({ ...content, name: "Edited blog" }),
+    });
+
+    const response = await update(event);
+    expect(response.statusCode).toEqual(204);
+    expect(response.isBase64Encoded).toBe(false);
+
+    const sk = `CON#${id}`;
+    const params = {
+      TableName: tableName,
+      Key: {
+        pk: `MOD#blog`,
+        sk,
+      },
+    };
+
+    const res = await ddb.get(params).promise();
+    expect(res.Item.data).toEqual({ ...content, name: "Edited blog" });
   });
 });
