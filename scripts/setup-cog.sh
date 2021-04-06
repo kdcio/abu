@@ -29,6 +29,10 @@ yarn workspace res setup:cog $STAGE
 cd "$(dirname "$0")"
 source ./pool-id.sh
 
+# Write POOL_ID to config
+echo "COG_POOL_ID: $POOL_ID" >> ../config/$STAGE.yml
+
+
 echo -e "\n${BLUE}Creating cognito groups...${NC}\n"
 # Create cognito admin group
 aws cognito-idp create-group \
@@ -43,6 +47,6 @@ aws cognito-idp create-group \
     --user-pool-id $POOL_ID \
     --group-name editor
 
-./scripts/create-user.sh $STAGE $EMAIL admin
+./create-user.sh $STAGE $EMAIL admin
 
 echo -e "${GREEN}Setup Cognito Success!!!${NC}\n"

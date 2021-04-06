@@ -41,7 +41,6 @@ fi
 
 STAGE=$1
 EMAIL=$2
-POOL_KEY="AbuCognitoUserPoolId-$STAGE"
 
 regex="^(([A-Za-z0-9]+((\.|\-|\_|\+)?[A-Za-z0-9]?)*[A-Za-z0-9]+)|[A-Za-z0-9]+)@(([A-Za-z0-9]+)+((\.|\-|\_)?([A-Za-z0-9]+)+)*)+\.([A-Za-z]{2,})+$"
 
