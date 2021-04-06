@@ -4,20 +4,12 @@ import Debug from "debug";
 const debug = Debug("lambda:auth");
 
 export const handler = async (event) => {
-  debug(JSON.stringify(event));
-
-  /**
-   * Format: {httpVerb}/[{resource}/[{child-resources}]]
-   */
-  const resources = {
-    admin: ["GET/"],
-    editor: ["GET/"],
-  };
+  debug(event);
 
   try {
     const { authorizationToken: token, methodArn } = event;
     if (!token) throw new Error("Unauthorized");
-    const policy = await authorizer({ token, methodArn, resources });
+    const policy = await authorizer({ token, methodArn });
     debug(JSON.stringify(policy, null, 2));
     return policy;
   } catch (error) {
