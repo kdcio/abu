@@ -5,7 +5,6 @@
   "scripts": {
     "setup:ddb": "sls deploy -c ddb.yml -s",
     "setup:cog": "sls deploy -c cognito.yml -s",
-    "setup:cog:info": "sls info -c cognito.yml -s",
     "setup:local": "yarn setup:cog dev && yarn setup:local:ddb",
     "setup:local:ddb": "mkdir -p .dbdata && yarn start && yarn ddb:wait && yarn ddb:init",
     "start": "docker-compose -p abu up -d",
@@ -15,7 +14,9 @@
     "ddb:rm": "docker-compose -p abu rm",
     "ddb:clear": "node clearDB.js",
     "ddb:clear:dev": "DDB_ENDPOINT=http://localhost:8062 AWS_REGION=ap-southeast-1 node clearDB.js",
-    "delete": "sls remove -v -s "
+    "info:cog": "sls info -c cognito.yml -s",
+    "delete": "sls remove -v -s ",
+    "delete:cog": "sls remove -c cognito.yml -s"
   },
   "author": {
     "name": "Ian Dela Cruz",

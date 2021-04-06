@@ -1,5 +1,12 @@
 service: abu-cognito
 
+custom:
+  project: ${file(../config/${self:provider.stage}.yml):PROJECT_NAME}
+  currentStage: ${self:provider.stage}
+  userPoolName: ${self:custom.project}-${self:provider.stage}
+  userPoolClientName: ${self:custom.project}-client-${self:provider.stage}
+  userPoolClientDomain: ${self:custom.project}-${self:provider.stage}
+
 provider:
   name: aws
   runtime: nodejs12.x
@@ -8,11 +15,6 @@ provider:
   profile: ${file(../config/${self:provider.stage}.yml):PROFILE}
   environment:
     TZ: ${file(../config/${self:provider.stage}.yml):TZ, "Asia/Manila"}
-
-custom:
-  currentStage: ${self:provider.stage}
-  userPoolName: abu-${self:provider.stage}
-  userPoolClientName: abu-client-${self:provider.stage}
 
 resources:
   Resources:
@@ -51,6 +53,27 @@ resources:
       Properties:
         ClientName: ${self:custom.userPoolClientName}
         GenerateSecret: False
+        SupportedIdentityProviders:
+          - COGNITO
+        AllowedOAuthFlowsUserPoolClient: true
+        AllowedOAuthFlows:
+          - implicit
+        AllowedOAuthScopes:
+          - phone
+          - email
+          - openid
+          - profile
+          - aws.cognito.signin.user.admin
+        CallbackURLs:
+          - http://localhost:8060
+        LogoutURLs:
+          - http://localhost:8060
+        UserPoolId:
+          Ref: CognitoUserPool
+    CognitoUserPoolClientDomain:
+      Type: AWS::Cognito::UserPoolDomain
+      Properties:
+        Domain: ${self:custom.userPoolClientDomain}
         UserPoolId:
           Ref: CognitoUserPool
     CreateCogUserDeletePolicy:
