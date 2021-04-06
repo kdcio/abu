@@ -30,5 +30,7 @@ echo "REACT_APP_AUTH_OAUTH_SIGNIN=http://localhost:8060" >> ../packages/cms/.env
 echo "REACT_APP_AUTH_OAUTH_SIGNOUT=http://localhost:8060" >> ../packages/cms/.env
 echo "REACT_APP_API_ENDPOINT=http://localhost:8061" >> ../packages/cms/.env
 
+# Setup local dynamodb
+yarn workspace res setup:local:ddb
 
 echo -e "${GREEN}Local Setup Success!!!${NC}\n"
