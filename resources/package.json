@@ -6,6 +6,7 @@
     "setup:ddb": "sls deploy -c ddb.yml -s",
     "setup:cog": "sls deploy -c cognito.yml -s",
     "setup:s3-cf": "sls deploy -c s3-cf.yml -s",
+    "setup:upload": "sls deploy -c upload.yml -s",
     "setup:local": "yarn setup:cog dev && yarn setup:local:ddb",
     "setup:local:ddb": "mkdir -p .dbdata && yarn start && yarn ddb:wait && yarn ddb:init",
     "start": "docker-compose -p abu up -d",

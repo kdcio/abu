@@ -23,8 +23,11 @@ fi
 STAGE=$1
 export ENV_FILE="../packages/cms/.env.production"
 
-echo -e "\n${BLUE}Setting up S3 and CloudFront...${NC}\n"
+echo -e "\n${BLUE}Setting up S3 and CloudFront for CMS...${NC}\n"
 yarn workspace res setup:s3-cf $STAGE
+
+echo -e "\n${BLUE}Setting up S3 and CloudFront for uploads...${NC}\n"
+yarn workspace res setup:upload $STAGE
 
 cd "$(dirname "$0")"
 source ./config-to-env.sh

@@ -60,6 +60,16 @@ provider:
           Resource:
             - "arn:aws:s3:::${self:custom.BucketName}"
             - "arn:aws:s3:::${self:custom.BucketName}/*"
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}/*"
 
 functions:
   - ${file(./functions.js)}
@@ -71,6 +81,7 @@ functions:
             event: s3:ObjectCreated:*
             rules:
               - prefix: ${self:custom.BucketResizePrefix}/
+            existing: true
 
 resources:
   Resources:

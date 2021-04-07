@@ -1,0 +1,80 @@
+service: abu-upload
+
+custom:
+  domain:
+    name: ${file(../config/${self:provider.stage}.yml):UPLOAD_BUCKET}
+    # aliases: ${file(../config/${self:provider.stage}.yml):UPLOAD_ALIASES}
+    # certificate: ${file(../config/${self:provider.stage}.yml):UPLOAD_CERT}
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage}
+  region: ${file(../config/${self:provider.stage}.yml):REGION}
+  profile: ${file(../config/${self:provider.stage}.yml):PROFILE}
+
+resources:
+  Resources:
+    s3Bucket:
+      Type: "AWS::S3::Bucket"
+      Properties:
+        BucketName: ${self:custom.domain.name}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - "*"
+              AllowedHeaders:
+                - "*"
+              AllowedMethods:
+                - PUT
+              MaxAge: 3000
+    s3Policy:
+      Type: "AWS::S3::BucketPolicy"
+      Properties:
+        Bucket: !Ref s3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: ReadAccess
+              Action:
+                - "s3:GetObject"
+              Effect: "Allow"
+              Resource: "arn:aws:s3:::${self:custom.domain.name}/*"
+              Principal: "*"
+    cloudfront:
+      Type: "AWS::CloudFront::Distribution"
+      Properties:
+        DistributionConfig:
+          Origins:
+            - DomainName: ${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
+              Id: S3-Website-${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
+              CustomOriginConfig:
+                HTTPPort: "80"
+                HTTPSPort: "443"
+                OriginProtocolPolicy: http-only
+          Enabled: "true"
+          Comment: ${self:service}
+          DefaultRootObject: index.html
+          # Aliases: ${self:custom.domain.aliases}
+          DefaultCacheBehavior:
+            TargetOriginId: S3-Website-${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
+            ForwardedValues:
+              QueryString: "false"
+            Compress: "true"
+            ViewerProtocolPolicy: redirect-to-https
+          ViewerCertificate:
+            CloudFrontDefaultCertificate: true
+            # AcmCertificateArn: ${self:custom.domain.certificate}
+            # MinimumProtocolVersion: TLSv1.2_2018
+            # SslSupportMethod: sni-only
+  Outputs:
+    CFDistributionId:
+      Description: CFDistributionId
+      Value:
+        Ref: cloudfront
+    CFEndpoint:
+      Description: CFDomainName
+      Value:
+        Fn::GetAtt: "cloudfront.DomainName"
