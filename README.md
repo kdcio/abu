@@ -29,7 +29,7 @@ You'll need [docker](https://www.docker.com/) installed for running [local dynam
    PROFILE: dev
    ```
 
-   `PROJECT_NAME` will be referenced in all resources used in AWS. It must be unique with only letters and numbers. It should also be unique for S3 bucket name and cognito pool client domain usage. I recommend using the root domain name of your project.
+   `PROJECT_NAME` will be referenced in all resources used in AWS. It must be unique with only letters and numbers. It should also be unique for S3 bucket name and cognito pool client domain usage. I recommend using a subdomain like `admin.myproject.com`.
 
    `REGION` is the [AWS Region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html) you want your application to be deployed.
 
@@ -76,12 +76,12 @@ Here are the services that will be running:
 2. Create `config/prod.yml` and add `PROJECT_NAME`, `REGION` and `PROFILE`.
 
    ```yaml
-   PROJECT_NAME: myproject
+   PROJECT_NAME: admin.myproject.com
    REGION: ap-southeast-1
    PROFILE: my-production-profile
    ```
 
-   `PROJECT_NAME` will be referenced in all resources used in AWS. It must be unique with only letters and numbers. It should also be unique for S3 bucket name and cognito pool client domain usage. I recommend using the root domain name of your project.
+   `PROJECT_NAME` will be referenced in all resources used in AWS. It must be unique with only letters and numbers. It should also be unique for S3 bucket name and cognito pool client domain usage. I recommend using a subdomain like `admin.myproject.com`.
 
    `REGION` is the [AWS Region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html) you want your application to be deployed.
 

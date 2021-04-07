@@ -41,9 +41,8 @@ resources:
       Properties:
         BucketName: ${self:custom.domain.name}
         WebsiteConfiguration:
-          RedirectAllRequestsTo:
-            HostName: www.${self:custom.domain.name}
-            Protocol: https
+          IndexDocument: index.html
+          ErrorDocument: index.html
     s3Policy:
       Type: "AWS::S3::BucketPolicy"
       Properties:
@@ -62,7 +61,7 @@ resources:
         DistributionConfig:
           Origins:
             - DomainName: ${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
-              Id: S3-Website-${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
+              Id: S3-Website.${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
               CustomOriginConfig:
                 HTTPPort: "80"
                 HTTPSPort: "443"
@@ -73,53 +72,7 @@ resources:
           # Aliases:
           #   - ${self:custom.domain.name}
           DefaultCacheBehavior:
-            TargetOriginId: S3-Website-${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
-            ForwardedValues:
-              QueryString: "false"
-            Compress: "true"
-            ViewerProtocolPolicy: redirect-to-https
-          ViewerCertificate:
-            CloudFrontDefaultCertificate: true
-            # AcmCertificateArn: ${self:custom.domain.certificate}
-            # MinimumProtocolVersion: TLSv1.2_2018
-            # SslSupportMethod: sni-only
-    s3BucketWWW:
-      Type: "AWS::S3::Bucket"
-      Properties:
-        BucketName: www.${self:custom.domain.name}
-        WebsiteConfiguration:
-          IndexDocument: index.html
-          ErrorDocument: index.html
-    s3PolicyWWW:
-      Type: "AWS::S3::BucketPolicy"
-      Properties:
-        Bucket: !Ref s3BucketWWW
-        PolicyDocument:
-          Statement:
-            - Sid: ReadAccess
-              Action:
-                - "s3:GetObject"
-              Effect: "Allow"
-              Resource: "arn:aws:s3:::www.${self:custom.domain.name}/*"
-              Principal: "*"
-    CloudFrontDistributionWWW:
-      Type: "AWS::CloudFront::Distribution"
-      Properties:
-        DistributionConfig:
-          Origins:
-            - DomainName: www.${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
-              Id: S3-Website-www.${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
-              CustomOriginConfig:
-                HTTPPort: "80"
-                HTTPSPort: "443"
-                OriginProtocolPolicy: http-only
-          Enabled: "true"
-          Comment: ${self:service}
-          DefaultRootObject: index.html
-          # Aliases:
-          #   - www.${self:custom.domain.name}
-          DefaultCacheBehavior:
-            TargetOriginId: S3-Website-www.${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
+            TargetOriginId: S3-Website.${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
             ForwardedValues:
               QueryString: "false"
             Compress: "true"
@@ -145,9 +98,3 @@ resources:
     AbuCFEndpoint:
       Description: CFDomainName
       Value: !GetAtt "CloudFrontDistribution.DomainName"
-    AbuCFDistributionIdWWW:
-      Description: AbuCFDistributionId
-      Value: !Ref CloudFrontDistributionWWW
-    AbuCFEndpointWWW:
-      Description: CFDomainName
-      Value: !GetAtt "CloudFrontDistributionWWW.DomainName"
