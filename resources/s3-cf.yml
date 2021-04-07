@@ -46,7 +46,8 @@ resources:
     s3Policy:
       Type: "AWS::S3::BucketPolicy"
       Properties:
-        Bucket: !Ref s3Bucket
+        Bucket:
+          Ref: s3Bucket
         PolicyDocument:
           Statement:
             - Sid: ReadAccess
