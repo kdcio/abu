@@ -39,6 +39,7 @@ OAUTH_CB="https://$CF_ENDPOINT"
 # Add COG_OAUTH_CALLBACK in config
 echo "COG_OAUTH_CALLBACK: $OAUTH_CB" >> ../config/$STAGE.yml
 echo "CF_ID: $CF_ID" >> ../config/$STAGE.yml
+echo "UPLOAD_BASE_URL: https://$CF_UPLOAD_ENDPOINT" >> ../config/$STAGE.yml
 
 ./setup-cog.sh $STAGE $2
 
