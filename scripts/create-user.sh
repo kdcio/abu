@@ -50,6 +50,7 @@ if [[ ! $EMAIL =~ ${regex} ]]; then
 fi
 
 cd "$(dirname "$0")"
+source ./config-to-env.sh
 source ./pool-id.sh
 
 echo -e "\n${BLUE}Create cognito user...${NC}\n"

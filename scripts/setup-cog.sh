@@ -27,6 +27,7 @@ echo -e "\n${BLUE}Setting up cognito...${NC}\n"
 yarn workspace res setup:cog $STAGE
 
 cd "$(dirname "$0")"
+source ./config-to-env.sh
 source ./pool-id.sh
 
 # Get Cognito pool client id
