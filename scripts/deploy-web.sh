@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
 STAGE=$1
 
 SEARCH_KEY="PROJECT_NAME: "
@@ -10,6 +16,9 @@ PROFILE=$(grep "$SEARCH_KEY" ./config/$STAGE.yml | sed -e "s/^$SEARCH_KEY//")
 
 SEARCH_KEY="CF_ID: "
 CF_ID=$(grep "$SEARCH_KEY" ./config/$STAGE.yml | sed -e "s/^$SEARCH_KEY//")
+
+SEARCH_KEY="COG_OAUTH_CALLBACK: "
+CMS_WEBSITE=$(grep "$SEARCH_KEY" ./config/$STAGE.yml | sed -e "s/^$SEARCH_KEY//")
 
 S3_BUCKET_NAME=$PROJECT
 CF_ID=$CF_ID
@@ -63,3 +72,7 @@ if [ "$WAIT_INV" = "yes" ]; then
     --id $INVID \
     --profile $PROFILE
 fi
+
+echo -e "\n${GREEN}Congratulations!!!${NC}\n"
+echo -e "You can find the CMS on the link below:\n"
+echo -e "${BLUE}$CMS_WEBSITE${NC}\n"
