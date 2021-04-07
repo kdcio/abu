@@ -65,15 +65,20 @@ resources:
           - profile
           - aws.cognito.signin.user.admin
         CallbackURLs:
-          - ${file(../config/${self:provider.stage}.yml):OAUTH_CALLBACK, "http://localhost:8060"}
+          - ${file(../config/${self:provider.stage}.yml):COG_OAUTH_CALLBACK, "http://localhost:8060"}
         LogoutURLs:
-          - ${file(../config/${self:provider.stage}.yml):OAUTH_CALLBACK, "http://localhost:8060"}
+          - ${file(../config/${self:provider.stage}.yml):COG_OAUTH_CALLBACK, "http://localhost:8060"}
         UserPoolId:
           Ref: CognitoUserPool
     CognitoUserPoolClientDomain:
       Type: AWS::Cognito::UserPoolDomain
       Properties:
-        Domain: ${self:custom.userPoolClientDomain}
+        Domain:
+          Fn::Join:
+            - "-"
+            - Fn::Split:
+                - "."
+                - ${self:custom.userPoolClientDomain}
         UserPoolId:
           Ref: CognitoUserPool
     CreateCogUserDeletePolicy:
