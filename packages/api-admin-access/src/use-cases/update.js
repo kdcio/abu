@@ -1,6 +1,6 @@
 const makeUpdate = ({ model }) => {
   const update = async (data) => {
-    await model.put(data);
+    await model.update(data);
   };
   return update;
 };
