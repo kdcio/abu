@@ -1,7 +1,9 @@
-require("dotenv/config");
+const dotenvCra = require("dotenv-cra");
 const { whenProd } = require("@craco/craco");
 const cspHtmlWebpackPlugin = require("csp-html-webpack-plugin");
 // const purgecss = require("@fullhuman/postcss-purgecss");
+
+dotenvCra.config();
 
 const apiParts = process.env.REACT_APP_API_ENDPOINT.split("/");
 const apiEndpoint = `${apiParts[0]}//${apiParts[2]}`;
