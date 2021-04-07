@@ -17,7 +17,9 @@
     "ddb:clear:dev": "DDB_ENDPOINT=http://localhost:8062 AWS_REGION=ap-southeast-1 node clearDB.js",
     "info:cog": "sls info -c cognito.yml -s",
     "delete": "sls remove -v -s ",
-    "delete:cog": "sls remove -c cognito.yml -s"
+    "delete:cog": "sls remove -c cognito.yml -s",
+    "delete:s3-cf": "sls remove -c s3-cf.yml -s",
+    "delete:ddb": "sls remove -c ddb.yml -s"
   },
   "author": {
     "name": "Ian Dela Cruz",
