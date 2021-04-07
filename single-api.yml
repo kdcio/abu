@@ -8,7 +8,6 @@ package:
 
 plugins:
   - serverless-bundle
-  - serverless-s3-local
   - serverless-offline
 
 custom:
@@ -16,18 +15,15 @@ custom:
   BucketResizePrefix: ${file(./config/${self:provider.stage}.yml):UPLOAD_PREFIX, 'uploads'}
   serverless-offline:
     httpPort: 8061
+    lambdaPort: 8066
     noPrependStageInUrl: true
     useChildProcesses: true
-  s3:
-    port: 8064
-    directory: ./.s3-local
-    cors: resources/s3-cors.xml
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   memorySize: 128
-  stage: ${opt:stage}
+  stage: ${opt:stage, 'dev'}
   region: ${file(./config/${self:provider.stage}.yml):REGION}
   profile: ${file(./config/${self:provider.stage}.yml):PROFILE}
   lambdaHashingVersion: 20201221
