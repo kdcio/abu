@@ -10,5 +10,5 @@ STACK_DESC=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --outpu
 SEARCH_KEY="ServiceEndpoint"
 API_ENDPOINT=$(echo "$STACK_DESC" | grep $SEARCH_KEY | awk 'END {print $8}')
 
-ENV_FILE="../packages/cms/.env.production"
+ENV_FILE="../packages/cms/.env.production.local"
 echo "REACT_APP_API_ENDPOINT=$API_ENDPOINT" >> $ENV_FILE

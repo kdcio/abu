@@ -21,7 +21,7 @@ if [ -z "$2" ]
 fi
 
 STAGE=$1
-export ENV_FILE="../packages/cms/.env.production"
+export ENV_FILE="../packages/cms/.env.production.local"
 
 echo -e "\n${BLUE}Setting up S3 and CloudFront for CMS...${NC}\n"
 yarn workspace res setup:s3-cf $STAGE
