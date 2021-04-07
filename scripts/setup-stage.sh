@@ -44,5 +44,10 @@ echo "REACT_APP_AUTH_OAUTH_SIGNIN=$OAUTH_CB" >> $ENV_FILE
 echo "REACT_APP_AUTH_OAUTH_SIGNOUT=$OAUTH_CB" >> $ENV_FILE
 # echo "REACT_APP_API_ENDPOINT=http://localhost:8061" >> $ENV_FILE
 
+
+echo -e "\n${BLUE}Setting up DynamoDB...${NC}\n"
+yarn workspace res setup:ddb $STAGE
+echo "DDB_TABLE: $PROJECT-$STAGE" >> ../config/$STAGE.yml
+
 echo -e "${GREEN}Setup Success!!!${NC}\n"
 

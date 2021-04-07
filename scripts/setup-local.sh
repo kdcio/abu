@@ -34,5 +34,6 @@ echo "REACT_APP_API_ENDPOINT=http://localhost:8061" >> $ENV_FILE
 
 # Setup local dynamodb
 yarn workspace res setup:local:ddb
+echo "DDB_ENDPOINT: http://localhost:8062" >> ../config/$STAGE.yml
 
 echo -e "${GREEN}Local Setup Success!!!${NC}\n"

@@ -45,7 +45,7 @@ provider:
     COG_ACCESS_KEY_ID: ${file(./config/${self:provider.stage}.yml):COG_ACCESS_KEY_ID}
     COG_SECRET_ACCESS_KEY: ${file(./config/${self:provider.stage}.yml):COG_SECRET_ACCESS_KEY}
     DDB_REGION: ${file(./config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
-    DDB_ENDPOINT: ${file(./config/${self:provider.stage}.yml):DDB_ENDPOINT, 'http://localhost:8062'}
+    DDB_ENDPOINT: ${file(./config/${self:provider.stage}.yml):DDB_ENDPOINT, ''}
     DDB_TABLE: ${file(./config/${self:provider.stage}.yml):DDB_TABLE, 'abu-local'}
     S3_BUCKET: ${self:custom.BucketName}
     S3_BUCKET_PREFIX: ${self:custom.BucketResizePrefix}
