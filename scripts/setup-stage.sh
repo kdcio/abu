@@ -49,5 +49,8 @@ echo -e "\n${BLUE}Setting up DynamoDB...${NC}\n"
 yarn workspace res setup:ddb $STAGE
 echo "DDB_TABLE: $PROJECT-$STAGE" >> ../config/$STAGE.yml
 
+PAGINATION_SECRET=$(openssl rand -base64 32)
+echo "PAGINATION_SECRET: $PAGINATION_SECRET" >> ../config/$STAGE.yml
+
 echo -e "${GREEN}Setup Success!!!${NC}\n"
 
