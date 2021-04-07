@@ -1,3 +1,4 @@
 PROJECT_NAME: admin.myproject.com
+UPLOAD_BUCKET: admin-upload.myproject.com
 REGION: ap-southeast-1
 PROFILE: my-profile

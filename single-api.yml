@@ -12,8 +12,8 @@ plugins:
   - serverless-offline
 
 custom:
-  BucketName: ${file(./config/${self:provider.stage}.yml):S3_BUCKET, 'local'}
-  BucketResizePrefix: ${file(./config/${self:provider.stage}.yml):S3_BUCKET_PREFIX, 'uploads'}
+  BucketName: ${file(./config/${self:provider.stage}.yml):UPLOAD_BUCKET, 'local'}
+  BucketResizePrefix: ${file(./config/${self:provider.stage}.yml):UPLOAD_PREFIX, 'uploads'}
   serverless-offline:
     httpPort: 8061
     noPrependStageInUrl: true

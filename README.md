@@ -8,6 +8,7 @@ Serverless Headless CMS. Deployed in AWS infrastructure.
 - [aws cli](https://aws.amazon.com/cli/) with working [named profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
 - [nodejs](https://nodejs.org/en/)
 - [yarn](https://yarnpkg.com/)
+- openssl for generating random string
 
 ## Local Development
 
@@ -77,11 +78,14 @@ Here are the services that will be running:
 
    ```yaml
    PROJECT_NAME: admin.myproject.com
+   UPLOAD_BUCKET: admin-upload.myproject.com
    REGION: ap-southeast-1
    PROFILE: my-production-profile
    ```
 
    `PROJECT_NAME` will be referenced in all resources used in AWS. It must be unique with only letters and numbers. It should also be unique for S3 bucket name and cognito pool client domain usage. I recommend using a subdomain like `admin.myproject.com`.
+
+   `UPLOAD_BUCKET` will be an S3 bucket to host file uploads.
 
    `REGION` is the [AWS Region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html) you want your application to be deployed.
 
