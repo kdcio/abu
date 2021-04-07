@@ -32,12 +32,12 @@ provider:
   name: aws
   runtime: nodejs12.x
   memorySize: 128
-  stage: dev
-  region: ap-southeast-1
-  profile: default
+  stage: ${opt:stage}
+  region: ${file(./config/${self:provider.stage}.yml):REGION}
+  profile: ${file(./config/${self:provider.stage}.yml):PROFILE}
   lambdaHashingVersion: 20201221
   environment:
-    TZ: ${file(./config/${self:provider.stage}.yml):TZ, 'Asia/Singapore'}
+    TZ: ${file(./config/${self:provider.stage}.yml):TZ, 'Asia/Manila'}
     STAGE: ${self:provider.stage}
     NODE_ENV: ${self:provider.stage}
     DEBUG: ${file(./config/${self:provider.stage}.yml):DEBUG, 'lambda:event,lambda:error'}
