@@ -13,7 +13,7 @@ const makeS3 = () => {
       endpoint: new AWS.Endpoint("http://localhost:8064"),
     });
   }
-  return new S3({ signatureVersion: "v4", region: REGION });
+  return new S3({ signatureVersion: "v4", region: "us-east-1" });
 };
 
 export default makeS3;

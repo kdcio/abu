@@ -18,7 +18,7 @@ STACK_DESC=$(aws cloudformation describe-stacks \
               --stack-name $STACK_NAME \
               --output text \
               --profile $PROFILE \
-              --region $REGION)
+              --region us-east-1)
 
 SEARCH_KEY="CFDomainName"
 CF_UPLOAD_ENDPOINT=$(echo "$STACK_DESC" | grep $SEARCH_KEY | awk 'END {print $4}')
