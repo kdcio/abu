@@ -94,7 +94,9 @@ resources:
   Outputs:
     AbuCFDistributionId:
       Description: AbuCFDistributionId
-      Value: !Ref CloudFrontDistribution
+      Value:
+        Ref: CloudFrontDistribution
     AbuCFEndpoint:
       Description: CFDomainName
-      Value: !GetAtt "CloudFrontDistribution.DomainName"
+      Value:
+        GetAtt: "CloudFrontDistribution.DomainName"
