@@ -109,10 +109,10 @@ Here are the services that will be running:
    yarn deploy:api prod
    ```
 
-5. Deploy Web
+5. Deploy CMS
 
    ```bash
-   yarn deploy:web prod
+   yarn deploy:cms prod
    ```
 
    The script should output where you can find the CMS.

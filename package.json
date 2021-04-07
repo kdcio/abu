@@ -17,7 +17,7 @@
     "build:api": "./scripts/build-api.sh",
     "test:api": "./scripts/test-api.sh",
     "coverage:api": "./scripts/coverage-api.sh",
-    "deploy:web": "./scripts/deploy-web.sh",
+    "deploy:cms": "./scripts/deploy-cms.sh",
     "deploy:api": "./scripts/deploy-api.sh",
     "deploy:api:all": "sls deploy -c single-api.yml -s",
     "deploy:api:func": "sls deploy function -c single-api.yml ",
