@@ -102,3 +102,19 @@ Here are the services that will be running:
    A temporary password will be sent to your email.
 
    Note that the script will append config variables to `config/prod.yml` and `packages/cms/.env.production` (this file will be created automatically).
+
+4. Deploy API
+
+   ```bash
+   yarn deploy:api prod
+   ```
+
+5. Deploy Web
+
+   ```bash
+   yarn deploy:web prod
+   ```
+
+   The script should output where you can find the CMS.
+
+   Enjoy!!!
