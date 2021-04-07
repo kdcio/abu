@@ -9,7 +9,7 @@ Serverless Headless CMS. Deployed in AWS infrastructure.
 - [nodejs](https://nodejs.org/en/)
 - [yarn](https://yarnpkg.com/)
 
-## Development
+## Local Development
 
 You'll need [docker](https://www.docker.com/) installed for running [local dynamodb](https://hub.docker.com/r/amazon/dynamodb-local).
 
@@ -24,12 +24,12 @@ You'll need [docker](https://www.docker.com/) installed for running [local dynam
 2. Create `config/dev.yml` and add `PROJECT_NAME`, `REGION` and `PROFILE`.
 
    ```yaml
-   PROJECT_NAME: myproject
+   PROJECT_NAME: myproject.com
    REGION: ap-southeast-1
    PROFILE: dev
    ```
 
-   `PROJECT_NAME` will be referenced in all resources used in AWS. It must be unique with only letters and numbers.
+   `PROJECT_NAME` will be referenced in all resources used in AWS. It must be unique with only letters and numbers. It should also be unique for S3 bucket name and cognito pool client domain usage. I recommend using the root domain name of your project.
 
    `REGION` is the [AWS Region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html) you want your application to be deployed.
 
@@ -62,3 +62,39 @@ Here are the services that will be running:
 3. [http://localhost:8062/](http://localhost:8062/) - DyanmoDB local
 4. [http://localhost:8063/](http://localhost:8063/) - [DyanmoDB manager](https://github.com/YoyaTeam/dynamodb-manager)
 5. [http://localhost:8064/](http://localhost:8064) - S3 local
+
+## Deployment using S3 and CloudFront
+
+1. Clone this project and install packages
+
+   ```bash
+   git clone https://github.com/kdcio/abu.git
+   cd abu
+   yarn
+   ```
+
+2. Create `config/prod.yml` and add `PROJECT_NAME`, `REGION` and `PROFILE`.
+
+   ```yaml
+   PROJECT_NAME: myproject
+   REGION: ap-southeast-1
+   PROFILE: my-production-profile
+   ```
+
+   `PROJECT_NAME` will be referenced in all resources used in AWS. It must be unique with only letters and numbers. It should also be unique for S3 bucket name and cognito pool client domain usage. I recommend using the root domain name of your project.
+
+   `REGION` is the [AWS Region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html) you want your application to be deployed.
+
+   `PROFILE` is used by AWS CLI to indentify who you are. Here's how you configure [named profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
+
+3. Run setup script
+
+   ```bash
+   yarn setup prod your@email.com
+   ```
+
+   This will create cognito, dynamodb and s3 resources in your AWS account.
+
+   A temporary password will be sent to your email.
+
+   Note that the script will append config variables to `config/prod.yml` and `packages/cms/.env.production` (this file will be created automatically).

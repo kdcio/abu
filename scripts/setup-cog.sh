@@ -41,10 +41,10 @@ COG_POOL_CLIENT_DOMAIN=$(echo "$EXP_LIST" | grep $COG_POOL_CLIENT_DOMAIN_KEY | a
 # Write Cognito info to config
 echo "COG_POOL_ID: $POOL_ID" >> ../config/$STAGE.yml
 # Write Cognito info to cms .env
-echo "REACT_APP_AUTH_AWS_REGION=$REGION" >> ../packages/cms/.env
-echo "REACT_APP_AUTH_POOL_ID=$POOL_ID" >> ../packages/cms/.env
-echo "REACT_APP_AUTH_CLIENT_ID=$COG_POOL_CLIENT_ID" >> ../packages/cms/.env
-echo "REACT_APP_AUTH_OAUTH_DOMAIN=$COG_POOL_CLIENT_DOMAIN.auth.$REGION.amazoncognito.com" >> ../packages/cms/.env
+echo "REACT_APP_AUTH_AWS_REGION=$REGION" >> $ENV_FILE
+echo "REACT_APP_AUTH_POOL_ID=$POOL_ID" >> $ENV_FILE
+echo "REACT_APP_AUTH_CLIENT_ID=$COG_POOL_CLIENT_ID" >> $ENV_FILE
+echo "REACT_APP_AUTH_OAUTH_DOMAIN=$COG_POOL_CLIENT_DOMAIN.auth.$REGION.amazoncognito.com" >> $ENV_FILE
 
 # Get Cognito user access key
 COG_USER_ACCESS_KEY="AbuCognitoUserAccessKey-$STAGE"

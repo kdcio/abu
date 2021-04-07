@@ -21,7 +21,7 @@ if [ -z "$1" ]
 fi
 
 STAGE=dev
-ENV_FILE="../packages/cms/.env"
+export ENV_FILE="../packages/cms/.env"
 
 cd "$(dirname "$0")"
 source ./config-to-env.sh
