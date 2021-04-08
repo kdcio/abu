@@ -27,7 +27,7 @@ echo -e "\n${BLUE}Setting up S3 and CloudFront for CMS...${NC}\n"
 yarn workspace res setup:s3-cf $STAGE
 
 echo -e "\n${BLUE}Setting up S3 and CloudFront for uploads...${NC}\n"
-yarn workspace res setup:upload $STAGE
+yarn workspace upload deploy $STAGE
 
 cd "$(dirname "$0")"
 source ./config-to-env.sh
@@ -46,7 +46,7 @@ echo "UPLOAD_BASE_URL: https://$CF_UPLOAD_ENDPOINT" >> ../config/$STAGE.yml
 # Write additional cms env
 echo "REACT_APP_AUTH_OAUTH_SIGNIN=$OAUTH_CB" >> $ENV_FILE
 echo "REACT_APP_AUTH_OAUTH_SIGNOUT=$OAUTH_CB" >> $ENV_FILE
-# echo "REACT_APP_API_ENDPOINT=http://localhost:8061" >> $ENV_FILE
+echo "REACT_APP_UPLOAD_ENDPOINT=https://$CF_UPLOAD_ENDPOINT" >> $ENV_FILE
 
 
 echo -e "\n${BLUE}Setting up DynamoDB...${NC}\n"
