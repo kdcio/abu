@@ -7,6 +7,8 @@ dotenvCra.config();
 
 const apiParts = process.env.REACT_APP_API_ENDPOINT.split("/");
 const apiEndpoint = `${apiParts[0]}//${apiParts[2]}`;
+const uploadParts = process.env.REACT_APP_UPLOAD_ENDPOINT.split("/");
+const uploadEndpoint = `${uploadParts[0]}//${uploadParts[2]}`;
 const cognitoEndpoint = `https://cognito-idp.${process.env.REACT_APP_AUTH_AWS_REGION}.amazonaws.com/`;
 
 const cspConfigPolicy = {
@@ -30,10 +32,10 @@ const cspConfigPolicy = {
     "data:",
     "https://*.kdc.codes",
     "https://*.googleusercontent.com",
-    "https://img.shields.io",
     "www.googletagmanager.com",
     "https://ssl.gstatic.com",
     "https://www.gstatic.com",
+    uploadEndpoint,
   ],
   "font-src": ["'self'"],
   "form-action": "'none'",
@@ -42,9 +44,11 @@ const cspConfigPolicy = {
     "'self'",
     "data:",
     apiEndpoint,
+    uploadEndpoint,
     cognitoEndpoint,
     `https://${process.env.REACT_APP_AUTH_OAUTH_DOMAIN}`,
     "https://www.google-analytics.com",
+    "s3.amazonaws.com",
   ],
 };
 

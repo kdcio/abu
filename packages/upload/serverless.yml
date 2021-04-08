@@ -1,17 +1,81 @@
 service: abu-upload
 
+package:
+  individually: true
+  excludeDevDependencies: true
+
+plugins:
+  - serverless-bundle
+  - serverless-s3-local
+  - serverless-offline
+
 custom:
+  BucketName: ${file(../../config/${self:provider.stage}.yml):UPLOAD_BUCKET, 'local'}
+  BucketResizePrefix: ${file(../../config/${self:provider.stage}.yml):UPLOAD_PREFIX, 'uploads'}
   domain:
-    name: ${file(../config/${self:provider.stage}.yml):UPLOAD_BUCKET}
-    # aliases: ${file(../config/${self:provider.stage}.yml):UPLOAD_ALIASES}
-    # certificate: ${file(../config/${self:provider.stage}.yml):UPLOAD_CERT}
+    name: ${file(../../config/${self:provider.stage}.yml):UPLOAD_BUCKET, 'local'}
+    # aliases: ${file(../../config/${self:provider.stage}.yml):UPLOAD_ALIASES}
+    # certificate: ${file(../../config/${self:provider.stage}.yml):UPLOAD_CERT}
+  bundle:
+    packager: yarn
+    packagerOptions:
+      scripts:
+        - rm -rf node_modules/sharp && npm install --arch=x64 --platform=linux sharp
+  serverless-offline:
+    httpPort: 8065
+    lambdaPort: 8067
+    noPrependStageInUrl: true
+    useChildProcesses: true
+  s3:
+    port: 8064
+    directory: ./.s3-local
+    cors: ./s3-cors.xml
 
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: ${opt:stage}
-  region: ${file(../config/${self:provider.stage}.yml):REGION}
-  profile: ${file(../config/${self:provider.stage}.yml):PROFILE}
+  memorySize: 256
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  profile: ${file(../../config/${self:provider.stage}.yml):PROFILE}
+  lambdaHashingVersion: 20201221
+  environment:
+    TZ: ${file(../../config/${self:provider.stage}.yml):TZ, 'Asia/Manila'}
+    STAGE: ${self:provider.stage}
+    NODE_ENV: ${self:provider.stage}
+    S3_BUCKET: ${self:custom.BucketName}
+    S3_BUCKET_PREFIX: ${self:custom.BucketResizePrefix}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - "s3:*"
+          Resource:
+            - "arn:aws:s3:::${self:custom.BucketName}"
+            - "arn:aws:s3:::${self:custom.BucketName}/*"
+
+functions:
+  cf:
+    handler: src/request.handler
+    events:
+      - cloudFront:
+          eventType: origin-request
+          origin:
+            DomainName: ${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
+            CustomOriginConfig:
+              HTTPPort: "80"
+              HTTPSPort: "443"
+              OriginProtocolPolicy: http-only
+  resize:
+    handler: src/resize.handler
+    events:
+      - s3:
+          bucket: ${self:custom.BucketName}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: ${self:custom.BucketResizePrefix}/
+          existing: true
 
 resources:
   Resources:
@@ -34,7 +98,8 @@ resources:
     s3Policy:
       Type: "AWS::S3::BucketPolicy"
       Properties:
-        Bucket: !Ref s3Bucket
+        Bucket:
+          Ref: s3Bucket
         PolicyDocument:
           Statement:
             - Sid: ReadAccess
