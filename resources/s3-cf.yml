@@ -7,32 +7,12 @@ custom:
     name: ${file(../config/${self:provider.stage}.yml):PROJECT_NAME}
     # certificate: ${file(../config/${self:provider.stage}.yml):DOMAIN_CERT}
 
-package:
-  exclude:
-    - ./**
-  include:
-    - functions/cloudfront.js
-
 provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'local'}
   region: ${file(../config/${self:provider.stage}.yml):REGION}
   profile: ${file(../config/${self:provider.stage}.yml):PROFILE}
-
-# functions:
-#   cf:
-#     handler: functions/cloudfront.handler
-#     events:
-#       - cloudFront:
-#           eventType: origin-response
-#           origin:
-#             DomainName: ${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
-#             Id: S3-Website-${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
-#             CustomOriginConfig:
-#               HTTPPort: "80"
-#               HTTPSPort: "443"
-#               OriginProtocolPolicy: http-only
 
 resources:
   Resources:
@@ -100,4 +80,6 @@ resources:
     AbuCFEndpoint:
       Description: CFDomainName
       Value:
-        GetAtt: "CloudFrontDistribution.DomainName"
+        Fn::GetAtt:
+          - CloudFrontDistribution
+          - DomainName
