@@ -64,7 +64,7 @@ Here are the services that will be running:
 4. [http://localhost:8063/](http://localhost:8063/) - [DyanmoDB manager](https://github.com/YoyaTeam/dynamodb-manager)
 5. [http://localhost:8064/](http://localhost:8064) - S3 local
 
-## Deployment using S3 and CloudFront
+## Deployment using S3 and CloudFront without domain name
 
 1. Clone this project and install packages
 
@@ -91,10 +91,10 @@ Here are the services that will be running:
 
    `PROFILE` is used by AWS CLI to indentify who you are. Here's how you configure [named profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
 
-3. Run setup script
+3. Run deploy script
 
    ```bash
-   yarn setup prod your@email.com
+   yarn deploy prod your@email.com
    ```
 
    This will create cognito, dynamodb and s3 resources in your AWS account.
@@ -103,18 +103,6 @@ Here are the services that will be running:
 
    Note that the script will append config variables to `config/prod.yml` and `packages/cms/.env.production` (this file will be created automatically).
 
-4. Deploy API
-
-   ```bash
-   yarn deploy:api prod
-   ```
-
-5. Deploy CMS
-
-   ```bash
-   yarn deploy:cms prod
-   ```
-
-   The script should output where you can find the CMS.
+   If all goes well, the script should output where you can find the CMS.
 
    Enjoy!!!
