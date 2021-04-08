@@ -1,7 +1,7 @@
 export const logo = [
   "608 134",
   `<title>AbuCMS logo</title>
-   <svg viewBox="0 0 2248 512">
+   <svg viewBox="0 0 2400 512">
       <path
          id="path10"
          class="ci-primary"
@@ -10,14 +10,16 @@ export const logo = [
       <text
          id="text22"
          y="406.013"
-         x="486.71121"
-         style="font-size:450px;line-height:1.15;font-family:Montserrat;letter-spacing:-30px"
-         xml:space="preserve"><tspan
-            style="font-size:450px;"
+         x="586.71121"
+         class="abu-logo"
+         xml:space="preserve">
+          <tspan
+            class="text"
             dx="-10.98"
             y="406.013"
-            x="486.71121"
-            id="tspan20">AbuCMS</tspan></text>
+            x="586.71121"
+            id="tspan20">AbuCMS</tspan>
+      </text>
    </svg>
 `,
 ];
