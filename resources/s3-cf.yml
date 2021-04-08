@@ -1,0 +1,85 @@
+service: abu-s3-cf
+
+# Template reference: https://github.com/kdcio/s3-cf-serverless-website
+
+custom:
+  domain:
+    name: ${file(../config/${self:provider.stage}.yml):PROJECT_NAME}
+    # certificate: ${file(../config/${self:provider.stage}.yml):DOMAIN_CERT}
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'local'}
+  region: ${file(../config/${self:provider.stage}.yml):REGION}
+  profile: ${file(../config/${self:provider.stage}.yml):PROFILE}
+
+resources:
+  Resources:
+    s3Bucket:
+      Type: "AWS::S3::Bucket"
+      Properties:
+        BucketName: ${self:custom.domain.name}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
+    s3Policy:
+      Type: "AWS::S3::BucketPolicy"
+      Properties:
+        Bucket:
+          Ref: s3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: ReadAccess
+              Action:
+                - "s3:GetObject"
+              Effect: "Allow"
+              Resource: "arn:aws:s3:::${self:custom.domain.name}/*"
+              Principal: "*"
+    CloudFrontDistribution:
+      Type: "AWS::CloudFront::Distribution"
+      Properties:
+        DistributionConfig:
+          Origins:
+            - DomainName: ${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
+              Id: S3-Website.${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
+              CustomOriginConfig:
+                HTTPPort: "80"
+                HTTPSPort: "443"
+                OriginProtocolPolicy: http-only
+          Enabled: "true"
+          Comment: ${self:service}
+          DefaultRootObject: index.html
+          # Aliases:
+          #   - ${self:custom.domain.name}
+          DefaultCacheBehavior:
+            TargetOriginId: S3-Website.${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
+            ForwardedValues:
+              QueryString: "false"
+            Compress: "true"
+            ViewerProtocolPolicy: redirect-to-https
+          CustomErrorResponses:
+            - ErrorCode: "403"
+              ResponsePagePath: "/index.html"
+              ResponseCode: "200"
+              ErrorCachingMinTTL: "30"
+            - ErrorCode: "404"
+              ResponsePagePath: "/index.html"
+              ResponseCode: "200"
+              ErrorCachingMinTTL: "30"
+          ViewerCertificate:
+            CloudFrontDefaultCertificate: true
+            # AcmCertificateArn: ${self:custom.domain.certificate}
+            # MinimumProtocolVersion: TLSv1.2_2018
+            # SslSupportMethod: sni-only
+  Outputs:
+    AbuCFDistributionId:
+      Description: AbuCFDistributionId
+      Value:
+        Ref: CloudFrontDistribution
+    AbuCFEndpoint:
+      Description: CFDomainName
+      Value:
+        Fn::GetAtt:
+          - CloudFrontDistribution
+          - DomainName

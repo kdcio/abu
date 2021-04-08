@@ -1,5 +1,12 @@
 service: abu-cognito
 
+custom:
+  project: ${file(../config/${self:provider.stage}.yml):PROJECT_NAME}
+  currentStage: ${self:provider.stage}
+  userPoolName: ${self:custom.project}-${self:provider.stage}
+  userPoolClientName: ${self:custom.project}-client-${self:provider.stage}
+  userPoolClientDomain: ${self:custom.project}-${self:provider.stage}
+
 provider:
   name: aws
   runtime: nodejs12.x
@@ -8,11 +15,6 @@ provider:
   profile: ${file(../config/${self:provider.stage}.yml):PROFILE}
   environment:
     TZ: ${file(../config/${self:provider.stage}.yml):TZ, "Asia/Manila"}
-
-custom:
-  currentStage: ${self:provider.stage}
-  userPoolName: abu-${self:provider.stage}
-  userPoolClientName: abu-client-${self:provider.stage}
 
 resources:
   Resources:
@@ -51,6 +53,32 @@ resources:
       Properties:
         ClientName: ${self:custom.userPoolClientName}
         GenerateSecret: False
+        SupportedIdentityProviders:
+          - COGNITO
+        AllowedOAuthFlowsUserPoolClient: true
+        AllowedOAuthFlows:
+          - implicit
+        AllowedOAuthScopes:
+          - phone
+          - email
+          - openid
+          - profile
+          - aws.cognito.signin.user.admin
+        CallbackURLs:
+          - ${file(../config/${self:provider.stage}.yml):COG_OAUTH_CALLBACK, "http://localhost:8060"}
+        LogoutURLs:
+          - ${file(../config/${self:provider.stage}.yml):COG_OAUTH_CALLBACK, "http://localhost:8060"}
+        UserPoolId:
+          Ref: CognitoUserPool
+    CognitoUserPoolClientDomain:
+      Type: AWS::Cognito::UserPoolDomain
+      Properties:
+        Domain:
+          Fn::Join:
+            - "-"
+            - Fn::Split:
+                - "."
+                - ${self:custom.userPoolClientDomain}
         UserPoolId:
           Ref: CognitoUserPool
     CreateCogUserDeletePolicy:
@@ -68,6 +96,38 @@ resources:
                 - Fn::GetAtt:
                     - CognitoUserPool
                     - Arn
+    CognitoUser:
+      Type: AWS::IAM::User
+      Properties:
+        Policies:
+          - PolicyName: cognito-access
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - cognito-idp:AdminDeleteUser
+                    - cognito-idp:ListUsersInGroup
+                    - cognito-idp:ListGroups
+                    - cognito-idp:AdminCreateUser
+                    - cognito-idp:AdminSetUserPassword
+                    - cognito-idp:AdminRemoveUserFromGroup
+                    - cognito-idp:AdminAddUserToGroup
+                    - cognito-idp:AdminListGroupsForUser
+                    - cognito-idp:AdminUpdateUserAttributes
+                    - cognito-idp:AdminGetUser
+                    - cognito-idp:ListUsers
+                  Resource:
+                    Fn::GetAtt:
+                      - CognitoUserPool
+                      - Arn
+
+    CognitoUserAccessKey:
+      Type: AWS::IAM::AccessKey
+      Properties:
+        UserName:
+          Ref: CognitoUser
+
   Outputs:
     AbuCognitoUserPoolArn:
       Value:
@@ -81,3 +141,25 @@ resources:
         Ref: CognitoUserPool
       Export:
         Name: AbuCognitoUserPoolId-${self:custom.currentStage}
+    AbuCognitoUserPoolClientId:
+      Value:
+        Ref: CognitoUserPoolClient
+      Export:
+        Name: AbuCognitoUserPoolClientId-${self:custom.currentStage}
+    AbuCognitoUserPoolClientDomain:
+      Value:
+        Ref: CognitoUserPoolClientDomain
+      Export:
+        Name: AbuCognitoUserPoolClientDomain-${self:custom.currentStage}
+    CognitoUserAccessKey:
+      Value:
+        Ref: CognitoUserAccessKey
+      Export:
+        Name: AbuCognitoUserAccessKey-${self:custom.currentStage}
+    CognitoUserSecretKey:
+      Value:
+        Fn::GetAtt:
+          - CognitoUserAccessKey
+          - SecretAccessKey
+      Export:
+        Name: AbuCognitoUserSecretKey-${self:custom.currentStage}

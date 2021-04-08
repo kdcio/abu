@@ -8,36 +8,29 @@ package:
 
 plugins:
   - serverless-bundle
-  - serverless-s3-local
   - serverless-offline
 
 custom:
-  BucketName: ${file(./config/${self:provider.stage}.yml):S3_BUCKET, 'local'}
-  BucketResizePrefix: ${file(./config/${self:provider.stage}.yml):S3_BUCKET_PREFIX, 'uploads'}
+  BucketName: ${file(./config/${self:provider.stage}.yml):UPLOAD_BUCKET, 'local'}
+  BucketResizePrefix: ${file(./config/${self:provider.stage}.yml):UPLOAD_PREFIX, 'uploads'}
   serverless-offline:
     httpPort: 8061
+    lambdaPort: 8066
     noPrependStageInUrl: true
     useChildProcesses: true
-  s3:
-    port: 8064
-    directory: ./.s3-local
-    cors: resources/s3-cors.xml
   bundle:
-    caching: false
-    packagerOptions:
-      scripts:
-        - rm -rf node_modules/sharp && npm install --arch=x64 --platform=linux sharp
+    packager: yarn
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   memorySize: 128
-  stage: dev
-  region: ap-southeast-1
-  profile: default
+  stage: ${opt:stage, 'dev'}
+  region: ${file(./config/${self:provider.stage}.yml):REGION}
+  profile: ${file(./config/${self:provider.stage}.yml):PROFILE}
   lambdaHashingVersion: 20201221
   environment:
-    TZ: ${file(./config/${self:provider.stage}.yml):TZ, 'Asia/Singapore'}
+    TZ: ${file(./config/${self:provider.stage}.yml):TZ, 'Asia/Manila'}
     STAGE: ${self:provider.stage}
     NODE_ENV: ${self:provider.stage}
     DEBUG: ${file(./config/${self:provider.stage}.yml):DEBUG, 'lambda:event,lambda:error'}
@@ -45,11 +38,11 @@ provider:
     COG_ACCESS_KEY_ID: ${file(./config/${self:provider.stage}.yml):COG_ACCESS_KEY_ID}
     COG_SECRET_ACCESS_KEY: ${file(./config/${self:provider.stage}.yml):COG_SECRET_ACCESS_KEY}
     DDB_REGION: ${file(./config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
-    DDB_ENDPOINT: ${file(./config/${self:provider.stage}.yml):DDB_ENDPOINT, 'http://localhost:8062'}
+    DDB_ENDPOINT: ${file(./config/${self:provider.stage}.yml):DDB_ENDPOINT, ''}
     DDB_TABLE: ${file(./config/${self:provider.stage}.yml):DDB_TABLE, 'abu-local'}
     S3_BUCKET: ${self:custom.BucketName}
     S3_BUCKET_PREFIX: ${self:custom.BucketResizePrefix}
-    S3_BASE_URL: ${file(./config/${self:provider.stage}.yml):S3_BASE_URL, 'http://localhost:8064/local'}
+    S3_BASE_URL: ${file(./config/${self:provider.stage}.yml):UPLOAD_BASE_URL, 'http://localhost:8064/local'}
     PAGINATION_SECRET: ${file(./config/${self:provider.stage}.yml):PAGINATION_SECRET, 'some-random-key'}
   iam:
     role:
@@ -60,17 +53,18 @@ provider:
           Resource:
             - "arn:aws:s3:::${self:custom.BucketName}"
             - "arn:aws:s3:::${self:custom.BucketName}/*"
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}/*"
 
-functions:
-  - ${file(./functions.js)}
-  - resize:
-      handler: packages/api-admin-content/src/resize.handler
-      events:
-        - s3:
-            bucket: ${self:custom.BucketName}
-            event: s3:ObjectCreated:*
-            rules:
-              - prefix: ${self:custom.BucketResizePrefix}/
+functions: ${file(./functions.js)}
 
 resources:
   Resources:

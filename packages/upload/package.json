@@ -1,0 +1,37 @@
+{
+  "name": "upload",
+  "version": "0.1.0",
+  "description": "S3 Uploads + CloudFront",
+  "main": "index.js",
+  "scripts": {
+    "start": "sls offline -s dev",
+    "deploy": "sls deploy -s",
+    "deploy:func": "sls deploy function",
+    "build": "sls package",
+    "delete": "sls remove -s",
+    "test": "serverless-bundle test --collect-coverage",
+    "test:watch": "serverless-bundle test --watch --collect-coverage"
+  },
+  "keywords": [
+    "s3",
+    "cloudfront",
+    "upload"
+  ],
+  "author": {
+    "name": "Ian Dela Cruz",
+    "email": "ian@kdcsoftware.com",
+    "url": "https://www.kdcsoftware.com"
+  },
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "aws-sdk": "^2.876.0",
+    "debug": "^4.3.1",
+    "sharp": "^0.28.1"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
+  }
+}

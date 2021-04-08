@@ -57,16 +57,7 @@ provider:
             - "arn:aws:s3:::${self:custom.BucketName}"
             - "arn:aws:s3:::${self:custom.BucketName}/*"
 
-functions:
-  - ${file(./functions.yml)}
-  - resize:
-      handler: src/resize.handler
-      events:
-        - s3:
-            bucket: ${self:custom.BucketName}
-            event: s3:ObjectCreated:*
-            rules:
-              - prefix: ${self:custom.BucketResizePrefix}/
+functions: ${file(./functions.yml)}
 
 resources:
   Resources:

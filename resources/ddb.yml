@@ -1,5 +1,9 @@
 service: abu-database
 
+custom:
+  project: ${file(../config/${self:provider.stage}.yml):PROJECT_NAME}
+  currentStage: ${self:provider.stage}
+
 provider:
   name: aws
   runtime: nodejs12.x
@@ -14,7 +18,7 @@ resources:
     DynamoDbTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: abu-${self:provider.stage}
+        TableName: ${self:custom.project}-${self:provider.stage}
         BillingMode: PAY_PER_REQUEST
         StreamSpecification:
           StreamViewType: "NEW_AND_OLD_IMAGES"
