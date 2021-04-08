@@ -31,6 +31,7 @@ source ./config-to-env.sh
 echo "REACT_APP_AUTH_OAUTH_SIGNIN=http://localhost:8060" >> $ENV_FILE
 echo "REACT_APP_AUTH_OAUTH_SIGNOUT=http://localhost:8060" >> $ENV_FILE
 echo "REACT_APP_API_ENDPOINT=http://localhost:8061" >> $ENV_FILE
+echo "REACT_APP_UPLOAD_ENDPOINT==http://localhost:8064" >> $ENV_FILE
 
 # Setup local dynamodb
 yarn workspace res setup:local:ddb
