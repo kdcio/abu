@@ -18,6 +18,8 @@ custom:
     lambdaPort: 8066
     noPrependStageInUrl: true
     useChildProcesses: true
+  bundle:
+    packager: yarn
 
 provider:
   name: aws
