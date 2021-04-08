@@ -66,6 +66,11 @@ yarn workspace upload delete $STAGE
 echo -e "\n${BLUE}Removing API...${NC}\n"
 yarn delete:api $STAGE
 
+echo -e "\n${BLUE}Removing CloudFront lambda function...${NC}\n"
+aws lambda delete-function \
+    --function-name abu-upload-$STAGE-cf \
+    --region us-east-1 \
+    --profile $PROFILE
 
 echo -e "${GREEN}Uninstall Success!!!${NC}\n"
 
