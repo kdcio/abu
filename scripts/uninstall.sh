@@ -68,7 +68,7 @@ yarn delete:api $STAGE
 
 echo -e "\n${BLUE}Removing CloudFront lambda function...${NC}\n"
 aws lambda delete-function \
-    --function-name abu-upload-$STAGE-cf \
+    --function-name abu-upload-$STAGE-origin-request \
     --region us-east-1 \
     --profile $PROFILE
 

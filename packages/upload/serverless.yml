@@ -56,8 +56,8 @@ provider:
             - "arn:aws:s3:::${self:custom.BucketName}/*"
 
 functions:
-  cf:
-    handler: src/request.handler
+  origin-request:
+    handler: src/origin-request.handler
     events:
       - cloudFront:
           eventType: origin-request
