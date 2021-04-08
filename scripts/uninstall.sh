@@ -8,13 +8,25 @@ NC='\033[0m' # No Color
 
 if [ -z "$1" ]
   then
-    echo -e "\nThis script will remove resources that was created by the setup script.\n"
+    echo -e "\nThis script will remove ALL resources that was created by the setup script.\n"
     echo -e "Usage: uninstall.sh ${BLUE}<stage>${NC}\n"
     echo -e "Example: uninstall.sh prod\n"
   exit 1
 fi
 
 STAGE=$1
+
+echo -e "\n\n${RED}DANGER: THIS CANNOT BE UNDONE!!!${NC}"
+echo -e "\n\n${RED}DANGER: ALL YOUR DATA WILL BE LOST AND CANNOT BE RECOVERED!!!${NC}\n\n"
+read -p "Are you sure? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    echo -e "\n${GREEN}Whew! I thought you were serious. :)${NC}\n"
+    exit 0
+fi
+
+exit 0
 
 cd "$(dirname "$0")"
 source ./config-to-env.sh
@@ -23,6 +35,11 @@ source ./pool-id.sh
 
 echo -e "\n${BLUE}Removing all files from bucket...${NC}\n"
 aws s3 rm s3://$PROJECT \
+    --recursive \
+    --profile $PROFILE
+
+echo -e "\n${BLUE}Removing all files from upload bucket...${NC}\n"
+aws s3 rm s3://$UPLOAD_BUCKET \
     --recursive \
     --profile $PROFILE
 
@@ -44,6 +61,9 @@ yarn workspace res delete:ddb $STAGE
 
 echo -e "\n${BLUE}Removing S3 and CloudFront...${NC}\n"
 yarn workspace res delete:s3-cf $STAGE
+
+echo -e "\n${BLUE}Removing Upload S3 and CloudFront...${NC}\n"
+yarn workspace upload delete $STAGE
 
 
 echo -e "${GREEN}Uninstall Success!!!${NC}\n"

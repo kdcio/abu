@@ -8,6 +8,7 @@
     "deploy": "sls deploy -s",
     "deploy:func": "sls deploy function",
     "build": "sls package",
+    "delete": "sls remove -s",
     "test": "serverless-bundle test --collect-coverage",
     "test:watch": "serverless-bundle test --watch --collect-coverage"
   },

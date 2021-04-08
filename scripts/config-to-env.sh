@@ -1,10 +1,13 @@
 #!/bin/bash
 
-PROJECT_MATCH="PROJECT_NAME: "
-PROJECT=$(grep "$PROJECT_MATCH" ../config/$STAGE.yml | sed -e "s/^$PROJECT_MATCH//")
+SEARCH_KEY="PROJECT_NAME: "
+PROJECT=$(grep "$SEARCH_KEY" ../config/$STAGE.yml | sed -e "s/^$SEARCH_KEY//")
 
-REGION_MATCH="REGION: "
-REGION=$(grep "$REGION_MATCH" ../config/$STAGE.yml | sed -e "s/^$REGION_MATCH//")
+SEARCH_KEY="UPLOAD_BUCKET: "
+UPLOAD_BUCKET=$(grep "$SEARCH_KEY" ../config/$STAGE.yml | sed -e "s/^$SEARCH_KEY//")
 
-PROFILE_MATCH="PROFILE: "
-PROFILE=$(grep "$PROFILE_MATCH" ../config/$STAGE.yml | sed -e "s/^$PROFILE_MATCH//")
+SEARCH_KEY="REGION: "
+REGION=$(grep "$SEARCH_KEY" ../config/$STAGE.yml | sed -e "s/^$SEARCH_KEY//")
+
+SEARCH_KEY="PROFILE: "
+PROFILE=$(grep "$SEARCH_KEY" ../config/$STAGE.yml | sed -e "s/^$SEARCH_KEY//")
