@@ -26,8 +26,6 @@ then
     exit 0
 fi
 
-exit 0
-
 cd "$(dirname "$0")"
 source ./config-to-env.sh
 source ./cf-stack-output.sh
@@ -59,11 +57,14 @@ yarn workspace res delete:cog $STAGE
 echo -e "\n${BLUE}Removing DynamoDB...${NC}\n"
 yarn workspace res delete:ddb $STAGE
 
-echo -e "\n${BLUE}Removing S3 and CloudFront...${NC}\n"
+echo -e "\n${BLUE}Removing CMS S3 and CloudFront...${NC}\n"
 yarn workspace res delete:s3-cf $STAGE
 
 echo -e "\n${BLUE}Removing Upload S3 and CloudFront...${NC}\n"
 yarn workspace upload delete $STAGE
+
+echo -e "\n${BLUE}Removing API...${NC}\n"
+yarn delete:api $STAGE
 
 
 echo -e "${GREEN}Uninstall Success!!!${NC}\n"
