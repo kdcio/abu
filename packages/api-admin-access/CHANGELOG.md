@@ -1,0 +1,8 @@
+# api-admin-access
+
+## 0.1.1
+### Patch Changes
+
+- 0d29c8b: First release
+- Updated dependencies [0d29c8b]
+  - model@0.1.1

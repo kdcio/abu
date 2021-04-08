@@ -1,6 +1,6 @@
 {
   "name": "authorizer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AbuCMS authorizer for content API",
   "main": "lib/index.js",
   "scripts": {
