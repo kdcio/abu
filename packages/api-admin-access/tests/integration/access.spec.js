@@ -80,6 +80,21 @@ describe("Access", () => {
     expect(json.Items).toHaveLength(2);
   });
 
+  it("should list access with default limit of 10", async () => {
+    const event = makeFakeEvent({
+      path: "/",
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "GET",
+    });
+
+    const response = await list(event);
+    expect(response.statusCode).toEqual(200);
+    expect(response.isBase64Encoded).toBe(false);
+    const json = JSON.parse(response.body);
+    expect(json).toHaveProperty("cursor");
+    expect(json.Items).toHaveLength(5);
+  });
+
   it("should read aaccess", async () => {
     const access = accesses[4];
     const event = makeFakeEvent({
