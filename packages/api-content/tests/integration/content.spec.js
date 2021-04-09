@@ -6,11 +6,15 @@ import {
   genHome,
   genSocial,
 } from "helper";
+import ApiAccess from "model/lib/entities/ApiAccess";
 import { handler as create } from "../../src/create";
 import { handler as list } from "../../src/list";
 import { handler as read } from "../../src/read";
 import { handler as remove } from "../../src/delete";
 import { handler as update } from "../../src/update";
+import { handler as authorizer } from "../../src/authorizer";
+
+import apiAccesses from "../fixtures/api-access.json";
 
 let ddb;
 let tableName;
@@ -24,6 +28,11 @@ const contents = {
 describe("Content", () => {
   beforeAll(async () => {
     ({ DocumentClient: ddb, TableName: tableName } = await start());
+    const proms = [];
+    apiAccesses.forEach((d) => {
+      proms.push(ApiAccess.put({ ...d }));
+    });
+    await Promise.all(proms);
   });
 
   [
@@ -242,5 +251,53 @@ describe("Content", () => {
 
     const res = await ddb.get(params).promise();
     expect(res.Item.data).toEqual({ ...content, name: "Edited blog" });
+  });
+
+  it("should authorize read only", async () => {
+    const event = makeFakeEvent({
+      path: "/",
+      httpMethod: "GET",
+      authorizationToken: "0f851da755f548668a094693779b8bc8",
+      methodArn:
+        "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/blog",
+    });
+
+    const response = await authorizer(event, {});
+    expect(response).toStrictEqual({
+      context: {},
+      policyDocument: {
+        Statement: [
+          {
+            Action: "execute-api:Invoke",
+            Effect: "Allow",
+            Resource: [
+              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/about_page",
+              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/about_page/*",
+              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/blog",
+              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/blog/*",
+              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/social_profile",
+              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/social_profile/*",
+              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/home",
+              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/home/*",
+            ],
+          },
+        ],
+        Version: "2012-10-17",
+      },
+      principalId: "1",
+    });
+  });
+
+  it("should throw unauthorized", async () => {
+    const event = makeFakeEvent({
+      path: "/",
+      httpMethod: "POST",
+      methodArn:
+        "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/POST/content/blog",
+    });
+
+    expect.assertions(1);
+    const response = await authorizer(event, {});
+    expect(response).toBeNull();
   });
 });

@@ -1,0 +1,19 @@
+[
+  {
+    "id": "1",
+    "name": "Read Only",
+    "key": "0f851da755f548668a094693779b8bc8",
+    "read": {
+      "about_page": true,
+      "blog": true,
+      "home": true,
+      "social_profile": true
+    },
+    "write": {
+      "about_page": false,
+      "blog": false,
+      "home": false,
+      "social_profile": false
+    }
+  }
+]
