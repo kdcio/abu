@@ -9,7 +9,8 @@ const makeBrowse = ({ list, parser, response }) => {
     const allowsGroups = ["admin", "editor"];
     const groups = request?.authorizer?.claims?.["cognito:groups"] || [];
     const filteredGroup = allowsGroups.filter((g) => groups.includes(g));
-    if (filteredGroup.length < 0) {
+
+    if (filteredGroup.length === 0) {
       throw new Error(
         "Forbidden: only admins and editors can perform this action"
       );
