@@ -67,7 +67,7 @@ describe("Admin Post Content", () => {
     }
   });
 
-  it("should throw missing id", async () => {
+  it("should throw missing model id", async () => {
     expect.assertions(1);
     try {
       const event = makeFakeEvent({

@@ -67,25 +67,6 @@ describe("Admin Patch Content", () => {
     }
   });
 
-  it("should throw Missing id", async () => {
-    expect.assertions(1);
-    try {
-      await patch({
-        event: {
-          requestContext: {
-            identity: {},
-            authorizer: {
-              claims: { sub: "tester", "cognito:groups": ["admin"] },
-            },
-          },
-          path: "/",
-        },
-      });
-    } catch (error) {
-      expect(error.message).toBe("Missing model id");
-    }
-  });
-
   it("should throw missing model id", async () => {
     expect.assertions(1);
     try {
