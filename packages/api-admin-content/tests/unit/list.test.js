@@ -1,17 +1,17 @@
 import parser from "@kdcio/api-gw-req";
 import response from "@kdcio/api-gw-resp";
-import makeListModels from "../../src/controller/list-models";
+import makeBrowse from "../../src/controller/browse";
 
-let listModels = null;
-describe("List Models", () => {
+let browse = null;
+describe("Admin Browse Content", () => {
   beforeAll(() => {
-    listModels = makeListModels({ list: () => {}, parser, response });
+    browse = makeBrowse({ list: () => {}, parser, response });
   });
 
   it("should throw unauthrozied", async () => {
     expect.assertions(1);
     try {
-      await listModels({
+      await browse({
         event: {
           requestContext: {},
         },

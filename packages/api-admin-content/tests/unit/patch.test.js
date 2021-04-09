@@ -1,17 +1,17 @@
 import parser from "@kdcio/api-gw-req";
 import response from "@kdcio/api-gw-resp";
-import makePatchModel from "../../src/controller/patch-model";
+import makePatch from "../../src/controller/patch";
 
-let patchModel = null;
-describe("Patch Model", () => {
+let patch = null;
+describe("Admin Patch Content", () => {
   beforeAll(() => {
-    patchModel = makePatchModel({ patch: () => {}, parser, response });
+    patch = makePatch({ patch: () => {}, parser, response });
   });
 
   it("should throw unauthrozied", async () => {
     expect.assertions(1);
     try {
-      await patchModel({
+      await patch({
         event: {
           requestContext: {},
         },
@@ -24,7 +24,7 @@ describe("Patch Model", () => {
   it("should throw Missing id", async () => {
     expect.assertions(1);
     try {
-      await patchModel({
+      await patch({
         event: {
           requestContext: {
             identity: {},
@@ -36,7 +36,7 @@ describe("Patch Model", () => {
         },
       });
     } catch (error) {
-      expect(error.message).toBe("Missing id");
+      expect(error.message).toBe("Missing model id");
     }
   });
 });

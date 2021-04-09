@@ -1,17 +1,17 @@
 import parser from "@kdcio/api-gw-req";
 import response from "@kdcio/api-gw-resp";
-import makeGetModel from "../../src/controller/get-model";
+import makeGet from "../../src/controller/get";
 
-let getModel = null;
-describe("Get Model", () => {
+let get = null;
+describe("Admin Get Content", () => {
   beforeAll(() => {
-    getModel = makeGetModel({ get: () => {}, parser, response });
+    get = makeGet({ get: () => {}, parser, response });
   });
 
   it("should throw unauthrozied", async () => {
     expect.assertions(1);
     try {
-      await getModel({
+      await get({
         event: {
           requestContext: {},
         },
@@ -24,7 +24,7 @@ describe("Get Model", () => {
   it("should throw Missing id", async () => {
     expect.assertions(1);
     try {
-      await getModel({
+      await get({
         event: {
           requestContext: {
             identity: {},
@@ -34,7 +34,7 @@ describe("Get Model", () => {
         },
       });
     } catch (error) {
-      expect(error.message).toBe("Missing id");
+      expect(error.message).toBe("Missing model id");
     }
   });
 });

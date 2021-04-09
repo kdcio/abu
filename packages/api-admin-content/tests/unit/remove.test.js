@@ -1,17 +1,17 @@
 import parser from "@kdcio/api-gw-req";
 import response from "@kdcio/api-gw-resp";
-import makeRemoveModel from "../../src/controller/remove-model";
+import makeRemove from "../../src/controller/delete";
 
-let removeModel = null;
-describe("Remove Model", () => {
+let remove = null;
+describe("Admin Delete Content", () => {
   beforeAll(() => {
-    removeModel = makeRemoveModel({ remove: () => {}, parser, response });
+    remove = makeRemove({ remove: () => {}, parser, response });
   });
 
   it("should throw unauthrozied", async () => {
     expect.assertions(1);
     try {
-      await removeModel({
+      await remove({
         event: {
           requestContext: {},
         },
@@ -24,7 +24,7 @@ describe("Remove Model", () => {
   it("should throw Missing id", async () => {
     expect.assertions(1);
     try {
-      await removeModel({
+      await remove({
         event: {
           requestContext: {
             identity: {},
@@ -36,7 +36,7 @@ describe("Remove Model", () => {
         },
       });
     } catch (error) {
-      expect(error.message).toBe("Missing id");
+      expect(error.message).toBe("Missing model id");
     }
   });
 });

@@ -1,17 +1,17 @@
 import parser from "@kdcio/api-gw-req";
 import response from "@kdcio/api-gw-resp";
-import makePostModel from "../../src/controller/post-model";
+import makePost from "../../src/controller/post";
 
-let postModel = null;
-describe("Post Model", () => {
+let post = null;
+describe("Admin Post Content", () => {
   beforeAll(() => {
-    postModel = makePostModel({ create: () => {}, parser, response });
+    post = makePost({ create: () => {}, parser, response });
   });
 
   it("should throw unauthrozied", async () => {
     expect.assertions(1);
     try {
-      await postModel({
+      await post({
         event: {
           requestContext: {},
         },
