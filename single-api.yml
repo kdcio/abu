@@ -26,17 +26,17 @@ provider:
   runtime: nodejs14.x
   memorySize: 128
   stage: ${opt:stage, 'dev'}
-  region: ${file(./config/${self:provider.stage}.yml):REGION}
-  profile: ${file(./config/${self:provider.stage}.yml):PROFILE}
+  region: ${file(./config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
+  profile: ${file(./config/${self:provider.stage}.yml):PROFILE, 'default'}
   lambdaHashingVersion: 20201221
   environment:
     TZ: ${file(./config/${self:provider.stage}.yml):TZ, 'Asia/Manila'}
     STAGE: ${self:provider.stage}
     NODE_ENV: ${self:provider.stage}
     DEBUG: ${file(./config/${self:provider.stage}.yml):DEBUG, 'lambda:event,lambda:error'}
-    COG_POOL_ID: ${file(./config/${self:provider.stage}.yml):COG_POOL_ID}
-    COG_ACCESS_KEY_ID: ${file(./config/${self:provider.stage}.yml):COG_ACCESS_KEY_ID}
-    COG_SECRET_ACCESS_KEY: ${file(./config/${self:provider.stage}.yml):COG_SECRET_ACCESS_KEY}
+    COG_POOL_ID: ${file(./config/${self:provider.stage}.yml):COG_POOL_ID, 'pool-id'}
+    COG_ACCESS_KEY_ID: ${file(./config/${self:provider.stage}.yml):COG_ACCESS_KEY_ID, 'access-key-id'}
+    COG_SECRET_ACCESS_KEY: ${file(./config/${self:provider.stage}.yml):COG_SECRET_ACCESS_KEY, 'secret-key-id'}
     DDB_REGION: ${file(./config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
     DDB_ENDPOINT: ${file(./config/${self:provider.stage}.yml):DDB_ENDPOINT, ''}
     DDB_TABLE: ${file(./config/${self:provider.stage}.yml):DDB_TABLE, 'abu-local'}
