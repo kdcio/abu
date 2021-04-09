@@ -163,7 +163,6 @@ describe("Admin Content", () => {
     const event = makeFakeEvent({
       path: "/",
       pathParameters: { modelId: "blog", id: "fake-id" },
-      queryStringParameters: { all: "true" },
       headers: { "Content-Type": "application/json" },
       httpMethod: "GET",
     });
@@ -181,7 +180,6 @@ describe("Admin Content", () => {
     const event = makeFakeEvent({
       path: "/",
       pathParameters: { modelId: "blog", id: blog.id },
-      queryStringParameters: { all: "true" },
       headers: { "Content-Type": "application/json" },
       httpMethod: "DELETE",
     });
