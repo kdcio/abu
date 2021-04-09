@@ -1,6 +1,6 @@
 const faker = require("faker");
 
-module.exports = ({ withId = true }) => {
+module.exports = ({ withId = true } = {}) => {
   const paraCount = faker.datatype.number({ max: 5 });
   let paragraphs = `<h1>${faker.lorem.words()}</h1>`;
   for (let ctr = 0; ctr < paraCount; ctr += 1) {
