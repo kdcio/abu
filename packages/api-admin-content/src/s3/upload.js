@@ -42,7 +42,6 @@ const getSignedUrl = async ({ filename, type }) => {
   return {
     url,
     targets: Object.keys(targets).reduce((acc, k) => {
-      console.log(k, targets[k], acc);
       acc[k] = `${S3_BASE_URL}/${targets[k]}`;
       return acc;
     }, {}),

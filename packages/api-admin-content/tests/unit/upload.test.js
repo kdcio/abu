@@ -1,11 +1,11 @@
-import makeCreate from "../../src/use-cases/create";
-import { handler } from "../../src/create";
+import makeSignedUrl from "../../src/use-cases/signed-url";
+import { handler } from "../../src/upload";
 
-jest.mock("../../src/use-cases/create");
+jest.mock("../../src/use-cases/signed-url");
 
-describe("Create content", () => {
+describe("Upload image", () => {
   it("should throw unauthrozied", async () => {
-    makeCreate.mockImplementation(() => {
+    makeSignedUrl.mockImplementation(() => {
       throw new Error("Some kind of error");
     });
 

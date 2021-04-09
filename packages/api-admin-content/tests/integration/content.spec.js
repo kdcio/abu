@@ -6,15 +6,12 @@ import {
   genHome,
   genSocial,
 } from "helper";
-import ApiAccess from "model/lib/entities/ApiAccess";
 import { handler as create } from "../../src/create";
-import { handler as list } from "../../src/list";
 import { handler as read } from "../../src/read";
-import { handler as remove } from "../../src/delete";
+import { handler as list } from "../../src/list";
 import { handler as update } from "../../src/update";
-import { handler as authorizer } from "../../src/authorizer";
-
-import apiAccesses from "../fixtures/api-access.json";
+import { handler as remove } from "../../src/delete";
+import { handler as upload } from "../../src/upload";
 
 let ddb;
 let tableName;
@@ -25,25 +22,20 @@ const contents = {
   social_profile: [],
 };
 
-describe("Content", () => {
+describe("Admin Content", () => {
   beforeAll(async () => {
     ({ DocumentClient: ddb, TableName: tableName } = await start());
-    const proms = [];
-    apiAccesses.forEach((d) => {
-      proms.push(ApiAccess.put({ ...d }));
-    });
-    await Promise.all(proms);
   });
 
   [
     { content: genBlog(), modelId: "blog" },
     { content: genBlog(), modelId: "blog" },
-    { content: genAbout(), modelId: "about_page" },
+    { content: genAbout({ withId: false }), modelId: "about_page" },
     { content: genBlog(), modelId: "blog" },
     { content: genBlog(), modelId: "blog" },
     { content: genSocial(), modelId: "social_profile" },
     { content: genBlog(), modelId: "blog" },
-    { content: genHome(), modelId: "home" },
+    { content: genHome({ withId: false }), modelId: "home" },
     { content: genSocial(), modelId: "social_profile" },
     { content: genBlog(), modelId: "blog" },
     { content: genBlog(), modelId: "blog" },
@@ -60,13 +52,17 @@ describe("Content", () => {
     { content: genBlog(), modelId: "blog" },
     { content: genBlog(), modelId: "blog" },
   ].forEach(({ content, modelId }) => {
-    it(`should create ${modelId}`, async () => {
+    it(`should create ${modelId} content`, async () => {
+      let body = { data: content };
+      if (modelId === "home" || modelId === "about_page") {
+        body.id = modelId;
+      }
       const event = makeFakeEvent({
-        path: "/",
+        path: `/content/${modelId}`,
         pathParameters: { modelId },
         headers: { "Content-Type": "application/json" },
         httpMethod: "POST",
-        body: JSON.stringify(content),
+        body: JSON.stringify(body),
       });
 
       const response = await create(event);
@@ -88,7 +84,6 @@ describe("Content", () => {
       };
 
       const { Item } = await ddb.get(params).promise();
-
       let expected = content;
       if (modelId === "home" || modelId === "about_page") {
         const { id, ...rest } = content;
@@ -132,23 +127,6 @@ describe("Content", () => {
     expect(json.Items).toHaveLength(6);
   });
 
-  it("should list all blogs", async () => {
-    let event = makeFakeEvent({
-      path: "/",
-      pathParameters: { modelId: "blog" },
-      queryStringParameters: { all: "true" },
-      headers: { "Content-Type": "application/json" },
-      httpMethod: "GET",
-    });
-
-    let response = await list(event);
-    expect(response.statusCode).toEqual(200);
-    expect(response.isBase64Encoded).toBe(false);
-    let json = JSON.parse(response.body);
-    expect(json).not.toHaveProperty("cursor");
-    expect(json.Items).toHaveLength(16);
-  });
-
   it("should read a blog", async () => {
     const blog = contents.blog[5];
     const event = makeFakeEvent({
@@ -165,12 +143,12 @@ describe("Content", () => {
 
     const json = JSON.parse(response.body);
     expect(json.id).toBe(blog.id);
-    expect(json.name).toBe(blog.name);
-    expect(json.cover_image).toEqual(blog.cover_image);
-    expect(json.excerpt).toBe(blog.excerpt);
-    expect(json.body).toBe(blog.body);
-    expect(json.slug).toBe(blog.slug);
-    expect(json.tags).toBe(blog.tags);
+    expect(json.data.name).toBe(blog.name);
+    expect(json.data.cover_image).toEqual(blog.cover_image);
+    expect(json.data.excerpt).toBe(blog.excerpt);
+    expect(json.data.body).toBe(blog.body);
+    expect(json.data.slug).toBe(blog.slug);
+    expect(json.data.tags).toBe(blog.tags);
     expect(json).toHaveProperty("created");
     expect(json).toHaveProperty("modified");
     expect(json).not.toHaveProperty("pk");
@@ -178,6 +156,7 @@ describe("Content", () => {
     expect(json).not.toHaveProperty("pk3");
     expect(json).not.toHaveProperty("sk");
     expect(json).not.toHaveProperty("sk2");
+    expect(json).not.toHaveProperty("entity");
   });
 
   it("should throw content not found", async () => {
@@ -230,10 +209,9 @@ describe("Content", () => {
     const event = makeFakeEvent({
       path: "/",
       pathParameters: { modelId: "blog", id },
-      queryStringParameters: { all: "true" },
       headers: { "Content-Type": "application/json" },
       httpMethod: "PUT",
-      body: JSON.stringify({ ...content, name: "Edited blog" }),
+      body: JSON.stringify({ data: { ...content, name: "Edited blog" } }),
     });
 
     const response = await update(event);
@@ -253,51 +231,29 @@ describe("Content", () => {
     expect(res.Item.data).toEqual({ ...content, name: "Edited blog" });
   });
 
-  it("should authorize read only", async () => {
+  it("should get a signed url for upload", async () => {
+    const blog = contents.blog[3];
     const event = makeFakeEvent({
       path: "/",
+      pathParameters: { modelId: "blog", id: blog.id },
+      queryStringParameters: { filename: "test.jpg", type: "image/jpeg" },
+      headers: { "Content-Type": "application/json" },
       httpMethod: "GET",
-      authorizationToken: "0f851da755f548668a094693779b8bc8",
-      methodArn:
-        "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/blog",
     });
 
-    const response = await authorizer(event, {});
-    expect(response).toStrictEqual({
-      context: {},
-      policyDocument: {
-        Statement: [
-          {
-            Action: "execute-api:Invoke",
-            Effect: "Allow",
-            Resource: [
-              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/about_page",
-              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/about_page/*",
-              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/blog",
-              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/blog/*",
-              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/social_profile",
-              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/social_profile/*",
-              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/home",
-              "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/home/*",
-            ],
-          },
-        ],
-        Version: "2012-10-17",
-      },
-      principalId: "1",
-    });
-  });
+    const response = await upload(event);
+    expect(response.statusCode).toEqual(200);
+    expect(response.isBase64Encoded).toBe(false);
 
-  it("should throw unauthorized", async () => {
-    const event = makeFakeEvent({
-      path: "/",
-      httpMethod: "POST",
-      methodArn:
-        "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/POST/content/blog",
-    });
-
-    expect.assertions(1);
-    const response = await authorizer(event, {});
-    expect(response).toBeNull();
+    const json = JSON.parse(response.body);
+    expect(json.targets.thumb).toMatch(
+      /http\:\/\/localhost\:8064\/local\/thumb\/\d+\-test\.webp/i
+    );
+    expect(json.targets.orig).toMatch(
+      /http\:\/\/localhost\:8064\/local\/orig\/\d+\-test\.jpg/i
+    );
+    expect(json.url).toMatch(
+      /http\:\/\/localhost\:8064\/local\/uploads\/\d+\-test\.jpg\?Content\-Type=image%2Fjpeg&X\-Amz\-Algorithm=AWS4\-HMAC\-SHA256&X\-Amz\-Credential=.*&X\-Amz\-Date=.*&X\-Amz\-Expires=600&X\-Amz\-Signature=.*&X\-Amz\-SignedHeaders=host%3Bx\-amz\-acl%3Bx\-amz\-meta\-opt\-orig%3Bx\-amz\-meta\-opt\-thumb&x\-amz\-acl=public\-read&x\-amz\-meta\-opt\-orig=.*&x\-amz\-meta\-opt\-thumb=.*/i
+    );
   });
 });

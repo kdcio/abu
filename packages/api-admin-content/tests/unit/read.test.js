@@ -1,11 +1,11 @@
-import makeCreate from "../../src/use-cases/create";
-import { handler } from "../../src/create";
+import makeRead from "../../src/use-cases/read";
+import { handler } from "../../src/read";
 
-jest.mock("../../src/use-cases/create");
+jest.mock("../../src/use-cases/read");
 
-describe("Create content", () => {
+describe("Read content", () => {
   it("should throw unauthrozied", async () => {
-    makeCreate.mockImplementation(() => {
+    makeRead.mockImplementation(() => {
       throw new Error("Some kind of error");
     });
 
