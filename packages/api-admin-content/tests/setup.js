@@ -3,3 +3,7 @@ process.env.DDB_REGION = "localhost";
 process.env.DDB_TABLE = "abu-test-model";
 process.env.DEBUG = "lambda:error";
 process.env.PAGINATION_SECRET = "45y5ert4erfgert";
+process.env.IS_OFFLINE = "true";
+process.env.S3_BUCKET = "local";
+process.env.S3_BUCKET_PREFIX = "uploads";
+process.env.S3_BASE_URL = "http://localhost:8064/local";

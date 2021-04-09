@@ -11,7 +11,7 @@ import { handler as read } from "../../src/read";
 import { handler as list } from "../../src/list";
 import { handler as update } from "../../src/update";
 import { handler as remove } from "../../src/delete";
-import faker from "faker";
+import { handler as upload } from "../../src/upload";
 
 let ddb;
 let tableName;
@@ -229,5 +229,31 @@ describe("Admin Content", () => {
 
     const res = await ddb.get(params).promise();
     expect(res.Item.data).toEqual({ ...content, name: "Edited blog" });
+  });
+
+  it("should get a signed url for upload", async () => {
+    const blog = contents.blog[3];
+    const event = makeFakeEvent({
+      path: "/",
+      pathParameters: { modelId: "blog", id: blog.id },
+      queryStringParameters: { filename: "test.jpg", type: "image/jpeg" },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "GET",
+    });
+
+    const response = await upload(event);
+    expect(response.statusCode).toEqual(200);
+    expect(response.isBase64Encoded).toBe(false);
+
+    const json = JSON.parse(response.body);
+    expect(json.targets.thumb).toMatch(
+      /http\:\/\/localhost\:8064\/local\/thumb\/\d+\-test\.webp/i
+    );
+    expect(json.targets.orig).toMatch(
+      /http\:\/\/localhost\:8064\/local\/orig\/\d+\-test\.jpg/i
+    );
+    expect(json.url).toMatch(
+      /http\:\/\/localhost\:8064\/local\/uploads\/\d+\-test\.jpg\?Content\-Type=image%2Fjpeg&X\-Amz\-Algorithm=AWS4\-HMAC\-SHA256&X\-Amz\-Credential=.*&X\-Amz\-Date=.*&X\-Amz\-Expires=600&X\-Amz\-Signature=.*&X\-Amz\-SignedHeaders=host%3Bx\-amz\-acl%3Bx\-amz\-meta\-opt\-orig%3Bx\-amz\-meta\-opt\-thumb&x\-amz\-acl=public\-read&x\-amz\-meta\-opt\-orig=.*&x\-amz\-meta\-opt\-thumb=.*/i
+    );
   });
 });

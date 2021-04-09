@@ -9,7 +9,7 @@ const makeUpload = ({ signedUrl, parser, response }) => {
     const allowsGroups = ["admin", "editor"];
     const groups = request?.authorizer?.claims?.["cognito:groups"] || [];
     const filteredGroup = allowsGroups.filter((g) => groups.includes(g));
-    if (filteredGroup.length < 0) {
+    if (filteredGroup.length === 0) {
       throw new Error(
         "Forbidden: only admins and editors can perform this action"
       );
@@ -24,6 +24,9 @@ const makeUpload = ({ signedUrl, parser, response }) => {
 
     const { query } = request;
     const { filename, type } = query;
+
+    if (!filename) throw new Error("Missing filename");
+    if (!type) throw new Error("Missing type");
 
     const data = await signedUrl({ modelId, filename, type });
     return response.OK({ body: data });
