@@ -12,7 +12,7 @@ describe("Manage Users by Admin", function () {
   });
 
   it("First signin ask to change password", () => {
-    cy.get("h1").contains("Login");
+    cy.get("#login-title").contains("Login");
 
     firstName = faker.name.firstName();
     lastName = faker.name.lastName();
@@ -82,7 +82,7 @@ describe("Manage Users by Admin", function () {
       .contains(`${firstName} ${lastName}`)
       .click();
     cy.get("#logout").click();
-    cy.get("h1").contains("Login");
+    cy.get("#login-title").contains("Login");
 
     // login as new editor
     cy.getVerificationCode(eEmail).then((code) => {
@@ -104,7 +104,7 @@ describe("Manage Users by Admin", function () {
     cy.get("#logout").click();
 
     // login again as admin
-    cy.get("h1").contains("Login");
+    cy.get("#login-title").contains("Login");
     cy.get("#email").type(email);
     cy.get("#password").type(password, { log: false });
     cy.get("#login").click();
@@ -173,7 +173,7 @@ describe("Manage Users by Admin", function () {
     cy.get("#logout").click();
 
     // login again as admin and delete editor
-    cy.get("h1").contains("Login");
+    cy.get("#login-title").contains("Login");
     cy.get("#email").type(email);
     cy.get("#password").type(password, { log: false });
     cy.get("#login").click();
