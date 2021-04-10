@@ -37,8 +37,8 @@ EMAIL=$2
 ./scripts/setup-stage.sh $STAGE $EMAIL
 
 # Run deploy api
-yarn deploy:api prod
+yarn deploy:api $STAGE
 
 # Run deploy cms
-yarn deploy:cms prod
+yarn deploy:cms $STAGE
 
