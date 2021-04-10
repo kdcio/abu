@@ -11,7 +11,10 @@ const makeBrowse = ({ list, parser, response }) => {
       throw new Error("Forbidden: only admins can perform this action");
     }
 
-    const data = await list();
+    const { query } = request;
+    const { limit, cursor } = query;
+
+    const data = await list({ limit, cursor });
     return response.OK({ body: data });
   };
   return browse;

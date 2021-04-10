@@ -1,11 +1,11 @@
-import makeList from "../../src/use-cases/list";
-import { handler } from "../../src/list";
+import makeRead from "../../src/use-cases/read";
+import { handler } from "../../src/read";
 
-jest.mock("../../src/use-cases/list");
+jest.mock("../../src/use-cases/read");
 
-describe("List access", () => {
+describe("Read access", () => {
   it("should throw unauthrozied", async () => {
-    makeList.mockImplementation(() => {
+    makeRead.mockImplementation(() => {
       throw new Error("Some kind of error");
     });
 

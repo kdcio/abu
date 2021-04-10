@@ -1,18 +1,18 @@
 import parser from "@kdcio/api-gw-req";
 import response from "@kdcio/api-gw-resp";
 import { makeFakeEvent } from "helper";
-import makePost from "../../../src/controller/post";
+import makeBrowse from "../../../src/controller/browse";
 
-let post = null;
-describe("Admin Post Content", () => {
+let browse = null;
+describe("Admin Browse Access", () => {
   beforeAll(() => {
-    post = makePost({ create: () => {}, parser, response });
+    browse = makeBrowse({ list: () => {}, parser, response });
   });
 
   it("should throw unauthrozied", async () => {
     expect.assertions(1);
     try {
-      await post({
+      await browse({
         event: {
           requestContext: {},
         },
@@ -29,7 +29,7 @@ describe("Admin Post Content", () => {
         path: "/",
         pathParameters: { modelId: "blog" },
         headers: { "Content-Type": "application/json" },
-        httpMethod: "POST",
+        httpMethod: "GET",
         requestContext: {
           authorizer: {
             claims: {
@@ -39,7 +39,7 @@ describe("Admin Post Content", () => {
           },
         },
       });
-      await post({ event });
+      await browse({ event });
     } catch (error) {
       expect(error.message).toMatch(/forbidden/i);
     }
@@ -52,7 +52,7 @@ describe("Admin Post Content", () => {
         path: "/",
         pathParameters: { modelId: "blog" },
         headers: { "Content-Type": "application/json" },
-        httpMethod: "POST",
+        httpMethod: "GET",
         requestContext: {
           authorizer: {
             claims: {
@@ -61,31 +61,9 @@ describe("Admin Post Content", () => {
           },
         },
       });
-      await post({ event });
+      await browse({ event });
     } catch (error) {
       expect(error.message).toMatch(/forbidden/i);
-    }
-  });
-
-  it("should throw missing model id", async () => {
-    expect.assertions(1);
-    try {
-      const event = makeFakeEvent({
-        path: "/",
-        headers: { "Content-Type": "application/json" },
-        httpMethod: "POST",
-        requestContext: {
-          authorizer: {
-            claims: {
-              sub: "user",
-              "cognito:groups": ["editor"],
-            },
-          },
-        },
-      });
-      await post({ event });
-    } catch (error) {
-      expect(error.message).toBe("Missing model id");
     }
   });
 });

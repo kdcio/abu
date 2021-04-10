@@ -1,11 +1,11 @@
-import makeList from "../../src/use-cases/list";
-import { handler } from "../../src/list";
+import makeUpdate from "../../src/use-cases/update";
+import { handler } from "../../src/update";
 
-jest.mock("../../src/use-cases/list");
+jest.mock("../../src/use-cases/update");
 
-describe("List access", () => {
+describe("Update access", () => {
   it("should throw unauthrozied", async () => {
-    makeList.mockImplementation(() => {
+    makeUpdate.mockImplementation(() => {
       throw new Error("Some kind of error");
     });
 

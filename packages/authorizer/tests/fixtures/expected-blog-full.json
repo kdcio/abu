@@ -1,0 +1,25 @@
+{
+  "context": {},
+  "principalId": "1",
+  "policyDocument": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": "execute-api:Invoke",
+        "Effect": "Allow",
+        "Resource": [
+          "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/blog",
+          "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/GET/content/blog/*",
+          "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/POST/content/blog",
+          "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/POST/content/blog/*",
+          "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/PUT/content/blog",
+          "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/PUT/content/blog/*",
+          "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/PATCH/content/blog",
+          "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/PATCH/content/blog/*",
+          "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/DELETE/content/blog",
+          "arn:aws:execute-api:localhost:random-account-id:random-api-id/local/DELETE/content/blog/*"
+        ]
+      }
+    ]
+  }
+}

@@ -1,23 +1,16 @@
-import parser from "@kdcio/api-gw-req";
-import response from "@kdcio/api-gw-resp";
-import makePostModel from "../../src/controller/post-model";
+import makeCreate from "../../src/use-cases/create";
+import { handler } from "../../src/create";
 
-let postModel = null;
-describe("Post Model", () => {
-  beforeAll(() => {
-    postModel = makePostModel({ create: () => {}, parser, response });
-  });
+jest.mock("../../src/use-cases/create");
 
+describe("Create access", () => {
   it("should throw unauthrozied", async () => {
-    expect.assertions(1);
-    try {
-      await postModel({
-        event: {
-          requestContext: {},
-        },
-      });
-    } catch (error) {
-      expect(error.message).toBe("Unauthorized");
-    }
+    makeCreate.mockImplementation(() => {
+      throw new Error("Some kind of error");
+    });
+
+    const response = await handler();
+    expect(response.statusCode).toEqual(500);
+    expect(response.isBase64Encoded).toBe(false);
   });
 });

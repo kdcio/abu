@@ -4,7 +4,7 @@ import { makeFakeEvent } from "helper";
 import makePost from "../../../src/controller/post";
 
 let post = null;
-describe("Admin Post Content", () => {
+describe("Admin Post Access", () => {
   beforeAll(() => {
     post = makePost({ create: () => {}, parser, response });
   });
@@ -64,28 +64,6 @@ describe("Admin Post Content", () => {
       await post({ event });
     } catch (error) {
       expect(error.message).toMatch(/forbidden/i);
-    }
-  });
-
-  it("should throw missing model id", async () => {
-    expect.assertions(1);
-    try {
-      const event = makeFakeEvent({
-        path: "/",
-        headers: { "Content-Type": "application/json" },
-        httpMethod: "POST",
-        requestContext: {
-          authorizer: {
-            claims: {
-              sub: "user",
-              "cognito:groups": ["editor"],
-            },
-          },
-        },
-      });
-      await post({ event });
-    } catch (error) {
-      expect(error.message).toBe("Missing model id");
     }
   });
 });

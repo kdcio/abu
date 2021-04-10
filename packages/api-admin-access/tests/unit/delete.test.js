@@ -1,11 +1,11 @@
-import makeList from "../../src/use-cases/list";
-import { handler } from "../../src/list";
+import makeDelete from "../../src/use-cases/delete";
+import { handler } from "../../src/delete";
 
-jest.mock("../../src/use-cases/list");
+jest.mock("../../src/use-cases/delete");
 
-describe("List access", () => {
+describe("Delete access", () => {
   it("should throw unauthrozied", async () => {
-    makeList.mockImplementation(() => {
+    makeDelete.mockImplementation(() => {
       throw new Error("Some kind of error");
     });
 

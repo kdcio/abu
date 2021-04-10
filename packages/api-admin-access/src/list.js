@@ -4,11 +4,13 @@ import debug from "debug";
 import model from "model/lib/entities/ApiAccess";
 import makeBrowse from "./controller/browse";
 import makeList from "./use-cases/list";
+import encrypt from "./lib/encrypt";
+import decrypt from "./lib/decrypt";
 
 export const handler = async (event) => {
   debug("lambda:event")(JSON.stringify(event));
   try {
-    const list = makeList({ model });
+    const list = makeList({ model, encrypt, decrypt });
     const browse = makeBrowse({ list, parser, response });
     const res = await browse({ event });
     return res;

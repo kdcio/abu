@@ -1,18 +1,18 @@
 import parser from "@kdcio/api-gw-req";
 import response from "@kdcio/api-gw-resp";
 import { makeFakeEvent } from "helper";
-import makePost from "../../../src/controller/post";
+import makeRemove from "../../../src/controller/delete";
 
-let post = null;
-describe("Admin Post Content", () => {
+let remove = null;
+describe("Admin Delete Access", () => {
   beforeAll(() => {
-    post = makePost({ create: () => {}, parser, response });
+    remove = makeRemove({ remove: () => {}, parser, response });
   });
 
   it("should throw unauthrozied", async () => {
     expect.assertions(1);
     try {
-      await post({
+      await remove({
         event: {
           requestContext: {},
         },
@@ -29,7 +29,7 @@ describe("Admin Post Content", () => {
         path: "/",
         pathParameters: { modelId: "blog" },
         headers: { "Content-Type": "application/json" },
-        httpMethod: "POST",
+        httpMethod: "DELETE",
         requestContext: {
           authorizer: {
             claims: {
@@ -39,7 +39,7 @@ describe("Admin Post Content", () => {
           },
         },
       });
-      await post({ event });
+      await remove({ event });
     } catch (error) {
       expect(error.message).toMatch(/forbidden/i);
     }
@@ -52,7 +52,7 @@ describe("Admin Post Content", () => {
         path: "/",
         pathParameters: { modelId: "blog" },
         headers: { "Content-Type": "application/json" },
-        httpMethod: "POST",
+        httpMethod: "DELETE",
         requestContext: {
           authorizer: {
             claims: {
@@ -61,31 +61,24 @@ describe("Admin Post Content", () => {
           },
         },
       });
-      await post({ event });
+      await remove({ event });
     } catch (error) {
       expect(error.message).toMatch(/forbidden/i);
     }
   });
 
-  it("should throw missing model id", async () => {
+  it("should throw missing id", async () => {
     expect.assertions(1);
     try {
       const event = makeFakeEvent({
         path: "/",
         headers: { "Content-Type": "application/json" },
-        httpMethod: "POST",
-        requestContext: {
-          authorizer: {
-            claims: {
-              sub: "user",
-              "cognito:groups": ["editor"],
-            },
-          },
-        },
+        httpMethod: "DELETE",
+        pathParameters: { modelId: "blog" },
       });
-      await post({ event });
+      await remove({ event });
     } catch (error) {
-      expect(error.message).toBe("Missing model id");
+      expect(error.message).toBe("Missing id");
     }
   });
 });

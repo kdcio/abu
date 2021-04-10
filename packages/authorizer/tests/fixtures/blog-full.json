@@ -1,0 +1,19 @@
+[
+  {
+    "id": "1",
+    "name": "Blog full access",
+    "key": "0f851da755f548668a094693779b8bc8",
+    "read": {
+      "about_page": false,
+      "blog": true,
+      "home": false,
+      "social_profile": false
+    },
+    "write": {
+      "about_page": false,
+      "blog": true,
+      "home": false,
+      "social_profile": false
+    }
+  }
+]

@@ -1,6 +1,6 @@
 const faker = require("faker");
 
-module.exports = ({ withId = true }) => {
+module.exports = ({ withId = true } = {}) => {
   const content = {
     intro: faker.company.catchPhrase(),
     cover_image: {
