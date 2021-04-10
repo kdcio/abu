@@ -9,6 +9,8 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { useSidebar } from "context/sidebar";
+import { useAuth } from "context/auth";
+import { GRP_ADMIN } from "../constants";
 
 import HeaderDropdown from "./HeaderDropdown";
 
@@ -16,9 +18,10 @@ import "scss/components/header.scss";
 
 const Header = () => {
   const { sidebarShow, setSidebarShow } = useSidebar();
+  const { user } = useAuth();
+  const group = user?.groups?.[0] || null;
 
   const toggleSidebar = () => {
-    console.log(sidebarShow);
     const val = [true, "responsive"].includes(sidebarShow)
       ? false
       : "responsive";
@@ -53,9 +56,11 @@ const Header = () => {
         <CHeaderNavItem className="px-3">
           <CHeaderNavLink to="/dashboard">Content</CHeaderNavLink>
         </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/system">Settings</CHeaderNavLink>
-        </CHeaderNavItem>
+        {group === GRP_ADMIN && (
+          <CHeaderNavItem className="px-3">
+            <CHeaderNavLink to="/system">Settings</CHeaderNavLink>
+          </CHeaderNavItem>
+        )}
       </CHeaderNav>
 
       <CHeaderNav className="px-3">
