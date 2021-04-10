@@ -167,13 +167,14 @@ describe("Manage Users by Admin", function () {
     cy.get("#email").type(eEmail);
     cy.get("#password").type(newPassword, { log: false });
     cy.get("#login").click();
+    cy.get(".c-sidebar-brand-full").click();
+    cy.get("#hello-title")
+      .should("be.visible")
+      .contains(`Hello ${eFirstName}!`);
     cy.get("#full-name")
       .should("be.visible")
       .contains(`${eFirstName} ${eLastName}`)
       .click();
-    cy.get("#hello-title")
-      .should("be.visible")
-      .contains(`Hello ${eFirstName}!`);
     cy.get("#logout").click();
 
     // login again as admin and delete editor
