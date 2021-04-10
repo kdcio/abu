@@ -45,3 +45,10 @@ delete:
         method: delete
         authorizer: authorizer
         cors: true
+hello:
+  handler: src/hello.handler
+  events:
+    - http:
+        path: /
+        method: get
+        cors: true
