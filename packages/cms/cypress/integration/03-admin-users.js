@@ -37,7 +37,7 @@ describe("Manage Users by Admin", function () {
       .should("be.visible")
       .contains(`${firstName} ${lastName}`)
       .click();
-    cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
+    cy.get("#hello-title").should("be.visible").contains(`Hello ${firstName}!`);
     cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
       .should("be.visible")
       .contains("Content");
@@ -100,7 +100,9 @@ describe("Manage Users by Admin", function () {
       .should("be.visible")
       .contains(`${eFirstName} ${eLastName}`)
       .click();
-    cy.get("h1").should("be.visible").contains(`Hello ${eFirstName}!`);
+    cy.get("#hello-title")
+      .should("be.visible")
+      .contains(`Hello ${eFirstName}!`);
     cy.get("#logout").click();
 
     // login again as admin
@@ -111,7 +113,7 @@ describe("Manage Users by Admin", function () {
     cy.get("#full-name")
       .should("be.visible")
       .contains(`${firstName} ${lastName}`);
-    cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
+    cy.get("#hello-title").should("be.visible").contains(`Hello ${firstName}!`);
     cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
       .should("be.visible")
       .contains("Content");
@@ -169,7 +171,9 @@ describe("Manage Users by Admin", function () {
       .should("be.visible")
       .contains(`${eFirstName} ${eLastName}`)
       .click();
-    cy.get("h1").should("be.visible").contains(`Hello ${eFirstName}!`);
+    cy.get("#hello-title")
+      .should("be.visible")
+      .contains(`Hello ${eFirstName}!`);
     cy.get("#logout").click();
 
     // login again as admin and delete editor
@@ -180,7 +184,7 @@ describe("Manage Users by Admin", function () {
     cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
       .should("be.visible")
       .contains("Content");
-    cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
+    cy.get("#hello-title").should("be.visible").contains(`Hello ${firstName}!`);
     cy.get(":nth-child(2) > .c-header-nav-link")
       .should("be.visible")
       .contains("Settings")
