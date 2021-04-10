@@ -121,7 +121,7 @@ Here are the services that will be running:
 
    A temporary password will be sent to your email.
 
-   Note that the script will append config variables to `config/prod.yml` and `packages/cms/.env.production` (this file will be created automatically).
+   Note that the script will append config variables to `config/prod.yml` and `packages/cms/.env.production.local` (this file will be created automatically).
 
    If all goes well, the script should output where you can find the CMS.
 
