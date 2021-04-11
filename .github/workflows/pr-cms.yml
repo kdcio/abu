@@ -155,6 +155,7 @@ jobs:
           CYPRESS_cognitoRegion: ${{ secrets.TEST_AUTH_AWS_REGION }}
           CYPRESS_awsAccessKeyId: ${{ secrets.TEST_COG_ACCESS_KEY_ID }}
           CYPRESS_awsSecretAccessKey: ${{ secrets.TEST_COG_SECRET_ACCESS_KEY }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DDB_ENDPOINT: http://localhost:8062
           DDB_TABLE: abu-local
