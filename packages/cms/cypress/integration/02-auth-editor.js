@@ -37,15 +37,11 @@ describe("Authentication Page Editor", function () {
       .should("be.visible")
       .contains(`${firstName} ${lastName}`)
       .click();
-    cy.get(":nth-child(1) > .c-sidebar-nav-link")
+    cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
+    cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
       .should("be.visible")
-      .contains("Dashboard");
-    cy.get(":nth-child(3) > .c-sidebar-nav-link")
-      .should("be.visible")
-      .contains("Sample");
-    cy.get(":nth-child(5) > .c-sidebar-nav-link").should("not.exist");
-    cy.get(":nth-child(6) > .c-sidebar-nav-link").should("not.exist");
-    cy.get(":nth-child(7) > .c-sidebar-nav-link").should("not.exist");
+      .contains("Content");
+    cy.get(":nth-child(2) > .c-header-nav-link").should("not.exist");
 
     cy.get("#logout").should("be.visible").click();
     cy.get("h1").contains("Login");
@@ -61,15 +57,11 @@ describe("Authentication Page Editor", function () {
       .should("be.visible")
       .contains(`${firstName} ${lastName}`)
       .click();
-    cy.get(":nth-child(1) > .c-sidebar-nav-link")
+    cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
+    cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
       .should("be.visible")
-      .contains("Dashboard");
-    cy.get(":nth-child(3) > .c-sidebar-nav-link")
-      .should("be.visible")
-      .contains("Sample");
-    cy.get(":nth-child(5) > .c-sidebar-nav-link").should("not.exist");
-    cy.get(":nth-child(6) > .c-sidebar-nav-link").should("not.exist");
-    cy.get(":nth-child(7) > .c-sidebar-nav-link").should("not.exist");
+      .contains("Content");
+    cy.get(":nth-child(2) > .c-header-nav-link").should("not.exist");
 
     cy.get("#logout").click();
     cy.get("h1").contains("Login");

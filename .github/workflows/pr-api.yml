@@ -7,9 +7,15 @@ on:
     paths:
       - "packages/api**/**"
       - "packages/model/**"
+      - "packages/authorizer/**"
+      - "packages/cognito/**"
       - "packages/helper/**"
       - "!**/**.md"
       - "!docs/**"
+      - "!packages/cms/**"
+      - "!resources/**"
+      - "!scripts/**"
+      - "!config/**"
   workflow_dispatch:
 
 jobs:

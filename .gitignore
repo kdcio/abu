@@ -109,4 +109,4 @@ packages/cms/cypress.env.json
 .webpack
 .dbdata
 .s3-local
-.env.production
+.env.production*

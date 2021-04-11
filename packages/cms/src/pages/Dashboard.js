@@ -10,7 +10,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <DashboardImg className="team-img" />
-      <h1>Hello {user.given_name}!</h1>
+      <h1 id="hello-title">Hello {user.given_name}!</h1>
       <p>Start editing your content on the left sidebar.</p>
     </div>
   );

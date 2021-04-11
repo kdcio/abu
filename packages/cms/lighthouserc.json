@@ -1,0 +1,18 @@
+{
+  "ci": {
+    "collect": {
+      "staticDistDir": "./packages/cms/build",
+      "settings": {
+        "emulatedFormFactor": "desktop",
+        "disableDeviceEmulation": true,
+        "disableCpuThrottling": true,
+        "disableNetworkThrottling": true,
+        "throttling": {
+          "rttMs": 40,
+          "throughputKbps": 10240,
+          "cpuSlowdownMultiplier": 1
+        }
+      }
+    }
+  }
+}

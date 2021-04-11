@@ -97,12 +97,32 @@ Here are the services that will be running:
    yarn deploy prod your@email.com
    ```
 
-   This will create cognito, dynamodb and s3 resources in your AWS account.
+   The script will take about 20 minutes to finish to provisioning everything.
+
+   Here's a list of AWS resources that will be provisioned:
+
+   - CMS Website Stack
+     - CloudFront
+     - S3
+   - API Stack
+     - Lambda
+     - API Gateway
+     - CloudWatch
+   - Upload Stack
+     - CloudFront
+     - S3
+     - Lambda
+   - User Management Stack
+     - Cognito
+   - Database Stack
+     - DyanmoDB
+
+   All of the stacks will use CloudFormation and S3 for deployment.
 
    A temporary password will be sent to your email.
 
-   Note that the script will append config variables to `config/prod.yml` and `packages/cms/.env.production` (this file will be created automatically).
+   Note that the script will append config variables to `config/prod.yml` and `packages/cms/.env.production.local` (this file will be created automatically).
 
    If all goes well, the script should output where you can find the CMS.
 
-   Enjoy!!!
+   **Enjoy!!!**

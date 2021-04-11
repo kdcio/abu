@@ -12,7 +12,7 @@ describe("Manage Users by Admin", function () {
   });
 
   it("First signin ask to change password", () => {
-    cy.get("h1").contains("Login");
+    cy.get("#login-title").contains("Login");
 
     firstName = faker.name.firstName();
     lastName = faker.name.lastName();
@@ -37,27 +37,24 @@ describe("Manage Users by Admin", function () {
       .should("be.visible")
       .contains(`${firstName} ${lastName}`)
       .click();
-    cy.get(":nth-child(1) > .c-sidebar-nav-link")
-      .should("be.visible")
-      .contains("Dashboard");
-    cy.get(":nth-child(3) > .c-sidebar-nav-link")
-      .should("be.visible")
-      .contains("Sample");
-    cy.get(":nth-child(5) > .c-sidebar-nav-link")
+    cy.get("#hello-title").should("be.visible").contains(`Hello ${firstName}!`);
+    cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
       .should("be.visible")
       .contains("Content");
-    cy.get(":nth-child(6) > .c-sidebar-nav-link")
+    cy.get(":nth-child(2) > .c-header-nav-link")
       .should("be.visible")
-      .contains("Apps");
-    cy.get(":nth-child(7) > .c-sidebar-nav-link")
-      .should("be.visible")
-      .contains("Users");
+      .contains("Settings");
+
     cy.saveLocalStorage();
   });
 
   it("Add user editor", () => {
     cy.restoreLocalStorage();
-    cy.get(":nth-child(7) > .c-sidebar-nav-link")
+    cy.get(":nth-child(2) > .c-header-nav-link")
+      .should("be.visible")
+      .contains("Settings")
+      .click();
+    cy.get(":nth-child(6) > .c-sidebar-nav-link")
       .should("be.visible")
       .contains("Users")
       .click();
@@ -85,7 +82,7 @@ describe("Manage Users by Admin", function () {
       .contains(`${firstName} ${lastName}`)
       .click();
     cy.get("#logout").click();
-    cy.get("h1").contains("Login");
+    cy.get("#login-title").contains("Login");
 
     // login as new editor
     cy.getVerificationCode(eEmail).then((code) => {
@@ -103,17 +100,28 @@ describe("Manage Users by Admin", function () {
       .should("be.visible")
       .contains(`${eFirstName} ${eLastName}`)
       .click();
+    cy.get("#hello-title")
+      .should("be.visible")
+      .contains(`Hello ${eFirstName}!`);
     cy.get("#logout").click();
 
     // login again as admin
-    cy.get("h1").contains("Login");
+    cy.get("#login-title").contains("Login");
     cy.get("#email").type(email);
     cy.get("#password").type(password, { log: false });
     cy.get("#login").click();
     cy.get("#full-name")
       .should("be.visible")
       .contains(`${firstName} ${lastName}`);
-    cy.get(":nth-child(7) > .c-sidebar-nav-link")
+    cy.get("#hello-title").should("be.visible").contains(`Hello ${firstName}!`);
+    cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
+      .should("be.visible")
+      .contains("Content");
+    cy.get(":nth-child(2) > .c-header-nav-link")
+      .should("be.visible")
+      .contains("Settings")
+      .click();
+    cy.get(":nth-child(6) > .c-sidebar-nav-link")
       .should("be.visible")
       .contains("Users")
       .click();
@@ -159,6 +167,10 @@ describe("Manage Users by Admin", function () {
     cy.get("#email").type(eEmail);
     cy.get("#password").type(newPassword, { log: false });
     cy.get("#login").click();
+    cy.get(".c-sidebar-brand-full").click();
+    cy.get("#hello-title")
+      .should("be.visible")
+      .contains(`Hello ${eFirstName}!`);
     cy.get("#full-name")
       .should("be.visible")
       .contains(`${eFirstName} ${eLastName}`)
@@ -166,14 +178,19 @@ describe("Manage Users by Admin", function () {
     cy.get("#logout").click();
 
     // login again as admin and delete editor
-    cy.get("h1").contains("Login");
+    cy.get("#login-title").contains("Login");
     cy.get("#email").type(email);
     cy.get("#password").type(password, { log: false });
     cy.get("#login").click();
-    cy.get("#full-name")
+    cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
       .should("be.visible")
-      .contains(`${firstName} ${lastName}`);
-    cy.get(":nth-child(7) > .c-sidebar-nav-link")
+      .contains("Content");
+    cy.get("#hello-title").should("be.visible").contains(`Hello ${firstName}!`);
+    cy.get(":nth-child(2) > .c-header-nav-link")
+      .should("be.visible")
+      .contains("Settings")
+      .click();
+    cy.get(":nth-child(6) > .c-sidebar-nav-link")
       .should("be.visible")
       .contains("Users")
       .click();

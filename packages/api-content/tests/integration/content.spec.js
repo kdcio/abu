@@ -13,6 +13,7 @@ import { handler as read } from "../../src/read";
 import { handler as remove } from "../../src/delete";
 import { handler as update } from "../../src/update";
 import { handler as authorizer } from "../../src/authorizer";
+import { handler as hello } from "../../src/hello";
 
 import apiAccesses from "../fixtures/api-access.json";
 
@@ -299,5 +300,11 @@ describe("Content", () => {
     expect.assertions(1);
     const response = await authorizer(event, {});
     expect(response).toBeNull();
+  });
+
+  it("should say hello", async () => {
+    const response = await hello();
+    expect(response.statusCode).toEqual(200);
+    expect(response.isBase64Encoded).toBe(false);
   });
 });

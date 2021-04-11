@@ -44,7 +44,7 @@ const SignIn = () => {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm>
-                    <h1>Login</h1>
+                    <h1 id="login-title">Login</h1>
                     <p className="text-muted">Sign In to your account</p>
                     {error && (
                       <p className="text-danger text-center">{error.message}</p>
