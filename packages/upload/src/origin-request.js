@@ -1,6 +1,9 @@
+import head from "./s3/head";
 import get from "./s3/get";
+import put from "./s3/put";
 import parseQs from "./lib/parse-qs";
 import createNewKey from "./lib/new-key";
+import convert from "./lib/convert";
 
 import { INPUT_TYPES } from "./constants";
 
@@ -22,22 +25,31 @@ export const handler = async (event) => {
   }
 
   const qs = parseQs(request.querystring);
+  if (Object.keys(qs).length === 0) {
+    console.log("Invalid resize paramters");
+    return request;
+  }
 
   const newKey = createNewKey({ key: receivedKey, qs });
+  try {
+    await head({ Key: newKey });
+    // file already converted
+    console.log("Converted file exist");
+    request.uri = `/${newKey}`;
+    return request;
+  } catch (error) {
+    // need to convert, continue
+    console.log("Converted file does NOT exist");
+  }
 
   // Get s3 object
-
   let data;
   try {
     data = await get({ Key: receivedKey });
   } catch (error) {
     // File does not exist
+    console.log("Original file does NOT exist");
     console.log(error);
-    return request;
-  }
-
-  if (!data) {
-    console.log("Object not found");
     return request;
   }
 
@@ -46,5 +58,17 @@ export const handler = async (event) => {
     return request;
   }
 
+  try {
+    const resized = await convert({ data: data.Body, options: qs });
+    await put({ Key: newKey, data: resized });
+  } catch (error) {
+    console.log("Error converting");
+    console.log(error);
+    console.log(qs, newKey);
+    console.log(data);
+    return request;
+  }
+
+  request.uri = `/${newKey}`;
   return request;
 };
