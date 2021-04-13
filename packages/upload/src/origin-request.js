@@ -30,9 +30,21 @@ export const handler = async (event) => {
     return request;
   }
 
+  let Bucket;
+  try {
+    Bucket = request.origin.custom.customHeaders["x-bucket-name"][0].value;
+  } catch (error) {
+    console.log(error);
+  }
+
+  if (!Bucket) {
+    console.log("Bucket name not found");
+    return request;
+  }
+
   const newKey = createNewKey({ key: receivedKey, qs });
   try {
-    await head({ Key: newKey });
+    await head({ Bucket, Key: newKey });
     // file already converted
     console.log("Converted file exist");
     request.uri = `/${newKey}`;
@@ -45,7 +57,7 @@ export const handler = async (event) => {
   // Get s3 object
   let data;
   try {
-    data = await get({ Key: receivedKey });
+    data = await get({ Bucket, Key: receivedKey });
   } catch (error) {
     // File does not exist
     console.log("Original file does NOT exist");
@@ -60,7 +72,7 @@ export const handler = async (event) => {
 
   try {
     const resized = await convert({ data: data.Body, options: qs });
-    await put({ Key: newKey, data: resized });
+    await put({ Bucket, Key: newKey, data: resized });
   } catch (error) {
     console.log("Error converting");
     console.log(error);

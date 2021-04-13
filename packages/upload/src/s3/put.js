@@ -1,8 +1,8 @@
 import makeS3 from "./s3";
 
-const put = async ({ Key, data }) => {
+const put = async ({ Bucket, Key, data }) => {
   const params = {
-    Bucket: "admin-github-upload.abucms.com",
+    Bucket,
     Key,
     CacheControl: "public,max-age=31536000",
     Body: data,
