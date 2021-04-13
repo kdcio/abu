@@ -34,7 +34,7 @@ const Edit = ({ name, id, validations, help }) => {
     if (data?.data?.[id]) {
       const val = data?.data[id];
       setValue(id, val);
-      setImage(val?.thumb);
+      setImage(`${val}?w=400&f=webp`);
     }
   }, [id, data, setValue, setImage]);
 

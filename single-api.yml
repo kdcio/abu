@@ -8,6 +8,7 @@ package:
 
 plugins:
   - serverless-bundle
+  - serverless-s3-local
   - serverless-offline
 
 custom:
@@ -18,6 +19,10 @@ custom:
     lambdaPort: 8066
     noPrependStageInUrl: true
     useChildProcesses: true
+  s3:
+    port: 8064
+    directory: ./.s3-local
+    cors: ./resources/s3-cors.xml
   bundle:
     packager: yarn
 
