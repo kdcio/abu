@@ -244,14 +244,12 @@ describe("Admin Content", () => {
     expect(response.isBase64Encoded).toBe(false);
 
     const json = JSON.parse(response.body);
-    expect(json.targets.thumb).toMatch(
-      /http\:\/\/localhost\:8064\/local\/thumb\/\d+\-test\.webp/i
+    expect(json.target).toMatch(
+      /http\:\/\/localhost\:8064\/local\/\d+\/\d+\/\d+\/\d+\-test\.jpg/i
     );
-    expect(json.targets.orig).toMatch(
-      /http\:\/\/localhost\:8064\/local\/orig\/\d+\-test\.jpg/i
-    );
+
     expect(json.url).toMatch(
-      /http\:\/\/localhost\:8064\/local\/uploads\/\d+\-test\.jpg\?Content\-Type=image%2Fjpeg&X\-Amz\-Algorithm=AWS4\-HMAC\-SHA256&X\-Amz\-Credential=.*&X\-Amz\-Date=.*&X\-Amz\-Expires=600&X\-Amz\-Signature=.*&X\-Amz\-SignedHeaders=host%3Bx\-amz\-acl%3Bx\-amz\-meta\-opt\-orig%3Bx\-amz\-meta\-opt\-thumb&x\-amz\-acl=public\-read&x\-amz\-meta\-opt\-orig=.*&x\-amz\-meta\-opt\-thumb=.*/i
+      /^http\:\/\/localhost\:8064\/local\/\d+\/\d+\/\d+\/\d+\-test\.jpg.*/i
     );
   });
 });

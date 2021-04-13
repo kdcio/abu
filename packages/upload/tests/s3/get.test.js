@@ -8,12 +8,12 @@ describe("S3 Get", () => {
     const promise = jest.fn(() => Promise.resolve());
     const getObject = jest.fn(() => ({ promise }));
     makeS3.mockImplementation(() => ({ getObject }));
-    await get({ Key: "test.jpg" });
+    await get({ Bucket: "my-bucket", Key: "test.jpg" });
     expect(makeS3).toBeCalledTimes(1);
     expect(getObject).toBeCalledTimes(1);
     expect(promise).toBeCalledTimes(1);
     expect(getObject).toBeCalledWith({
-      Bucket: "local",
+      Bucket: "my-bucket",
       Key: "test.jpg",
     });
   });

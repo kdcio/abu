@@ -1,9 +1,8 @@
 import makeS3 from "./s3";
 
-const put = async ({ Key, data }) => {
-  const { S3_BUCKET } = process.env;
+const put = async ({ Bucket, Key, data }) => {
   const params = {
-    Bucket: S3_BUCKET,
+    Bucket,
     Key,
     CacheControl: "public,max-age=31536000",
     Body: data,

@@ -74,8 +74,17 @@ describe("Manage Users by Admin", function () {
     );
     cy.get("#email").should("be.visible").type(eEmail);
     cy.get("#addUser").click();
+
+    // Find user in list
     cy.get("#listTitle").should("be.visible").contains("Users");
-    cy.get("tbody > :nth-child(1) > :nth-child(3)").contains(eEmail);
+    cy.get("tbody").within(() => {
+      cy.findByText(eEmail)
+        .should("exist")
+        .next()
+        .contains("editor")
+        .next()
+        .contains("FORCE_CHANGE_PASSWORD");
+    });
 
     cy.get("#full-name")
       .should("be.visible")
@@ -128,13 +137,24 @@ describe("Manage Users by Admin", function () {
 
     // check if editor data has been update
     cy.get("#listTitle").should("be.visible").contains("Users");
-    cy.get("tbody > :nth-child(1) > :nth-child(1)").contains(eFirstName);
-    cy.get("tbody > :nth-child(1) > :nth-child(2)").contains(eLastName);
-    cy.get("tbody > :nth-child(1) > :nth-child(3)").contains(eEmail);
-    cy.get("tbody > :nth-child(1) > :nth-child(4)").contains("editor");
-    cy.get("tbody > :nth-child(1) > :nth-child(5)").contains("CONFIRMED");
-
-    cy.get("tbody > :nth-child(1) > :nth-child(6) > .edit-btn").click();
+    cy.get("tbody").within(() => {
+      cy.findByText(eEmail)
+        .should("exist")
+        .first()
+        .contains(eFirstName)
+        .prev()
+        .contains(eLastName)
+        .next()
+        .contains(eEmail)
+        .next()
+        .contains("editor")
+        .next()
+        .contains("CONFIRMED")
+        .next()
+        .within(() => {
+          cy.get(".edit-btn").click();
+        });
+    });
 
     // Edit user
     cy.get("#formTitle").contains("Edit User");
@@ -146,12 +166,27 @@ describe("Manage Users by Admin", function () {
 
     // Check if user is updated
     cy.get("#listTitle").should("be.visible").contains("Users");
-    cy.get("tbody > :nth-child(1) > :nth-child(2)").contains(`${eLastName} jr`);
-    cy.get("tbody > :nth-child(1) > :nth-child(4)").contains("admin");
+    cy.get("tbody").within(() => {
+      cy.findByText(eEmail)
+        .should("exist")
+        .first()
+        .contains(eFirstName)
+        .prev()
+        .contains(`${eLastName} jr`)
+        .next()
+        .contains(eEmail)
+        .next()
+        .contains("admin")
+        .next()
+        .contains("CONFIRMED")
+        .next()
+        .within(() => {
+          cy.get(".edit-btn").click();
+        });
+    });
 
     // Change password
     const newPassword = `${faker.internet.password()}1A`;
-    cy.get("tbody > :nth-child(1) > :nth-child(6) > .edit-btn").click();
     cy.get("#password").clear().type(newPassword);
     cy.get("#confirmPassword").clear().type(newPassword);
     cy.get("#update").click();
@@ -197,11 +232,27 @@ describe("Manage Users by Admin", function () {
 
     // Delete user
     cy.on("window:confirm", () => true);
-    cy.get(":nth-child(1) > :nth-child(6) > .delete-btn").click();
-    cy.get("tbody > :nth-child(1) > :nth-child(3)").should(
-      "not.contain",
-      eEmail
-    );
+    cy.get("tbody").within(() => {
+      cy.findByText(eEmail)
+        .should("exist")
+        .first()
+        .contains(eFirstName)
+        .prev()
+        .contains(`${eLastName} jr`)
+        .next()
+        .contains(eEmail)
+        .next()
+        .contains("admin")
+        .next()
+        .contains("CONFIRMED")
+        .next()
+        .within(() => {
+          cy.get(".delete-btn").click();
+        });
+    });
+    cy.get("tbody").within(() => {
+      cy.findByText(eEmail).should("not.exist");
+    });
   });
 
   after(function () {

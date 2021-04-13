@@ -12,10 +12,6 @@ plugins:
 custom:
   BucketName: ${file(../../config/${self:provider.stage}.yml):UPLOAD_BUCKET, 'local'}
   BucketResizePrefix: ${file(../../config/${self:provider.stage}.yml):UPLOAD_PREFIX, 'uploads'}
-  domain:
-    name: ${file(../../config/${self:provider.stage}.yml):UPLOAD_BUCKET, 'local'}
-    # aliases: ${file(../../config/${self:provider.stage}.yml):UPLOAD_ALIASES}
-    # certificate: ${file(../../config/${self:provider.stage}.yml):UPLOAD_CERT}
   bundle:
     packager: yarn
     packagerOptions:
@@ -34,17 +30,12 @@ custom:
 provider:
   name: aws
   runtime: nodejs12.x
-  memorySize: 256
+  memorySize: 512
+  timeout: 30
   stage: ${opt:stage, 'dev'}
   region: us-east-1
   profile: ${file(../../config/${self:provider.stage}.yml):PROFILE}
   lambdaHashingVersion: 20201221
-  environment:
-    TZ: ${file(../../config/${self:provider.stage}.yml):TZ, 'Asia/Manila'}
-    STAGE: ${self:provider.stage}
-    NODE_ENV: ${self:provider.stage}
-    S3_BUCKET: ${self:custom.BucketName}
-    S3_BUCKET_PREFIX: ${self:custom.BucketResizePrefix}
   iam:
     role:
       statements:
@@ -54,6 +45,21 @@ provider:
           Resource:
             - "arn:aws:s3:::${self:custom.BucketName}"
             - "arn:aws:s3:::${self:custom.BucketName}/*"
+  cloudFront:
+    cachePolicies:
+      uploadCachePolicy:
+        MinTTL: 0
+        MaxTTL: 31536000
+        DefaultTTL: 86400
+        ParametersInCacheKeyAndForwardedToOrigin:
+          CookiesConfig:
+            CookieBehavior: "none"
+          EnableAcceptEncodingBrotli: true
+          EnableAcceptEncodingGzip: true
+          HeadersConfig:
+            HeaderBehavior: "none"
+          QueryStringsConfig:
+            QueryStringBehavior: "all"
 
 functions:
   origin-request:
@@ -62,27 +68,24 @@ functions:
       - cloudFront:
           eventType: origin-request
           origin:
-            DomainName: ${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
+            DomainName: ${self:custom.BucketName}.s3-website-${self:provider.region}.amazonaws.com
+            Id: S3-Website-${self:custom.BucketName}.s3-website-${self:provider.region}.amazonaws.com
             CustomOriginConfig:
               HTTPPort: "80"
               HTTPSPort: "443"
               OriginProtocolPolicy: http-only
-  resize:
-    handler: src/resize.handler
-    events:
-      - s3:
-          bucket: ${self:custom.BucketName}
-          event: s3:ObjectCreated:*
-          rules:
-            - prefix: ${self:custom.BucketResizePrefix}/
-          existing: true
+            OriginCustomHeaders:
+              - HeaderName: X-Bucket-Name
+                HeaderValue: ${self:custom.BucketName}
+          cachePolicy:
+            name: uploadCachePolicy
 
 resources:
   Resources:
     s3Bucket:
       Type: "AWS::S3::Bucket"
       Properties:
-        BucketName: ${self:custom.domain.name}
+        BucketName: ${self:custom.BucketName}
         WebsiteConfiguration:
           IndexDocument: index.html
           ErrorDocument: index.html
@@ -106,40 +109,5 @@ resources:
               Action:
                 - "s3:GetObject"
               Effect: "Allow"
-              Resource: "arn:aws:s3:::${self:custom.domain.name}/*"
+              Resource: "arn:aws:s3:::${self:custom.BucketName}/*"
               Principal: "*"
-    cloudfront:
-      Type: "AWS::CloudFront::Distribution"
-      Properties:
-        DistributionConfig:
-          Origins:
-            - DomainName: ${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
-              Id: S3-Website-${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
-              CustomOriginConfig:
-                HTTPPort: "80"
-                HTTPSPort: "443"
-                OriginProtocolPolicy: http-only
-          Enabled: "true"
-          Comment: ${self:service}
-          DefaultRootObject: index.html
-          # Aliases: ${self:custom.domain.aliases}
-          DefaultCacheBehavior:
-            TargetOriginId: S3-Website-${self:custom.domain.name}.s3-website-${self:provider.region}.amazonaws.com
-            ForwardedValues:
-              QueryString: "false"
-            Compress: "true"
-            ViewerProtocolPolicy: redirect-to-https
-          ViewerCertificate:
-            CloudFrontDefaultCertificate: true
-            # AcmCertificateArn: ${self:custom.domain.certificate}
-            # MinimumProtocolVersion: TLSv1.2_2018
-            # SslSupportMethod: sni-only
-  Outputs:
-    CFDistributionId:
-      Description: CFDistributionId
-      Value:
-        Ref: cloudfront
-    CFEndpoint:
-      Description: CFDomainName
-      Value:
-        Fn::GetAtt: "cloudfront.DomainName"

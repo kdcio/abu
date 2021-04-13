@@ -17,6 +17,8 @@ const upload = async (url, file) => {
     body: file,
     headers: {
       "Content-Type": file.type,
+      "x-amz-acl": "public-read",
+      "Cache-Control": "public,max-age=31536000",
     },
   }).then((res) => {
     if (!res.ok) {
@@ -26,9 +28,9 @@ const upload = async (url, file) => {
 };
 
 const submit = async ({ model, file }) => {
-  const { url, targets } = await getUrl(model.id, file);
+  const { url, target } = await getUrl(model.id, file);
   await upload(url, file);
-  return targets;
+  return target;
 };
 
 export default submit;
