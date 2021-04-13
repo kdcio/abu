@@ -5,7 +5,9 @@ const createNewKey = ({ qs, key }) => {
   const { w, h, f, q } = qs;
   const file = path.parse(key);
 
-  let newKey = `${file.dir}/${file.name}`;
+  let newKey = "";
+  if (file.dir !== "") newKey += `${file.dir}/`;
+  newKey += file.name;
   if (w) newKey += `-w${w}`;
   if (h) newKey += `-h${h}`;
   if (q && f && (f === "jpg" || f === "jpeg")) {
@@ -18,7 +20,7 @@ const createNewKey = ({ qs, key }) => {
     newKey += ".jpg";
     return newKey;
   } else if (!f) {
-    newKey += ".jpg";
+    newKey += file.ext;
     return newKey;
   }
 
