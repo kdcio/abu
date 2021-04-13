@@ -8,10 +8,10 @@ import convert from "./lib/convert";
 import { INPUT_TYPES } from "./constants";
 
 export const handler = async (event) => {
-  console.log(JSON.stringify(event));
+  // console.log(JSON.stringify(event));
   const request = { ...event.Records[0].cf.request };
 
-  console.log(JSON.stringify(request));
+  // console.log(JSON.stringify(request));
   const receivedKey = request.uri.replace("/", "");
 
   if (receivedKey === "") {
@@ -34,7 +34,7 @@ export const handler = async (event) => {
   try {
     Bucket = request.origin.custom.customHeaders["x-bucket-name"][0].value;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 
   if (!Bucket) {
@@ -43,6 +43,7 @@ export const handler = async (event) => {
   }
 
   const newKey = createNewKey({ key: receivedKey, qs });
+  console.log(receivedKey, newKey);
   try {
     await head({ Bucket, Key: newKey });
     // file already converted
@@ -61,7 +62,7 @@ export const handler = async (event) => {
   } catch (error) {
     // File does not exist
     console.log("Original file does NOT exist");
-    console.log(error);
+    // console.log(error);
     return request;
   }
 

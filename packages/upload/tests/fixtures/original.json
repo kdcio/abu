@@ -1,0 +1,62 @@
+{
+  "Records": [
+    {
+      "cf": {
+        "config": {
+          "distributionDomainName": "d111111abcdef8.cloudfront.net",
+          "distributionId": "EDFDVBD6EXAMPLE",
+          "eventType": "viewer-request",
+          "requestId": "4TyzHTaYWb1GX1qTfsHhEqV6HUDd_BzoBZnwfnvQc_1oF26ClkoUSEQ=="
+        },
+        "request": {
+          "clientIp": "203.0.113.178",
+          "headers": {
+            "host": [
+              {
+                "key": "Host",
+                "value": "d111111abcdef8.cloudfront.net"
+              }
+            ],
+            "user-agent": [
+              {
+                "key": "User-Agent",
+                "value": "curl/7.66.0"
+              }
+            ],
+            "accept": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              }
+            ]
+          },
+          "method": "GET",
+          "origin": {
+            "custom": {
+              "customHeaders": {
+                "x-bucket-name": [
+                  {
+                    "key": "X-Bucket-Name",
+                    "value": "admin-github-upload.abucms.com"
+                  }
+                ]
+              },
+              "domainName": "admin-github-upload.abucms.com.s3-website-us-east-1.amazonaws.com",
+              "keepaliveTimeout": 5,
+              "path": "",
+              "port": 80,
+              "protocol": "http",
+              "readTimeout": 30,
+              "sslProtocols": [
+                "TLSv1",
+                "SSLv3"
+              ]
+            }
+          },
+          "querystring": "",
+          "uri": "/test.jpg"
+        }
+      }
+    }
+  ]
+}
