@@ -24,7 +24,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs14.x
-  memorySize: 256
+  memorySize: 512
   stage: ${opt:stage, 'dev'}
   region: ${file(./config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
   profile: ${file(./config/${self:provider.stage}.yml):PROFILE, 'default'}
