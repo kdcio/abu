@@ -60,13 +60,13 @@ You'll need [docker](https://www.docker.com/) installed for running [local dynam
 
    Note that the script will append config variables to `config/dev.yml` and `packages/cms/.env` (this file will be created automatically).
 
-4. Run the API, CMS and S3 (for uploads) using [concurrently](https://www.npmjs.com/package/concurrently)
+4. Run the API, CMS and S3 using [concurrently](https://www.npmjs.com/package/concurrently)
 
    ```bash
    yarn start
    ```
 
-   You can also run them sepeartely `yarn start:api`. `yarn start:upload` and `yarn start:cms` for easier debugging.
+   You can also run them sepeartely `yarn start:api` and `yarn start:cms` for easier debugging.
 
 Here are the services that will be running:
 
@@ -123,7 +123,7 @@ Here are the services that will be running:
    - Upload Stack
      - CloudFront
      - S3
-     - Lambda
+     - Lambda Edge
    - User Management Stack
      - Cognito
    - Database Stack
