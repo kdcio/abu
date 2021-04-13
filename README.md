@@ -1,6 +1,18 @@
 # Abu CMS
 
-Serverless Headless CMS. Deployed in AWS infrastructure.
+Open-source serverless headless CMS. Deployed in AWS infrastructure.
+
+![Models](docs/img/models.png)
+
+AbuCMS is an easy to use content manager making them availble via API.
+
+- Bring your data anywhere - Central location for all your content. Accessible to anywhere via REST API.
+- Zero-cost - As long you are within the AWS free-tier limit, you'll be paying $0 forever. Even if you go above the free-tier, cost will be minimal and it will be a pay-per-use model.
+- No servers needed - Services used are all serverless technologies which means you don't have to worry about performance, scalability, security and cost.
+
+## Infrastructure
+
+![Infrastructure](docs/img/infra.png)
 
 ## Requirements
 
