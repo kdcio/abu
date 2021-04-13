@@ -10,3 +10,8 @@ Authorization: 395fa1419f474d4485030eedfd9ba33a
 GET http://localhost:8061/content/blog?all=true
 Authorization: 441c7fa752b14de789b8530e2eecfb90
 
+###
+
+GET http://dlev35o7s6zyp.cloudfront.net/uploads/1618194832215-dsc00011.jpg?w=402f=webp
+
+
