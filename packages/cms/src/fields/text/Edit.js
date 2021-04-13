@@ -5,8 +5,8 @@ import { useData } from "context/data";
 
 const Edit = ({ name, id, validations, help, default: defaultValue }) => {
   const { data } = useData();
-  const { register, errors, formState, setValue } = useFormContext();
-  const { isSubmitting } = formState;
+  const { register, formState, setValue } = useFormContext();
+  const { errors, isSubmitting } = formState;
 
   useEffect(() => {
     data?.data?.[id] && setValue(id, data.data[id]);

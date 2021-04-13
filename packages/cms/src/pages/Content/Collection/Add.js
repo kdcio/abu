@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CButton, CCard, CCardBody, CCardHeader } from "@coreui/react";
 import { Link, useHistory } from "react-router-dom";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useFormState } from "react-hook-form";
 import CIcon from "@coreui/icons-react";
 import FieldEdit from "components/FieldEdit";
 import { useModels } from "context/models";
@@ -16,6 +16,7 @@ const Add = () => {
   const { addToast } = useToaster();
   const history = useHistory();
   const methods = useForm();
+  const { isSubmitting } = useFormState({ control: methods.control });
   const [error, setError] = useState(null);
 
   const createContent = async ({ data }) => {
@@ -74,6 +75,7 @@ const Add = () => {
               Add {model.name}
             </span>
             <div className="card-header-actions">
+              {isSubmitting && <span>Saving data...</span>}
               <CButton
                 type="submit"
                 id="add"

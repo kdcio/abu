@@ -12,7 +12,12 @@ import "scss/components/quill.scss";
 const Edit = ({ name, id, validations, help }) => {
   const { data } = useData();
   const { selected: model } = useModels();
-  const { register, setValue, errors, watch } = useFormContext();
+  const {
+    register,
+    setValue,
+    formState: { errors },
+    watch,
+  } = useFormContext();
 
   const value = watch(id, "");
   useEffect(() => {

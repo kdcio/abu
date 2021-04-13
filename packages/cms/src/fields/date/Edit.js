@@ -6,8 +6,8 @@ import { useData } from "context/data";
 
 const Edit = ({ name, id, validations, help, today }) => {
   const { data } = useData();
-  const { register, errors, formState, setValue } = useFormContext();
-  const { isSubmitting } = formState;
+  const { register, formState, setValue } = useFormContext();
+  const { errors, isSubmitting } = formState;
   const initial = today ? dateFormatInput(new Date()) : null;
 
   useEffect(() => {

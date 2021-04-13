@@ -11,7 +11,11 @@ import "scss/components/image-edit.scss";
 const Edit = ({ name, id, validations, help }) => {
   const { data } = useData();
   const [image, setImage] = useState(null);
-  const { register, errors, setValue } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+    setValue,
+  } = useFormContext();
   const [{ error, loading }, setFile] = useFileReader({
     method: "readAsDataURL",
     onload: setImage,

@@ -14,8 +14,8 @@ import { useData } from "context/data";
 const Edit = ({ name, id, validations, help, reference }) => {
   const { data } = useData();
   const { selected: model } = useModels();
-  const { register, errors, formState, watch, setValue } = useFormContext();
-  const { isSubmitting } = formState;
+  const { register, formState, watch, setValue } = useFormContext();
+  const { errors, isSubmitting } = formState;
   const [initial, setInitial] = useState();
 
   useEffect(() => {
