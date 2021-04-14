@@ -23,15 +23,45 @@ describe("Authentication Page Admin", function () {
 
     cy.getVerificationCode(email).then((code) => {
       cy.get("#email").type(email);
-      cy.get("#password").type(code, { log: false });
-      cy.get("#login").click();
+      cy.get("#password").type(`${code}{enter}`);
     });
 
-    cy.get("#first-name").type(firstName);
-    cy.get("#last-name").type(lastName);
-    cy.get("#password").type(password, { log: false });
-    cy.get("#confirm-password").type(password, { log: false });
+    cy.get("#first-name").type("a").clear();
     cy.get("#complete").click();
+    cy.get(":nth-child(3) > .invalid-feedback").contains(
+      "Please provide first name with at least 2 characters."
+    );
+    cy.get(":nth-child(4) > .invalid-feedback").contains(
+      "Please provide last name with at least 2 characters."
+    );
+    cy.get(":nth-child(5) > .invalid-feedback").contains(
+      "Please enter a new password"
+    );
+    cy.get(":nth-child(6) > .invalid-feedback").contains(
+      "Please confirm the new password"
+    );
+    cy.get("#first-name").type("a");
+    cy.get("#last-name").type("b");
+    cy.get("#password").type("test");
+    cy.get("#confirm-password").type("test1");
+    cy.get("#complete").click();
+    cy.get(":nth-child(3) > .invalid-feedback").should("not.exist");
+    cy.get(":nth-child(4) > .invalid-feedback").should("not.exist");
+    cy.get(":nth-child(5) > .invalid-feedback").contains(
+      /^Password must contain/
+    );
+    cy.get(":nth-child(6) > .invalid-feedback").contains(
+      "Passwords does not match"
+    );
+    cy.get("#first-name").clear().type(firstName);
+    cy.get("#last-name").clear().type(lastName);
+    cy.get("#password").clear().type(password);
+    cy.get("#confirm-password").clear().type(password);
+    cy.get("#complete").click();
+    cy.get(":nth-child(3) > .invalid-feedback").should("not.exist");
+    cy.get(":nth-child(4) > .invalid-feedback").should("not.exist");
+    cy.get(":nth-child(5) > .invalid-feedback").should("not.exist");
+    cy.get(":nth-child(6) > .invalid-feedback").should("not.exist");
 
     cy.get("#full-name")
       .should("be.visible")
@@ -52,7 +82,7 @@ describe("Authentication Page Admin", function () {
   it("Second signin go to main", () => {
     cy.get("h1").contains("Login");
     cy.get("#email").type(email);
-    cy.get("#password").type(password, { log: false });
+    cy.get("#password").type(password);
     cy.get("#login").click();
 
     cy.get("#full-name")
