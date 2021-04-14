@@ -11,7 +11,11 @@ import "scss/components/image-edit.scss";
 const Edit = ({ name, id, validations, help }) => {
   const { data } = useData();
   const [image, setImage] = useState(null);
-  const { register, errors, setValue } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+    setValue,
+  } = useFormContext();
   const [{ error, loading }, setFile] = useFileReader({
     method: "readAsDataURL",
     onload: setImage,
@@ -20,14 +24,14 @@ const Edit = ({ name, id, validations, help }) => {
   const onDrop = useCallback(
     (acceptedFiles) => {
       setFile(acceptedFiles[0]);
-      setValue(id, acceptedFiles[0]);
+      setValue(id, acceptedFiles[0], { shouldDirty: true });
     },
     [id, setFile, setValue]
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   useEffect(() => {
-    register({ name: id });
+    register(id);
   }, [id, register]);
 
   useEffect(() => {

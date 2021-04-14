@@ -11,15 +11,15 @@ import {
   CRow,
 } from "@coreui/react";
 import { useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import CIcon from "@coreui/icons-react";
 
 import create from "api/create";
 
 const Add = () => {
   const history = useHistory();
-  const { register, handleSubmit, errors } = useForm();
-  const [processing, setProcessing] = useState(false);
+  const { register, handleSubmit, control } = useForm();
+  const { errors, isDirty, isSubmitting } = useFormState({ control });
   const [error, setError] = useState(null);
 
   const createUser = async ({ firstName, lastName, email, group }) =>
@@ -34,14 +34,12 @@ const Add = () => {
     });
 
   const onSubmit = async (data) => {
-    setProcessing(true);
     try {
       await createUser(data);
       history.push("/system/users");
     } catch (err) {
       setError(err);
     }
-    setProcessing(false);
   };
 
   return (
@@ -64,10 +62,9 @@ const Add = () => {
                   type="email"
                   className={`form-control ${errors.email && "is-invalid"}`}
                   id="email"
-                  name="email"
+                  {...register("email", { required: true })}
                   placeholder="Enter your email"
-                  ref={register({ required: true })}
-                  disabled={processing}
+                  disabled={isSubmitting}
                   autoComplete="off"
                 />
                 <small className="form-text text-muted">
@@ -82,9 +79,8 @@ const Add = () => {
                 <select
                   className={`form-control ${errors.group && "is-invalid"}`}
                   id="group"
-                  name="group"
-                  ref={register({ required: true })}
-                  disabled={processing}
+                  {...register("group", { required: true })}
+                  disabled={isSubmitting}
                 >
                   <option value="editor">Editor</option>
                   <option value="admin">Admin</option>
@@ -103,9 +99,9 @@ const Add = () => {
             size="sm"
             color="primary"
             className="mr-2"
-            disabled={processing}
+            disabled={!isDirty || isSubmitting}
           >
-            <CIcon name="cil-scrubber" /> Submit
+            <CIcon name="cil-scrubber" /> {isSubmitting ? "Adding..." : "Add"}
           </CButton>
           <CButton
             type="button"
@@ -113,7 +109,7 @@ const Add = () => {
             size="sm"
             color="danger"
             className="mr-2"
-            disabled={processing}
+            disabled={isSubmitting}
             onClick={() => history.push("/system/users")}
           >
             <CIcon name="cil-ban" /> Cancel

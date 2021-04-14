@@ -1,11 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { CFormGroup, CLabel, CSwitch, CButton } from "@coreui/react";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import snakeCase from "lodash.snakecase";
 
 const Setting = ({ processing, update, error }) => {
-  const { register, handleSubmit, errors, watch, setValue } = useForm();
-  const requiredRef = useRef();
+  const { register, handleSubmit, control, watch, setValue } = useForm();
+  const { errors, isDirty, isSubmitting } = useFormState({ control });
+  const { ref: reqRef, ...reqRest } = register("required");
 
   const name = watch("name");
   useEffect(() => {
@@ -37,9 +38,8 @@ const Setting = ({ processing, update, error }) => {
             errors.name && "is-invalid"
           }`}
           id="name"
-          name="name"
+          {...register("name", { required: true })}
           placeholder="Title"
-          ref={register({ required: true })}
           disabled={processing}
         />
         {errors.name && (
@@ -54,9 +54,8 @@ const Setting = ({ processing, update, error }) => {
             errors.id && "is-invalid"
           }`}
           id="id"
-          name="id"
+          {...register("id", { required: true })}
           placeholder="title"
-          ref={register({ required: true })}
           disabled={processing}
         />
         <small className="form-text text-muted">
@@ -75,9 +74,8 @@ const Setting = ({ processing, update, error }) => {
             errors.reference && "is-invalid"
           }`}
           id="reference"
-          name="reference"
+          {...register("reference", { required: true })}
           placeholder=""
-          ref={register({ required: true })}
           disabled={processing}
         />
         <small className="form-text text-muted">
@@ -95,9 +93,8 @@ const Setting = ({ processing, update, error }) => {
             errors.help && "is-invalid"
           }`}
           id="help"
-          name="help"
+          {...register("help")}
           placeholder=""
-          ref={register}
           disabled={processing}
         />
         {errors.help && (
@@ -112,17 +109,21 @@ const Setting = ({ processing, update, error }) => {
           shape={"pill"}
           color={"primary"}
           defaultChecked
-          innerRef={(e) => {
-            register(e);
-            requiredRef.current = e;
-          }}
+          {...reqRest}
+          innerRef={reqRef}
         />
         <div className="ml-2 collection-info">
           <span>Required</span>
         </div>
       </div>
-      <CButton type="submit" color="success" block className="mt-4">
-        Add field
+      <CButton
+        type="submit"
+        color="success"
+        block
+        className="mt-4"
+        disabled={!isDirty || isSubmitting}
+      >
+        {isSubmitting ? "Adding..." : "Add"}
       </CButton>
     </form>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import snakeCase from "lodash.snakecase";
 
 import {
@@ -13,7 +13,7 @@ import {
   CSwitch,
 } from "@coreui/react";
 import { useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { useModels } from "context/models";
 import { useModal } from "context/modal";
 
@@ -25,10 +25,10 @@ const Add = () => {
   const history = useHistory();
   const { modal, setModal } = useModal();
   const { list, dispatch } = useModels();
-  const collectionRef = useRef();
-  const { register, handleSubmit, errors, watch, setValue } = useForm();
-  const [processing, setProcessing] = useState(false);
+  const { register, handleSubmit, watch, setValue, control } = useForm();
+  const { errors, isDirty, isSubmitting } = useFormState({ control });
   const [error, setError] = useState(null);
+  const { ref: collectionRef, ...collectionRest } = register("collection");
 
   const name = watch("name");
   useEffect(() => {
@@ -62,11 +62,9 @@ const Add = () => {
   };
 
   const onSubmit = async (data) => {
-    setProcessing(true);
     const idx = list.findIndex((item) => item.id === data.id);
     if (idx >= 0) {
       setError("Model ID not unique. Please choose a different one.");
-      setProcessing(false);
       return;
     }
     try {
@@ -77,7 +75,6 @@ const Add = () => {
     } catch (error) {
       console.log(error);
     }
-    setProcessing(false);
   };
 
   return (
@@ -100,10 +97,9 @@ const Add = () => {
                 errors.name && "is-invalid"
               }`}
               id="name"
-              name="name"
+              {...register("name", { required: true })}
               placeholder="Blog"
-              ref={register({ required: true })}
-              disabled={processing}
+              disabled={isSubmitting}
             />
             {errors.name && (
               <div className="invalid-feedback">Please provide name.</div>
@@ -117,10 +113,9 @@ const Add = () => {
                 errors.id && "is-invalid"
               }`}
               id="id"
-              name="id"
+              {...register("id", { required: true })}
               placeholder="blog"
-              ref={register({ required: true })}
-              disabled={processing}
+              disabled={isSubmitting}
             />
             <small className="form-text text-muted">
               This will be automatically generated based on name and will be
@@ -133,15 +128,12 @@ const Add = () => {
           <div className="d-flex">
             <CSwitch
               id="collection"
-              name="collection"
-              className={"mx-1"}
-              shape={"pill"}
-              color={"primary"}
+              className="mx-1"
+              shape="pill"
+              color="primary"
               defaultChecked
-              innerRef={(e) => {
-                register(e);
-                collectionRef.current = e;
-              }}
+              {...collectionRest}
+              innerRef={collectionRef}
             />
             <div className="ml-2 collection-info">
               <span>Collections</span>
@@ -155,8 +147,13 @@ const Add = () => {
           </div>
         </CModalBody>
         <CModalFooter>
-          <CButton type="submit" color="primary" block>
-            Save
+          <CButton
+            type="submit"
+            color="primary"
+            block
+            disabled={!isDirty || isSubmitting}
+          >
+            {isSubmitting ? "Saving..." : "Save"}
           </CButton>
         </CModalFooter>
       </CModal>

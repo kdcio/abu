@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CButton,
   CCard,
@@ -15,7 +15,7 @@ import {
   CInputGroupAppend,
 } from "@coreui/react";
 import { useHistory, useParams, Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import CIcon from "@coreui/icons-react";
 import { useModels } from "context/models";
 import { useToaster } from "context/toaster";
@@ -29,12 +29,11 @@ const Form = () => {
   const { list: models } = useModels();
   const history = useHistory();
   const { addToast } = useToaster();
-  const { register, handleSubmit, errors, getValues, reset } = useForm();
+  const { register, handleSubmit, control, getValues, reset } = useForm();
+  const { errors, isDirty, isSubmitting } = useFormState({ control });
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
   const [key, setKey] = useState(null);
-
-  const switchRef = useRef([]);
 
   const createAccess = async (data) => {
     const { id } = await create({ apiName: "Access", data });
@@ -109,8 +108,7 @@ const Form = () => {
                   type="text"
                   className={`form-control ${errors.name && "is-invalid"}`}
                   id="name"
-                  name="name"
-                  ref={register({ required: true })}
+                  {...register("name", { required: true })}
                   disabled={processing}
                 />
                 {errors.name && (
@@ -148,37 +146,40 @@ const Form = () => {
                   Write
                 </CCol>
               </CRow>
-              {models.map((model, idx) => (
-                <CRow key={model.id} className="form-group">
-                  <CCol xs={4}>{model.name}</CCol>
-                  <CCol xs={4} className="text-center">
-                    <CSwitch
-                      id={`read-${model.id}`}
-                      name={`read[${model.id}]`}
-                      className={"mx-1"}
-                      shape={"pill"}
-                      color={"primary"}
-                      innerRef={(e) => {
-                        register(e);
-                        switchRef.current[idx * 2] = e;
-                      }}
-                    />
-                  </CCol>
-                  <CCol xs={4} className="text-center">
-                    <CSwitch
-                      id={`write-${model.id}`}
-                      name={`write[${model.id}]`}
-                      className={"mx-1"}
-                      shape={"pill"}
-                      color={"primary"}
-                      innerRef={(e) => {
-                        register(e);
-                        switchRef.current[idx * 2 + 1] = e;
-                      }}
-                    />
-                  </CCol>
-                </CRow>
-              ))}
+              {models.map((model, idx) => {
+                const { ref: readRef, ...readRest } = register(
+                  `read[${model.id}]`
+                );
+                const { ref: writeRef, ...writeRest } = register(
+                  `write[${model.id}]`
+                );
+
+                return (
+                  <CRow key={model.id} className="form-group">
+                    <CCol xs={4}>{model.name}</CCol>
+                    <CCol xs={4} className="text-center">
+                      <CSwitch
+                        id={`read-${model.id}`}
+                        className="mx-1"
+                        shape="pill"
+                        color="primary"
+                        {...readRest}
+                        innerRef={readRef}
+                      />
+                    </CCol>
+                    <CCol xs={4} className="text-center">
+                      <CSwitch
+                        id={`write-${model.id}`}
+                        className="mx-1"
+                        shape="pill"
+                        color="primary"
+                        {...writeRest}
+                        innerRef={writeRef}
+                      />
+                    </CCol>
+                  </CRow>
+                );
+              })}
             </CCol>
           </CRow>
         </CCardBody>
@@ -189,9 +190,9 @@ const Form = () => {
             size="sm"
             color="primary"
             className="mr-2"
-            disabled={processing}
+            disabled={!isDirty || isSubmitting}
           >
-            <CIcon name="cil-scrubber" /> {id ? "Update" : "Add Access"}
+            <CIcon name="cil-scrubber" /> {isSubmitting ? "Saving..." : "Save"}
           </CButton>
           <Link
             id="cancel"

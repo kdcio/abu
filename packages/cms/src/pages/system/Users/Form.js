@@ -11,7 +11,7 @@ import {
   CRow,
 } from "@coreui/react";
 import { useHistory, useParams, Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import CIcon from "@coreui/icons-react";
 
 import get from "api/get";
@@ -20,7 +20,15 @@ import update from "api/update";
 const Form = () => {
   const { id } = useParams();
   const history = useHistory();
-  const { register, handleSubmit, errors, getValues, reset, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    control,
+    getValues,
+    reset,
+    watch,
+  } = useForm();
+  const { errors, isDirty, isSubmitting } = useFormState({ control });
   const [processing, setProcessing] = useState(true);
   const [defaultValues, setDefaultValues] = useState({});
 
@@ -106,9 +114,8 @@ const Form = () => {
                     errors.email && "is-invalid"
                   }`}
                   id="email"
-                  name="email"
+                  {...register("email", { required: true })}
                   placeholder="Enter your email"
-                  ref={register({ required: true })}
                   readOnly
                 />
                 {errors.email && (
@@ -121,9 +128,8 @@ const Form = () => {
                   type="text"
                   className={`form-control ${errors.firstName && "is-invalid"}`}
                   id="firstName"
-                  name="firstName"
+                  {...register("firstName", { required: true })}
                   placeholder="Enter your first name"
-                  ref={register({ required: true })}
                   disabled={processing}
                 />
                 {errors.firstName && (
@@ -138,9 +144,8 @@ const Form = () => {
                   type="text"
                   className={`form-control ${errors.lastName && "is-invalid"}`}
                   id="lastName"
-                  name="lastName"
+                  {...register("lastName", { required: true })}
                   placeholder="Enter your last name"
-                  ref={register({ required: true })}
                   disabled={processing}
                 />
                 {errors.lastName && (
@@ -156,8 +161,7 @@ const Form = () => {
                 <select
                   className={`form-control ${errors.group && "is-invalid"}`}
                   id="group"
-                  name="group"
-                  ref={register({ required: true })}
+                  {...register("group", { required: true })}
                   disabled={processing}
                 >
                   <option value="editor">Editor</option>
@@ -175,8 +179,7 @@ const Form = () => {
                   type="password"
                   className={`form-control ${errors.password && "is-invalid"}`}
                   id="password"
-                  name="password"
-                  ref={register({
+                  {...register("password", {
                     pattern: {
                       value: /(?=.*\d)(?=.*[A-Z]).{6,}/,
                       message:
@@ -200,8 +203,7 @@ const Form = () => {
                     errors.confirmPassword && "is-invalid"
                   }`}
                   id="confirmPassword"
-                  name="confirmPassword"
-                  ref={register({
+                  {...register("confirmPassword", {
                     pattern: {
                       value: /(?=.*\d)(?=.*[A-Z]).{6,}/,
                       message:
@@ -230,15 +232,15 @@ const Form = () => {
             size="sm"
             color="primary"
             className="mr-2"
-            disabled={processing}
+            disabled={processing || !isDirty || isSubmitting}
           >
-            <CIcon name="cil-scrubber" /> Update
+            <CIcon name="cil-scrubber" /> {isSubmitting ? "Saving..." : "Save"}
           </CButton>
           <Link
             id="cancel"
             to={`/system/users`}
             className="btn btn-danger btn-sm"
-            disabled={processing}
+            disabled={processing || isSubmitting}
           >
             <CIcon name="cil-ban" /> Cancel
           </Link>

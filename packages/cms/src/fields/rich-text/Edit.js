@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { CFormGroup, CLabel } from "@coreui/react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import ReactQuill from "react-quill";
 import { useModels } from "context/models";
 import { useData } from "context/data";
@@ -12,15 +12,25 @@ import "scss/components/quill.scss";
 const Edit = ({ name, id, validations, help }) => {
   const { data } = useData();
   const { selected: model } = useModels();
-  const { register, setValue, errors, watch } = useFormContext();
+  const {
+    register,
+    setValue,
+    formState: { errors },
+    control,
+  } = useFormContext();
 
-  const value = watch(id, "");
+  const value = useWatch({
+    control,
+    name: id, // without supply name will watch the entire form, or ['firstName', 'lastName'] to watch both
+    defaultValue: "", // default value before the render
+  });
+
   useEffect(() => {
-    data?.data?.[id] && setValue(id, data.data[id]);
+    data?.data?.[id] && setValue(id, data.data[id] || "");
   }, [model.id, id, data, setValue]);
 
   useEffect(() => {
-    register({ name: id });
+    register(id);
   }, [id, register]);
 
   return (
@@ -34,7 +44,7 @@ const Edit = ({ name, id, validations, help }) => {
         name={id}
         value={value}
         onChange={(content) => {
-          setValue(id, content);
+          setValue(id, content, { shouldDirty: true });
         }}
       />
       {errors[id] && (
