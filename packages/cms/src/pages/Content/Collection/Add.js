@@ -91,7 +91,7 @@ const Add = () => {
                 id="cancel"
                 to={`/content/${model.id}`}
                 className="btn btn-danger btn-sm"
-                disabled={methods?.formState?.isSubmitting}
+                disabled={isSubmitting}
               >
                 <CIcon name="cil-ban" /> Cancel
               </Link>

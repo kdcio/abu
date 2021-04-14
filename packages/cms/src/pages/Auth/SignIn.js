@@ -14,18 +14,28 @@ import {
   CRow,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import { useForm, useFormState } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "context/auth";
 
 const SignIn = () => {
   const history = useHistory();
   const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { register, handleSubmit, control } = useForm();
+  const { errors, isDirty, isSubmitting } = useFormState({ control });
   const [error, setError] = useState(null);
 
-  const doSignIn = async () => {
+  const { ref: emailRef, ...emailRest } = register("email", {
+    required: true,
+  });
+  const { ref: pwdRef, ...pwdRest } = register("password", {
+    required: true,
+    pattern: /(?=.*\d)(?=.*[A-Z]).{6,}/,
+  });
+
+  const doSignIn = async (data) => {
     try {
+      const { email, password } = data;
       const res = await login(email, password);
       if (res === "NEW_PASSWORD_REQUIRED") {
         history.push("/new-password");
@@ -43,7 +53,7 @@ const SignIn = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm onSubmit={handleSubmit(doSignIn)}>
                     <h1 id="login-title">Login</h1>
                     <p className="text-muted">Sign In to your account</p>
                     {error && (
@@ -59,13 +69,17 @@ const SignIn = () => {
                         placeholder="Email"
                         autoComplete="Email"
                         type="email"
-                        className="form-control"
                         id="email"
                         aria-describedby="emailHelp"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
+                        className={errors.email && "is-invalid"}
+                        {...emailRest}
+                        innerRef={emailRef}
                       />
+                      {errors.emailRef && (
+                        <div className="invalid-feedback">
+                          Please provide email
+                        </div>
+                      )}
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupPrepend>
@@ -77,24 +91,33 @@ const SignIn = () => {
                         placeholder="Password"
                         autoComplete="current-password"
                         type="password"
-                        className="form-control"
+                        className={errors.password && "is-invalid"}
                         id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        pattern="(?=.*\d)(?=.*[A-Z]).{6,}"
-                        title="Must contain at least one number and one uppercase letter, and at least 6 or more characters"
-                        required
+                        {...pwdRest}
+                        innerRef={pwdRef}
                       />
+                      {errors?.password?.type === "required" && (
+                        <div className="invalid-feedback">
+                          Please enter a new password
+                        </div>
+                      )}
+                      {errors?.password?.type === "pattern" && (
+                        <div className="invalid-feedback">
+                          Password must contain at least one number and one
+                          uppercase letter, and at least 6 or more characters
+                        </div>
+                      )}
                     </CInputGroup>
                     <CRow>
                       <CCol xs="6">
                         <CButton
+                          type="submit"
                           id="login"
                           color="primary"
                           className="px-4"
-                          onClick={doSignIn}
+                          disabled={!isDirty || isSubmitting}
                         >
-                          Login
+                          {isSubmitting ? "Loging in..." : "Login"}
                         </CButton>
                       </CCol>
                       <CCol xs="6" className="text-right">
