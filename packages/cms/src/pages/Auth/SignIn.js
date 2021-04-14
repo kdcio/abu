@@ -22,11 +22,12 @@ const SignIn = () => {
   const history = useHistory();
   const { login } = useAuth();
   const { register, handleSubmit, control } = useForm();
-  const { errors, isDirty, isSubmitting } = useFormState({ control });
+  const { errors, isSubmitting } = useFormState({ control });
   const [error, setError] = useState(null);
 
   const { ref: emailRef, ...emailRest } = register("email", {
     required: true,
+    pattern: /^\S+@\S+\.\S+$/,
   });
   const { ref: pwdRef, ...pwdRest } = register("password", {
     required: true,
@@ -75,9 +76,9 @@ const SignIn = () => {
                         {...emailRest}
                         innerRef={emailRef}
                       />
-                      {errors.emailRef && (
+                      {errors.email && (
                         <div className="invalid-feedback">
-                          Please provide email
+                          Please provide a valid email
                         </div>
                       )}
                     </CInputGroup>
@@ -115,7 +116,7 @@ const SignIn = () => {
                           id="login"
                           color="primary"
                           className="px-4"
-                          disabled={!isDirty || isSubmitting}
+                          disabled={isSubmitting}
                         >
                           {isSubmitting ? "Loging in..." : "Login"}
                         </CButton>
