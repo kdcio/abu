@@ -1,16 +1,11 @@
 import React, { useEffect } from "react";
 import { CFormGroup, CLabel, CSwitch, CButton } from "@coreui/react";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import snakeCase from "lodash.snakecase";
 
 const Setting = ({ processing, update, error }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    setValue,
-  } = useForm();
+  const { register, handleSubmit, control, watch, setValue } = useForm();
+  const { errors, isDirty, isSubmitting } = useFormState({ control });
   const { ref: todayRef, ...todayRest } = register("today");
   const { ref: reqRef, ...reqRest } = register("required");
 
@@ -117,8 +112,14 @@ const Setting = ({ processing, update, error }) => {
           <span>Required</span>
         </div>
       </div>
-      <CButton type="submit" color="success" block className="mt-4">
-        Add field
+      <CButton
+        type="submit"
+        color="success"
+        block
+        className="mt-4"
+        disabled={!isDirty || isSubmitting}
+      >
+        {isSubmitting ? "Adding..." : "Add"}
       </CButton>
     </form>
   );

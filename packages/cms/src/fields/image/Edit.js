@@ -24,7 +24,7 @@ const Edit = ({ name, id, validations, help }) => {
   const onDrop = useCallback(
     (acceptedFiles) => {
       setFile(acceptedFiles[0]);
-      setValue(id, acceptedFiles[0]);
+      setValue(id, acceptedFiles[0], { shouldDirty: true });
     },
     [id, setFile, setValue]
   );

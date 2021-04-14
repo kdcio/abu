@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CButton, CCard, CCardBody, CCardHeader } from "@coreui/react";
 import { Link } from "react-router-dom";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useFormState } from "react-hook-form";
 import CIcon from "@coreui/icons-react";
 import { useParams } from "react-router-dom";
 import FieldEdit from "components/FieldEdit";
@@ -20,6 +20,8 @@ const Edit = () => {
   const { cid } = useParams();
   const { addToast } = useToaster();
   const methods = useForm();
+  const { reset, control } = methods;
+  const { isDirty, isSubmitting } = useFormState({ control });
   const [error, setError] = useState(null);
 
   const updateContent = async ({ data }) => {
@@ -59,6 +61,7 @@ const Edit = () => {
     try {
       const imageData = await submitImages(data);
       await updateContent({ data: { ...data, ...imageData } });
+      reset({ ...data, ...imageData });
       addToast({
         message: `${model.name} saved successfully!`,
         color: "success",
@@ -79,6 +82,7 @@ const Edit = () => {
           id: cid,
         });
         if (cancel) return;
+        reset(res.data);
         setData(res);
       } catch (e) {
         setData({});
@@ -90,7 +94,7 @@ const Edit = () => {
     return () => {
       cancel = true;
     };
-  }, [model, setData, cid]);
+  }, [model, setData, cid, reset]);
 
   return (
     <FormProvider {...methods}>
@@ -107,15 +111,16 @@ const Edit = () => {
                 size="sm"
                 color="primary"
                 className="mr-2"
-                disabled={methods?.formState?.isSubmitting}
+                disabled={!isDirty || isSubmitting}
               >
-                <CIcon name="cil-scrubber" /> Update
+                <CIcon name="cil-scrubber" />{" "}
+                {isSubmitting ? "Saving..." : "Save"}
               </CButton>
               <Link
                 id="cancel"
                 to={`/content/${model.id}`}
                 className="btn btn-danger btn-sm"
-                disabled={methods?.formState?.isSubmitting}
+                disabled={isSubmitting}
               >
                 <CIcon name="cil-ban" /> Cancel
               </Link>

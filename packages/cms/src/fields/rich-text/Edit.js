@@ -44,7 +44,7 @@ const Edit = ({ name, id, validations, help }) => {
         name={id}
         value={value}
         onChange={(content) => {
-          setValue(id, content);
+          setValue(id, content, { shouldDirty: true });
         }}
       />
       {errors[id] && (

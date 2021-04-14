@@ -11,7 +11,7 @@ import {
   CRow,
 } from "@coreui/react";
 import { useHistory, useParams, Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import CIcon from "@coreui/icons-react";
 
 import get from "api/get";
@@ -23,11 +23,12 @@ const Form = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    control,
     getValues,
     reset,
     watch,
   } = useForm();
+  const { errors, isDirty, isSubmitting } = useFormState({ control });
   const [processing, setProcessing] = useState(true);
   const [defaultValues, setDefaultValues] = useState({});
 
@@ -231,15 +232,15 @@ const Form = () => {
             size="sm"
             color="primary"
             className="mr-2"
-            disabled={processing}
+            disabled={processing || !isDirty || isSubmitting}
           >
-            <CIcon name="cil-scrubber" /> Update
+            <CIcon name="cil-scrubber" /> {isSubmitting ? "Saving..." : "Save"}
           </CButton>
           <Link
             id="cancel"
             to={`/system/users`}
             className="btn btn-danger btn-sm"
-            disabled={processing}
+            disabled={processing || isSubmitting}
           >
             <CIcon name="cil-ban" /> Cancel
           </Link>

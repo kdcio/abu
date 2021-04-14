@@ -16,7 +16,8 @@ const Add = () => {
   const { addToast } = useToaster();
   const history = useHistory();
   const methods = useForm();
-  const { isSubmitting } = useFormState({ control: methods.control });
+  const { control } = methods;
+  const { isDirty, isSubmitting } = useFormState({ control });
   const [error, setError] = useState(null);
 
   const createContent = async ({ data }) => {
@@ -75,16 +76,16 @@ const Add = () => {
               Add {model.name}
             </span>
             <div className="card-header-actions">
-              {isSubmitting && <span>Saving data...</span>}
               <CButton
                 type="submit"
                 id="add"
                 size="sm"
                 color="primary"
                 className="mr-2"
-                disabled={methods?.formState?.isSubmitting}
+                disabled={!isDirty || isSubmitting}
               >
-                <CIcon name="cil-scrubber" /> Add
+                <CIcon name="cil-scrubber" />{" "}
+                {isSubmitting ? "Saving..." : "Save"}
               </CButton>
               <Link
                 id="cancel"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CCard, CCardBody, CCardHeader, CButton } from "@coreui/react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useFormState } from "react-hook-form";
 import FieldEdit from "components/FieldEdit";
 import { useModels } from "context/models";
 import { useData } from "context/data";
@@ -16,6 +16,8 @@ const Single = () => {
   const { setData } = useData();
   const { addToast } = useToaster();
   const methods = useForm();
+  const { reset, control } = methods;
+  const { isDirty, isSubmitting } = useFormState({ control });
   const [error, setError] = useState(null);
 
   const createSingle = async ({ data }) => {
@@ -55,6 +57,7 @@ const Single = () => {
     try {
       const imageData = await submitImages(data);
       await createSingle({ data: { ...data, ...imageData } });
+      reset({ ...data, ...imageData });
       addToast({
         message: `${model.name} saved successfully!`,
         color: "success",
@@ -75,6 +78,7 @@ const Single = () => {
           id: model.id,
         });
         if (cancel) return;
+        reset(res.data);
         setData(res);
       } catch (e) {
         setData({});
@@ -86,7 +90,7 @@ const Single = () => {
     return () => {
       cancel = true;
     };
-  }, [model, setData]);
+  }, [model, setData, reset]);
 
   return (
     <FormProvider {...methods}>
@@ -97,8 +101,13 @@ const Single = () => {
               Editing {model.name}
             </span>
             <div className="card-header-actions">
-              <CButton type="submit" color="primary" block>
-                Save
+              <CButton
+                type="submit"
+                color="primary"
+                block
+                disabled={!isDirty || isSubmitting}
+              >
+                {isSubmitting ? "Saving..." : "Save"}
               </CButton>
             </div>
           </CCardHeader>

@@ -15,7 +15,7 @@ import {
   CInputGroupAppend,
 } from "@coreui/react";
 import { useHistory, useParams, Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import CIcon from "@coreui/icons-react";
 import { useModels } from "context/models";
 import { useToaster } from "context/toaster";
@@ -29,13 +29,8 @@ const Form = () => {
   const { list: models } = useModels();
   const history = useHistory();
   const { addToast } = useToaster();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    reset,
-  } = useForm();
+  const { register, handleSubmit, control, getValues, reset } = useForm();
+  const { errors, isDirty, isSubmitting } = useFormState({ control });
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
   const [key, setKey] = useState(null);
@@ -195,9 +190,9 @@ const Form = () => {
             size="sm"
             color="primary"
             className="mr-2"
-            disabled={processing}
+            disabled={!isDirty || isSubmitting}
           >
-            <CIcon name="cil-scrubber" /> {id ? "Update" : "Add Access"}
+            <CIcon name="cil-scrubber" /> {isSubmitting ? "Saving..." : "Save"}
           </CButton>
           <Link
             id="cancel"
