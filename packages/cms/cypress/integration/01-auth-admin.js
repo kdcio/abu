@@ -24,7 +24,6 @@ describe("Authentication Page Admin", function () {
     cy.getVerificationCode(email).then((code) => {
       cy.get("#email").type(email);
       cy.get("#password").type(`${code}{enter}`);
-      cy.get("#login").click();
     });
 
     cy.get("#first-name").type("a").clear();
