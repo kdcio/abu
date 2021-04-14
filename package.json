@@ -11,7 +11,7 @@
     "prepare": "husky install",
     "setup": "./scripts/setup-stage.sh",
     "setup:local": "./scripts/setup-local.sh",
-    "start": "concurrently \"yarn start:api\" \"yarn start:cms\"",
+    "start": "concurrently -r npm:start:*",
     "start:cms": "yarn workspace cms start",
     "start:api": "sls offline start -c single-api.yml",
     "cypress": "yarn workspace cms cypress",

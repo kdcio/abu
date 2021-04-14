@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CButton,
   CCard,
@@ -29,12 +29,16 @@ const Form = () => {
   const { list: models } = useModels();
   const history = useHistory();
   const { addToast } = useToaster();
-  const { register, handleSubmit, errors, getValues, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    reset,
+  } = useForm();
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
   const [key, setKey] = useState(null);
-
-  const switchRef = useRef([]);
 
   const createAccess = async (data) => {
     const { id } = await create({ apiName: "Access", data });
@@ -109,8 +113,7 @@ const Form = () => {
                   type="text"
                   className={`form-control ${errors.name && "is-invalid"}`}
                   id="name"
-                  name="name"
-                  ref={register({ required: true })}
+                  {...register("name", { required: true })}
                   disabled={processing}
                 />
                 {errors.name && (
@@ -148,37 +151,40 @@ const Form = () => {
                   Write
                 </CCol>
               </CRow>
-              {models.map((model, idx) => (
-                <CRow key={model.id} className="form-group">
-                  <CCol xs={4}>{model.name}</CCol>
-                  <CCol xs={4} className="text-center">
-                    <CSwitch
-                      id={`read-${model.id}`}
-                      name={`read[${model.id}]`}
-                      className={"mx-1"}
-                      shape={"pill"}
-                      color={"primary"}
-                      innerRef={(e) => {
-                        register(e);
-                        switchRef.current[idx * 2] = e;
-                      }}
-                    />
-                  </CCol>
-                  <CCol xs={4} className="text-center">
-                    <CSwitch
-                      id={`write-${model.id}`}
-                      name={`write[${model.id}]`}
-                      className={"mx-1"}
-                      shape={"pill"}
-                      color={"primary"}
-                      innerRef={(e) => {
-                        register(e);
-                        switchRef.current[idx * 2 + 1] = e;
-                      }}
-                    />
-                  </CCol>
-                </CRow>
-              ))}
+              {models.map((model, idx) => {
+                const { ref: readRef, ...readRest } = register(
+                  `read[${model.id}]`
+                );
+                const { ref: writeRef, ...writeRest } = register(
+                  `write[${model.id}]`
+                );
+
+                return (
+                  <CRow key={model.id} className="form-group">
+                    <CCol xs={4}>{model.name}</CCol>
+                    <CCol xs={4} className="text-center">
+                      <CSwitch
+                        id={`read-${model.id}`}
+                        className="mx-1"
+                        shape="pill"
+                        color="primary"
+                        {...readRest}
+                        innerRef={readRef}
+                      />
+                    </CCol>
+                    <CCol xs={4} className="text-center">
+                      <CSwitch
+                        id={`write-${model.id}`}
+                        className="mx-1"
+                        shape="pill"
+                        color="primary"
+                        {...writeRest}
+                        innerRef={writeRef}
+                      />
+                    </CCol>
+                  </CRow>
+                );
+              })}
             </CCol>
           </CRow>
         </CCardBody>

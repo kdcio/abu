@@ -40,9 +40,8 @@ const Edit = ({ name, id, validations, help, reference }) => {
           type="text"
           className={`form-control ${errors[id] && "is-invalid"}`}
           id={id}
-          name={id}
           placeholder=""
-          ref={register({ required: validations.required })}
+          {...register(id, { required: validations.required })}
           defaultValue={initial}
           disabled={isSubmitting}
         />

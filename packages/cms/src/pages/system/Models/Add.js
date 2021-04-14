@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import snakeCase from "lodash.snakecase";
 
 import {
@@ -25,10 +25,16 @@ const Add = () => {
   const history = useHistory();
   const { modal, setModal } = useModal();
   const { list, dispatch } = useModels();
-  const collectionRef = useRef();
-  const { register, handleSubmit, errors, watch, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setValue,
+  } = useForm();
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
+  const { ref: collectionRef, ...collectionRest } = register("collection");
 
   const name = watch("name");
   useEffect(() => {
@@ -100,9 +106,8 @@ const Add = () => {
                 errors.name && "is-invalid"
               }`}
               id="name"
-              name="name"
+              {...register("name", { required: true })}
               placeholder="Blog"
-              ref={register({ required: true })}
               disabled={processing}
             />
             {errors.name && (
@@ -117,9 +122,8 @@ const Add = () => {
                 errors.id && "is-invalid"
               }`}
               id="id"
-              name="id"
+              {...register("id", { required: true })}
               placeholder="blog"
-              ref={register({ required: true })}
               disabled={processing}
             />
             <small className="form-text text-muted">
@@ -133,15 +137,12 @@ const Add = () => {
           <div className="d-flex">
             <CSwitch
               id="collection"
-              name="collection"
-              className={"mx-1"}
-              shape={"pill"}
-              color={"primary"}
+              className="mx-1"
+              shape="pill"
+              color="primary"
               defaultChecked
-              innerRef={(e) => {
-                register(e);
-                collectionRef.current = e;
-              }}
+              {...collectionRest}
+              innerRef={collectionRef}
             />
             <div className="ml-2 collection-info">
               <span>Collections</span>

@@ -18,7 +18,11 @@ import create from "api/create";
 
 const Add = () => {
   const history = useHistory();
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
 
@@ -64,9 +68,8 @@ const Add = () => {
                   type="email"
                   className={`form-control ${errors.email && "is-invalid"}`}
                   id="email"
-                  name="email"
+                  {...register("email", { required: true })}
                   placeholder="Enter your email"
-                  ref={register({ required: true })}
                   disabled={processing}
                   autoComplete="off"
                 />
@@ -82,8 +85,7 @@ const Add = () => {
                 <select
                   className={`form-control ${errors.group && "is-invalid"}`}
                   id="group"
-                  name="group"
-                  ref={register({ required: true })}
+                  {...register("group", { required: true })}
                   disabled={processing}
                 >
                   <option value="editor">Editor</option>

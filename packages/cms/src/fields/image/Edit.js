@@ -31,7 +31,7 @@ const Edit = ({ name, id, validations, help }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   useEffect(() => {
-    register({ name: id });
+    register(id);
   }, [id, register]);
 
   useEffect(() => {

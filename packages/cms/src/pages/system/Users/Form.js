@@ -20,7 +20,14 @@ import update from "api/update";
 const Form = () => {
   const { id } = useParams();
   const history = useHistory();
-  const { register, handleSubmit, errors, getValues, reset, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    reset,
+    watch,
+  } = useForm();
   const [processing, setProcessing] = useState(true);
   const [defaultValues, setDefaultValues] = useState({});
 
@@ -106,9 +113,8 @@ const Form = () => {
                     errors.email && "is-invalid"
                   }`}
                   id="email"
-                  name="email"
+                  {...register("email", { required: true })}
                   placeholder="Enter your email"
-                  ref={register({ required: true })}
                   readOnly
                 />
                 {errors.email && (
@@ -121,9 +127,8 @@ const Form = () => {
                   type="text"
                   className={`form-control ${errors.firstName && "is-invalid"}`}
                   id="firstName"
-                  name="firstName"
+                  {...register("firstName", { required: true })}
                   placeholder="Enter your first name"
-                  ref={register({ required: true })}
                   disabled={processing}
                 />
                 {errors.firstName && (
@@ -138,9 +143,8 @@ const Form = () => {
                   type="text"
                   className={`form-control ${errors.lastName && "is-invalid"}`}
                   id="lastName"
-                  name="lastName"
+                  {...register("lastName", { required: true })}
                   placeholder="Enter your last name"
-                  ref={register({ required: true })}
                   disabled={processing}
                 />
                 {errors.lastName && (
@@ -156,8 +160,7 @@ const Form = () => {
                 <select
                   className={`form-control ${errors.group && "is-invalid"}`}
                   id="group"
-                  name="group"
-                  ref={register({ required: true })}
+                  {...register("group", { required: true })}
                   disabled={processing}
                 >
                   <option value="editor">Editor</option>
@@ -175,8 +178,7 @@ const Form = () => {
                   type="password"
                   className={`form-control ${errors.password && "is-invalid"}`}
                   id="password"
-                  name="password"
-                  ref={register({
+                  {...register("password", {
                     pattern: {
                       value: /(?=.*\d)(?=.*[A-Z]).{6,}/,
                       message:
@@ -200,8 +202,7 @@ const Form = () => {
                     errors.confirmPassword && "is-invalid"
                   }`}
                   id="confirmPassword"
-                  name="confirmPassword"
-                  ref={register({
+                  {...register("confirmPassword", {
                     pattern: {
                       value: /(?=.*\d)(?=.*[A-Z]).{6,}/,
                       message:

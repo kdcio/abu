@@ -1,12 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { CFormGroup, CLabel, CSwitch, CButton } from "@coreui/react";
 import { useForm } from "react-hook-form";
 import snakeCase from "lodash.snakecase";
 
 const Setting = ({ processing, update, error }) => {
-  const { register, handleSubmit, errors, watch, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setValue,
+  } = useForm();
 
-  const requiredRef = useRef();
+  const { ref: reqRef, ...reqRest } = register("required");
 
   const name = watch("name");
   useEffect(() => {
@@ -37,9 +43,8 @@ const Setting = ({ processing, update, error }) => {
             errors.name && "is-invalid"
           }`}
           id="name"
-          name="name"
+          {...register("name", { required: true })}
           placeholder="Title"
-          ref={register({ required: true })}
           disabled={processing}
         />
         {errors.name && (
@@ -54,9 +59,8 @@ const Setting = ({ processing, update, error }) => {
             errors.id && "is-invalid"
           }`}
           id="id"
-          name="id"
+          {...register("id", { required: true })}
           placeholder="title"
-          ref={register({ required: true })}
           disabled={processing}
         />
         <small className="form-text text-muted">
@@ -75,9 +79,8 @@ const Setting = ({ processing, update, error }) => {
             errors.help && "is-invalid"
           }`}
           id="help"
-          name="help"
+          {...register("help")}
           placeholder=""
-          ref={register}
           disabled={processing}
         />
         {errors.help && (
@@ -92,10 +95,8 @@ const Setting = ({ processing, update, error }) => {
           shape={"pill"}
           color={"primary"}
           defaultChecked
-          innerRef={(e) => {
-            register(e);
-            requiredRef.current = e;
-          }}
+          {...reqRest}
+          innerRef={reqRef}
         />
         <div className="ml-2 required-info">
           <span>Required</span>
