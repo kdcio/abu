@@ -17,7 +17,7 @@ const FieldSetting = ({ type }) => {
 
   const updateModel = async ({ id, ...others }) => {
     const data = { id, ...others };
-    await update({ apiName: "Model", id, data });
+    return update({ apiName: "Model", id, data });
   };
 
   const onSubmit = async (data) => {
@@ -38,7 +38,7 @@ const FieldSetting = ({ type }) => {
       setModal(false);
     } catch (err) {
       console.log(err);
-      setError(err);
+      setError(err.message);
     }
   };
 

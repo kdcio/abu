@@ -8,7 +8,7 @@ import RichTextField from "fields/rich-text/Select";
 import SlugField from "fields/slug/Select";
 import TextField from "fields/text/Select";
 
-import FieldSetting from "../../../../components/system/FieldSetting";
+import Setting from "./Setting";
 
 const Select = () => {
   const { selected, setSelected } = useSelect();
@@ -17,7 +17,7 @@ const Select = () => {
     setSelected(null);
   }, [setSelected]);
 
-  if (selected) return <FieldSetting type={selected} />;
+  if (selected) return <Setting type={selected} />;
 
   return (
     <>
