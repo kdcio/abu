@@ -6,7 +6,7 @@ import RichTextField from "fields/rich-text/List";
 import SlugField from "fields/slug/List";
 import TextField from "fields/text/List";
 
-const FieldInList = (field) => {
+const ViewModelField = (field) => {
   switch (field.type) {
     case "date":
       return <DateField {...field} />;
@@ -24,4 +24,4 @@ const FieldInList = (field) => {
   return null;
 };
 
-export default FieldInList;
+export default ViewModelField;

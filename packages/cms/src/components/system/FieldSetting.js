@@ -8,24 +8,23 @@ import TextField from "fields/text/Setting";
 
 import { useModels } from "context/models";
 import { useModal } from "context/modal";
-import update from "../../api/update";
+import update from "api/update";
 
 const FieldSetting = ({ type }) => {
   const { selected: model, dispatch } = useModels();
   const { setModal } = useModal();
-  const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
 
-  const updateModel = async ({ id, ...others }) =>
-    await update({ apiName: "Model", id, data: { id, ...others } });
+  const updateModel = async ({ id, ...others }) => {
+    const data = { id, ...others };
+    await update({ apiName: "Model", id, data });
+  };
 
   const onSubmit = async (data) => {
-    setProcessing(true);
     if (model?.fields?.length > 0) {
       const idx = model.fields.findIndex((item) => item.id === data.id);
       if (idx >= 0) {
         setError("Field ID not unique. Please choose a different one.");
-        setProcessing(false);
         return;
       }
     }
@@ -41,34 +40,19 @@ const FieldSetting = ({ type }) => {
       console.log(err);
       setError(err);
     }
-    setProcessing(false);
   };
 
   switch (type) {
     case "date":
-      return (
-        <DateField processing={processing} update={onSubmit} error={error} />
-      );
+      return <DateField update={onSubmit} error={error} />;
     case "image":
-      return (
-        <ImageField processing={processing} update={onSubmit} error={error} />
-      );
+      return <ImageField update={onSubmit} error={error} />;
     case "rich-text":
-      return (
-        <RichTextField
-          processing={processing}
-          update={onSubmit}
-          error={error}
-        />
-      );
+      return <RichTextField update={onSubmit} error={error} />;
     case "slug":
-      return (
-        <SlugField processing={processing} update={onSubmit} error={error} />
-      );
+      return <SlugField update={onSubmit} error={error} />;
     case "text":
-      return (
-        <TextField processing={processing} update={onSubmit} error={error} />
-      );
+      return <TextField update={onSubmit} error={error} />;
     default:
       break;
   }

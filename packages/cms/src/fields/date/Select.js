@@ -1,5 +1,5 @@
 import React from "react";
-import SelectorItem from "components/system/SelectorItem";
+import SelectorItem from "components/system/SelectItem";
 
 const Select = () => {
   return (

@@ -8,9 +8,9 @@ import RichTextField from "fields/rich-text/Select";
 import SlugField from "fields/slug/Select";
 import TextField from "fields/text/Select";
 
-import FieldSetting from "./FieldSetting";
+import FieldSetting from "../../../../components/system/FieldSetting";
 
-const FieldSelector = () => {
+const Select = () => {
   const { selected, setSelected } = useSelect();
 
   useEffect(() => {
@@ -46,4 +46,4 @@ const FieldSelector = () => {
   );
 };
 
-export default FieldSelector;
+export default Select;

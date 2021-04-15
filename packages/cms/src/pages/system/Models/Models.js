@@ -2,10 +2,10 @@ import React from "react";
 
 import { CRow, CCol } from "@coreui/react";
 import { useModal } from "context/modal";
-import List from "./List";
-import Form from "./Fields";
+import List from "./ListModels";
+import ViewModel from "./ViewModel";
 import Add from "./Add";
-import AddField from "./AddField";
+import AddField from "./Fields/Add";
 
 import "scss/components/models.scss";
 
@@ -19,7 +19,7 @@ const Models = () => {
           <List />
         </CCol>
         <CCol sm="8">
-          <Form />
+          <ViewModel />
         </CCol>
       </CRow>
       {modal === "addModel" && <Add />}
