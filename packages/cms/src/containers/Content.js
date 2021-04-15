@@ -4,6 +4,8 @@ import { CContainer, CFade } from "@coreui/react";
 import { useAuth } from "context/auth";
 import { GRP_EDITOR } from "../constants";
 
+import "scss/components/content.scss";
+
 // routes config
 import routes from "../routes";
 
@@ -19,8 +21,8 @@ const Content = () => {
   const { user } = useAuth();
   const group = user?.groups?.[0] || GRP_EDITOR;
   return (
-    <main className="c-main">
-      <CContainer fluid>
+    <main className="c-main d-flex">
+      <CContainer fluid className="d-flex">
         <Suspense fallback={loading}>
           <Switch>
             {routes.map((route, idx) => {
