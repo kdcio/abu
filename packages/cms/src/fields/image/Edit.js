@@ -31,8 +31,8 @@ const Edit = ({ name, id, validations, help }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   useEffect(() => {
-    register(id);
-  }, [id, register]);
+    register(id, { required: validations?.required });
+  }, [id, register, validations]);
 
   useEffect(() => {
     if (data?.data?.[id]) {
@@ -56,7 +56,7 @@ const Edit = ({ name, id, validations, help }) => {
             <p>Click here to change</p>
           </div>
         ) : (
-          <div className="card">
+          <div className="card mb-0">
             <div className="card-body">
               {isDragActive ? (
                 <p>Drop the image here ...</p>
@@ -69,7 +69,9 @@ const Edit = ({ name, id, validations, help }) => {
         <input {...getInputProps()} />
       </div>
       {errors[id] && (
-        <div className="invalid-feedback">This field is required.</div>
+        <div className="text-danger">
+          <small>This field is required.</small>
+        </div>
       )}
       {help && <small className="form-text text-muted">{help}</small>}
     </CFormGroup>

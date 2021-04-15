@@ -30,8 +30,8 @@ const Edit = ({ name, id, validations, help }) => {
   }, [model.id, id, data, setValue]);
 
   useEffect(() => {
-    register(id);
-  }, [id, register]);
+    register(id, { required: validations?.required });
+  }, [id, register, validations]);
 
   return (
     <CFormGroup>
@@ -48,7 +48,9 @@ const Edit = ({ name, id, validations, help }) => {
         }}
       />
       {errors[id] && (
-        <div className="invalid-feedback">This field is required.</div>
+        <div className="text-danger">
+          <small>This field is required.</small>
+        </div>
       )}
       {help && <small className="form-text text-muted">{help}</small>}
     </CFormGroup>
