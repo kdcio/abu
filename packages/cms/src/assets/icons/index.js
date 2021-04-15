@@ -22,6 +22,7 @@ import {
   cilImage1,
   cilShortText,
   cilLink,
+  cilFolder,
 } from "@coreui/icons";
 
 export const icons = {
@@ -47,4 +48,5 @@ export const icons = {
   cilImage1,
   cilShortText,
   cilLink,
+  cilFolder,
 };

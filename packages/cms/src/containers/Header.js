@@ -1,16 +1,7 @@
 import React from "react";
-import {
-  CHeader,
-  CToggler,
-  CHeaderBrand,
-  CHeaderNav,
-  CHeaderNavItem,
-  CHeaderNavLink,
-} from "@coreui/react";
+import { CHeader, CToggler, CHeaderBrand, CHeaderNav } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { useSidebar } from "context/sidebar";
-import { useAuth } from "context/auth";
-import { GRP_ADMIN } from "../constants";
 
 import HeaderDropdown from "./HeaderDropdown";
 
@@ -18,8 +9,6 @@ import "scss/components/header.scss";
 
 const Header = () => {
   const { sidebarShow, setSidebarShow } = useSidebar();
-  const { user } = useAuth();
-  const group = user?.groups?.[0] || null;
 
   const toggleSidebar = () => {
     const val = [true, "responsive"].includes(sidebarShow)
@@ -52,16 +41,7 @@ const Header = () => {
         AbuCMS
       </CHeaderBrand>
 
-      <CHeaderNav className="d-md-down-none mr-auto">
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/dashboard">Content</CHeaderNavLink>
-        </CHeaderNavItem>
-        {group === GRP_ADMIN && (
-          <CHeaderNavItem className="px-3">
-            <CHeaderNavLink to="/system">Settings</CHeaderNavLink>
-          </CHeaderNavItem>
-        )}
-      </CHeaderNav>
+      <CHeaderNav className="d-md-down-none mr-auto"></CHeaderNav>
 
       <CHeaderNav className="px-3">
         <HeaderDropdown />
