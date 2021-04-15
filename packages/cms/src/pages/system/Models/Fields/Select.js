@@ -8,16 +8,16 @@ import RichTextField from "fields/rich-text/Select";
 import SlugField from "fields/slug/Select";
 import TextField from "fields/text/Select";
 
-import FieldSetting from "./FieldSetting";
+import Setting from "./Setting";
 
-const FieldSelector = () => {
+const Select = () => {
   const { selected, setSelected } = useSelect();
 
   useEffect(() => {
     setSelected(null);
   }, [setSelected]);
 
-  if (selected) return <FieldSetting type={selected} />;
+  if (selected) return <Setting type={selected} />;
 
   return (
     <>
@@ -46,4 +46,4 @@ const FieldSelector = () => {
   );
 };
 
-export default FieldSelector;
+export default Select;

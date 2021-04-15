@@ -3,9 +3,9 @@ import { CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { useModels } from "context/models";
 import { useModal } from "context/modal";
-import FieldInList from "components/system/FieldInList";
+import ViewModelField from "./ViewModelField";
 
-const FieldList = () => {
+const ListModelFields = () => {
   const { selected } = useModels();
   const { setModal } = useModal();
   const [fields, setFields] = useState([]);
@@ -38,10 +38,10 @@ const FieldList = () => {
   return (
     <div>
       {fields.map((f) => (
-        <FieldInList key={f.id} {...f} />
+        <ViewModelField key={f.id} {...f} />
       ))}
     </div>
   );
 };
 
-export default FieldList;
+export default ListModelFields;

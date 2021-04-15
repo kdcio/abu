@@ -3,7 +3,7 @@ import React from "react";
 import { CModal, CModalBody, CModalHeader, CModalTitle } from "@coreui/react";
 import { useModal } from "context/modal";
 import { useSelect } from "context/select";
-import FieldSelector from "components/system/FieldSelector";
+import Select from "./Select";
 
 const AddField = () => {
   const { modal, setModal } = useModal();
@@ -39,7 +39,7 @@ const AddField = () => {
       <CModalHeader closeButton>
         <CModalTitle>{title}</CModalTitle>
       </CModalHeader>
-      <CModalBody>{modal === "addModelField" && <FieldSelector />}</CModalBody>
+      <CModalBody>{modal === "addModelField" && <Select />}</CModalBody>
     </CModal>
   );
 };

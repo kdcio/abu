@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 import { useModels } from "context/models";
 import { useModal } from "context/modal";
 import Info from "./Info";
-import FieldList from "./FieldList";
+import ListModelFields from "./ListModelFields";
 
-const Fields = () => {
+const ViewModel = () => {
   const { selected } = useModels();
   const { setModal } = useModal();
 
@@ -19,18 +19,9 @@ const Fields = () => {
         <span id="listTitle" className="h3">
           {selected.name}
         </span>
-        <div className="card-header-actions">
-          <Link
-            id="addmodel"
-            to={`/system/models/add`}
-            className="btn btn-info btn-sm float-right"
-          >
-            <CIcon name="cil-pencil" /> Edit Model
-          </Link>
-        </div>
       </CCardHeader>
       <CCardBody>
-        <FieldList />
+        <ListModelFields />
         {selected?.fields?.length > 0 && (
           <Link
             id="addmodel"
@@ -46,4 +37,4 @@ const Fields = () => {
   );
 };
 
-export default Fields;
+export default ViewModel;

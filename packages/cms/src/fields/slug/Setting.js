@@ -3,7 +3,7 @@ import { CFormGroup, CLabel, CSwitch, CButton } from "@coreui/react";
 import { useForm, useFormState } from "react-hook-form";
 import snakeCase from "lodash.snakecase";
 
-const Setting = ({ processing, update, error }) => {
+const Setting = ({ update, error }) => {
   const { register, handleSubmit, control, watch, setValue } = useForm();
   const { errors, isDirty, isSubmitting } = useFormState({ control });
   const { ref: reqRef, ...reqRest } = register("required");
@@ -40,7 +40,7 @@ const Setting = ({ processing, update, error }) => {
           id="name"
           {...register("name", { required: true })}
           placeholder="Title"
-          disabled={processing}
+          disabled={isSubmitting}
         />
         {errors.name && (
           <div className="invalid-feedback">Please provide name.</div>
@@ -56,7 +56,7 @@ const Setting = ({ processing, update, error }) => {
           id="id"
           {...register("id", { required: true })}
           placeholder="title"
-          disabled={processing}
+          disabled={isSubmitting}
         />
         <small className="form-text text-muted">
           This will be automatically generated based on name and will be used in
@@ -76,7 +76,7 @@ const Setting = ({ processing, update, error }) => {
           id="reference"
           {...register("reference", { required: true })}
           placeholder=""
-          disabled={processing}
+          disabled={isSubmitting}
         />
         <small className="form-text text-muted">
           Make sure you've added the referenced field before adding this.
@@ -95,7 +95,7 @@ const Setting = ({ processing, update, error }) => {
           id="help"
           {...register("help")}
           placeholder=""
-          disabled={processing}
+          disabled={isSubmitting}
         />
         {errors.help && (
           <div className="invalid-feedback">{errors.help.message}</div>
