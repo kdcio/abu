@@ -210,7 +210,6 @@ describe("Model", () => {
       headers: { "Content-Type": "application/json" },
       httpMethod: "PATCH",
       body: JSON.stringify({
-        ...model,
         name: newName,
       }),
     });
@@ -231,6 +230,39 @@ describe("Model", () => {
     expect(Item.sk2).toBe(newName);
     expect(Item.collection).toBe(model.collection);
     expect(Item.fields).toEqual(model.fields);
+  });
+
+  it(`should update model field order`, async () => {
+    const model = models[faker.datatype.number({ max: models.length - 1 })];
+    const { fields } = model;
+    const newFields = [fields[3], fields[1], fields[2], fields[4], fields[0]];
+    const event = makeFakeEvent({
+      path: `/${model.id}`,
+      pathParameters: { id: model.id },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "PATCH",
+      body: JSON.stringify({
+        fields: newFields,
+      }),
+    });
+
+    const response = await update(event);
+    expect(response.statusCode).toEqual(204);
+    expect(response.isBase64Encoded).toBe(false);
+
+    const params = {
+      TableName: tableName,
+      Key: {
+        pk: `MOD#${model.id}`,
+        sk: `META`,
+      },
+    };
+
+    const { Item } = await ddb.get(params).promise();
+    expect(Item.sk2).toBe(model.name);
+    expect(Item.collection).toBe(model.collection);
+    expect(Item.fields).toEqual(newFields);
+    expect(Item.fields).not.toEqual(fields);
   });
 
   it(`should not update model if user is not logged in`, async () => {

@@ -8,21 +8,21 @@ import Info from "./Info";
 import ListModelFields from "./ListModelFields";
 
 const ViewModel = () => {
-  const { selected } = useModels();
+  const { selected: model } = useModels();
   const { setModal } = useModal();
 
-  if (!selected) return <Info />;
+  if (!model) return <Info />;
 
   return (
     <CCard>
       <CCardHeader>
         <span id="listTitle" className="h3">
-          {selected.name}
+          {model.name}
         </span>
       </CCardHeader>
       <CCardBody>
         <ListModelFields />
-        {selected?.fields?.length > 0 && (
+        {model?.fields?.length > 0 && (
           <Link
             id="addmodel"
             to={`/system/models/add`}

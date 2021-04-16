@@ -1,6 +1,6 @@
 const makePatch = ({ model }) => {
-  const patch = async ({ id, ...others }) => {
-    await model.put({ ...others, id });
+  const patch = async (data) => {
+    await model.update(data);
   };
   return patch;
 };
