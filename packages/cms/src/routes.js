@@ -2,6 +2,7 @@ import React from "react";
 import { GRP_ADMIN, GRP_EDITOR } from "./constants";
 
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
+const NotFound = React.lazy(() => import("pages/NotFound"));
 const UsersList = React.lazy(() => import("./pages/system/Users"));
 const UsersForm = React.lazy(() => import("./pages/system/Users/Form"));
 const UsersAdd = React.lazy(() => import("./pages/system/Users/Add"));
@@ -23,6 +24,13 @@ const routes = [
     name: "Dashboard",
     exact: true,
     component: Dashboard,
+    groups: [GRP_ADMIN, GRP_EDITOR],
+  },
+  {
+    path: "/not-found",
+    name: "Not Found",
+    exact: true,
+    component: NotFound,
     groups: [GRP_ADMIN, GRP_EDITOR],
   },
   {
