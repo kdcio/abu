@@ -9,8 +9,6 @@ import "scss/components/content.scss";
 // routes config
 import routes from "../routes";
 
-const NotFound = React.lazy(() => import("pages/NotFound"));
-
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -43,14 +41,10 @@ const Content = () => {
                 )
               );
             })}
-            <Redirect from="/system" to="/system/models" />
-            <Redirect from="/content" to="/dashboard" />
-            <Redirect from="/" to="/dashboard" />
-            <Route path="*">
-              <Suspense fallback={loading}>
-                <NotFound />
-              </Suspense>
-            </Route>
+            <Redirect from="/system" to="/system/models" exact={true} />
+            <Redirect from="/content" to="/dashboard" exact={true} />
+            <Redirect from="/" to="/dashboard" exact={true} />
+            <Redirect from="*" to="/not-found" exact={true} />
           </Switch>
         </Suspense>
       </CContainer>
