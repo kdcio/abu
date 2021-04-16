@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  CButton,
   CCard,
   CCardBody,
   CCardFooter,
@@ -12,7 +11,9 @@ import {
 } from "@coreui/react";
 import { useHistory } from "react-router-dom";
 import { useForm, useFormState } from "react-hook-form";
-import CIcon from "@coreui/icons-react";
+import Back from "components/Back";
+import AddBtn from "components/Add";
+import Cancel from "components/Cancel";
 
 import create from "api/create";
 
@@ -46,7 +47,10 @@ const Add = () => {
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       <CCard>
         <CCardHeader>
-          <h3 id="addTitle">Add User</h3>
+          <Back isSubmitting={isSubmitting} url="/system/users" />
+          <h3 id="addTitle" className="mb-0">
+            Add User
+          </h3>
         </CCardHeader>
         <CCardBody>
           <CRow>
@@ -93,27 +97,12 @@ const Add = () => {
           </CRow>
         </CCardBody>
         <CCardFooter>
-          <CButton
-            type="submit"
-            id="addUser"
-            size="sm"
-            color="primary"
+          <AddBtn
+            isDirty={isDirty}
+            isSubmitting={isSubmitting}
             className="mr-2"
-            disabled={!isDirty || isSubmitting}
-          >
-            <CIcon name="cil-scrubber" /> {isSubmitting ? "Adding..." : "Add"}
-          </CButton>
-          <CButton
-            type="button"
-            id="cancel"
-            size="sm"
-            color="danger"
-            className="mr-2"
-            disabled={isSubmitting}
-            onClick={() => history.push("/system/users")}
-          >
-            <CIcon name="cil-ban" /> Cancel
-          </CButton>
+          />
+          <Cancel isSubmitting={isSubmitting} url="/system/users" />
         </CCardFooter>
       </CCard>
     </form>

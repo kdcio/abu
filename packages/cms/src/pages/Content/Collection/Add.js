@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { CButton, CCard, CCardBody, CCardHeader } from "@coreui/react";
-import { Link, useHistory } from "react-router-dom";
+import { CCard, CCardBody, CCardHeader } from "@coreui/react";
+import { useHistory } from "react-router-dom";
 import { useForm, FormProvider, useFormState } from "react-hook-form";
-import CIcon from "@coreui/icons-react";
 import FieldEdit from "components/FieldEdit";
 import { useModels } from "context/models";
 import { useToaster } from "context/toaster";
+import Back from "components/Back";
+import AddBtn from "components/Add";
 
 import uploadImage from "fields/image/submit";
 
@@ -72,29 +73,16 @@ const Add = () => {
       <form onSubmit={methods.handleSubmit(onSubmit)} autoComplete="off">
         <CCard>
           <CCardHeader>
+            <Back isSubmitting={isSubmitting} url={`/content/${model.id}`} />
             <span id="singleTitle" className="h3 mb-0">
               Add {model.name}
             </span>
             <div className="card-header-actions">
-              <CButton
-                type="submit"
-                id="add"
-                size="sm"
-                color="primary"
+              <AddBtn
+                isDirty={isDirty}
+                isSubmitting={isSubmitting}
                 className="mr-2"
-                disabled={!isDirty || isSubmitting}
-              >
-                <CIcon name="cil-scrubber" />{" "}
-                {isSubmitting ? "Saving..." : "Save"}
-              </CButton>
-              <Link
-                id="cancel"
-                to={`/content/${model.id}`}
-                className="btn btn-danger btn-sm"
-                disabled={isSubmitting}
-              >
-                <CIcon name="cil-ban" /> Cancel
-              </Link>
+              />
             </div>
           </CCardHeader>
           <CCardBody>

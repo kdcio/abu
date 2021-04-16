@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { CButton, CCard, CCardBody, CCardHeader } from "@coreui/react";
-import { Link } from "react-router-dom";
+import { CCard, CCardBody, CCardHeader } from "@coreui/react";
 import { useForm, FormProvider, useFormState } from "react-hook-form";
-import CIcon from "@coreui/icons-react";
 import { useParams } from "react-router-dom";
 import FieldEdit from "components/FieldEdit";
 import { useModels } from "context/models";
 import { useToaster } from "context/toaster";
 import { useData } from "context/data";
+import Back from "components/Back";
+import Save from "components/Save";
 
 import uploadImage from "fields/image/submit";
 
@@ -23,6 +23,7 @@ const Edit = () => {
   const { reset, control } = methods;
   const { isDirty, isSubmitting } = useFormState({ control });
   const [error, setError] = useState(null);
+  const [processing, setProcessing] = useState(false);
 
   const updateContent = async ({ data }) => {
     const modelData = model.fields.reduce((acc, f) => {
@@ -75,6 +76,7 @@ const Edit = () => {
   useEffect(() => {
     let cancel = false;
     const getContent = async () => {
+      setProcessing(true);
       try {
         const res = await get({
           apiName: "Content",
@@ -87,6 +89,7 @@ const Edit = () => {
       } catch (e) {
         setData({});
       }
+      setProcessing(false);
     };
 
     if (model?.id) getContent();
@@ -101,29 +104,17 @@ const Edit = () => {
       <form onSubmit={methods.handleSubmit(onSubmit)} autoComplete="off">
         <CCard>
           <CCardHeader>
+            <Back isSubmitting={isSubmitting} url={`/content/${model.id}`} />
             <span id="singleTitle" className="h3 mb-0">
               Edit {model.name}
             </span>
             <div className="card-header-actions">
-              <CButton
-                type="submit"
-                id="update"
-                size="sm"
-                color="primary"
+              <Save
+                isRetrieving={processing}
+                isDirty={isDirty}
+                isSubmitting={isSubmitting}
                 className="mr-2"
-                disabled={!isDirty || isSubmitting}
-              >
-                <CIcon name="cil-scrubber" />{" "}
-                {isSubmitting ? "Saving..." : "Save"}
-              </CButton>
-              <Link
-                id="cancel"
-                to={`/content/${model.id}`}
-                className="btn btn-danger btn-sm"
-                disabled={isSubmitting}
-              >
-                <CIcon name="cil-ban" /> Cancel
-              </Link>
+              />
             </div>
           </CCardHeader>
           <CCardBody>

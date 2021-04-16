@@ -12,7 +12,7 @@ import {
   cilPenAlt,
   cilTrash,
   cilPlus,
-  cilScrubber,
+  cilSave,
   cilBan,
   cilFile,
   cilLibrary,
@@ -23,6 +23,7 @@ import {
   cilShortText,
   cilLink,
   cilFolder,
+  cilChevronLeft,
 } from "@coreui/icons";
 
 export const icons = {
@@ -38,7 +39,7 @@ export const icons = {
   cilPenAlt,
   cilTrash,
   cilPlus,
-  cilScrubber,
+  cilSave,
   cilBan,
   cilFile,
   cilLibrary,
@@ -49,4 +50,5 @@ export const icons = {
   cilShortText,
   cilLink,
   cilFolder,
+  cilChevronLeft,
 };

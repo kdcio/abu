@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { CCard, CCardBody, CCardHeader, CButton } from "@coreui/react";
+import { CCard, CCardBody, CCardHeader } from "@coreui/react";
 import { useForm, FormProvider, useFormState } from "react-hook-form";
 import FieldEdit from "components/FieldEdit";
 import { useModels } from "context/models";
 import { useData } from "context/data";
 import { useToaster } from "context/toaster";
+import Save from "components/Save";
 
 import uploadImage from "fields/image/submit";
 
@@ -19,6 +20,7 @@ const Single = () => {
   const { reset, control } = methods;
   const { isDirty, isSubmitting } = useFormState({ control });
   const [error, setError] = useState(null);
+  const [processing, setProcessing] = useState(false);
 
   const createSingle = async ({ data }) => {
     const modelData = model.fields.reduce((acc, f) => {
@@ -71,6 +73,7 @@ const Single = () => {
   useEffect(() => {
     let cancel = false;
     const getData = async () => {
+      setProcessing(true);
       try {
         const res = await get({
           apiName: "Content",
@@ -83,6 +86,7 @@ const Single = () => {
       } catch (e) {
         setData({});
       }
+      setProcessing(false);
     };
 
     if (model?.id) getData();
@@ -101,14 +105,12 @@ const Single = () => {
               Editing {model.name}
             </span>
             <div className="card-header-actions">
-              <CButton
-                type="submit"
-                color="primary"
-                block
-                disabled={!isDirty || isSubmitting}
-              >
-                {isSubmitting ? "Saving..." : "Save"}
-              </CButton>
+              <Save
+                isRetrieving={processing}
+                isDirty={isDirty}
+                isSubmitting={isSubmitting}
+                className="mr-2"
+              />
             </div>
           </CCardHeader>
           <CCardBody>
