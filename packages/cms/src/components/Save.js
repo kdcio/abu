@@ -12,7 +12,7 @@ const Save = ({
 }) => (
   <CButton
     type="submit"
-    id="add"
+    id="save"
     size="sm"
     color="primary"
     className={`abu-btn ${className}`}

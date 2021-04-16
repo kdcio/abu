@@ -68,12 +68,28 @@ describe("Authentication Page Admin", function () {
       .contains(`${firstName} ${lastName}`)
       .click();
     cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
-    cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Content");
-    cy.get(":nth-child(2) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Settings");
+    cy.get(".c-sidebar-nav").within(() => {
+      cy.findByText("Content")
+        .should("exist")
+        .next()
+        .within(() => {
+          cy.findByText("Add model").should("exist");
+        })
+        .next()
+        .contains("System")
+        .next()
+        .within(() => {
+          cy.findByText("Models").should("exist");
+        })
+        .next()
+        .within(() => {
+          cy.findByText("API Access").should("exist");
+        })
+        .next()
+        .within(() => {
+          cy.findByText("Users").should("exist");
+        });
+    });
 
     cy.get("#logout").should("be.visible").click();
     cy.get("h1").contains("Login");
@@ -90,12 +106,28 @@ describe("Authentication Page Admin", function () {
       .contains(`${firstName} ${lastName}`)
       .click();
     cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
-    cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Content");
-    cy.get(":nth-child(2) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Settings");
+    cy.get(".c-sidebar-nav").within(() => {
+      cy.findByText("Content")
+        .should("exist")
+        .next()
+        .within(() => {
+          cy.findByText("Add model").should("exist");
+        })
+        .next()
+        .contains("System")
+        .next()
+        .within(() => {
+          cy.findByText("Models").should("exist");
+        })
+        .next()
+        .within(() => {
+          cy.findByText("API Access").should("exist");
+        })
+        .next()
+        .within(() => {
+          cy.findByText("Users").should("exist");
+        });
+    });
 
     cy.get("#logout").click();
     cy.get("h1").contains("Login");

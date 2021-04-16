@@ -38,10 +38,18 @@ describe("Authentication Page Editor", function () {
       .contains(`${firstName} ${lastName}`)
       .click();
     cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
-    cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Content");
-    cy.get(":nth-child(2) > .c-header-nav-link").should("not.exist");
+    cy.get(".c-sidebar-nav").within(() => {
+      cy.findByText("Content")
+        .should("exist")
+        .next()
+        .within(() => {
+          cy.findByText("Add model").should("exist");
+        });
+      cy.findByText("System").should("not.exist");
+      cy.findByText("Models").should("not.exist");
+      cy.findByText("API Access").should("not.exist");
+      cy.findByText("Users").should("not.exist");
+    });
 
     cy.get("#logout").should("be.visible").click();
     cy.get("h1").contains("Login");
@@ -58,10 +66,18 @@ describe("Authentication Page Editor", function () {
       .contains(`${firstName} ${lastName}`)
       .click();
     cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
-    cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Content");
-    cy.get(":nth-child(2) > .c-header-nav-link").should("not.exist");
+    cy.get(".c-sidebar-nav").within(() => {
+      cy.findByText("Content")
+        .should("exist")
+        .next()
+        .within(() => {
+          cy.findByText("Add model").should("exist");
+        });
+      cy.findByText("System").should("not.exist");
+      cy.findByText("Models").should("not.exist");
+      cy.findByText("API Access").should("not.exist");
+      cy.findByText("Users").should("not.exist");
+    });
 
     cy.get("#logout").click();
     cy.get("h1").contains("Login");
