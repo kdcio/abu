@@ -38,26 +38,37 @@ describe("Manage Users by Admin", function () {
       .contains(`${firstName} ${lastName}`)
       .click();
     cy.get("#hello-title").should("be.visible").contains(`Hello ${firstName}!`);
-    cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Content");
-    cy.get(":nth-child(2) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Settings");
+    cy.get(".c-sidebar-nav").within(() => {
+      cy.findByText("Content")
+        .should("exist")
+        .next()
+        .within(() => {
+          cy.findByText("Add model").should("exist");
+        })
+        .next()
+        .contains("System")
+        .next()
+        .within(() => {
+          cy.findByText("Models").should("exist");
+        })
+        .next()
+        .within(() => {
+          cy.findByText("API Access").should("exist");
+        })
+        .next()
+        .within(() => {
+          cy.findByText("Users").should("exist");
+        });
+    });
 
     cy.saveLocalStorage();
   });
 
   it("Add user editor", () => {
     cy.restoreLocalStorage();
-    cy.get(":nth-child(2) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Settings")
-      .click();
-    cy.get(":nth-child(6) > .c-sidebar-nav-link")
-      .should("be.visible")
-      .contains("Users")
-      .click();
+    cy.get(".c-sidebar-nav").within(() => {
+      cy.findByText("Users").should("exist").click();
+    });
 
     cy.get("#listTitle").should("be.visible").contains("Users");
     cy.get("#addUser").click();
@@ -73,7 +84,7 @@ describe("Manage Users by Admin", function () {
       "test.kdc.codes"
     );
     cy.get("#email").should("be.visible").type(eEmail);
-    cy.get("#addUser").click();
+    cy.get("#add").click();
 
     // Find user in list
     cy.get("#listTitle").should("be.visible").contains("Users");
@@ -123,17 +134,9 @@ describe("Manage Users by Admin", function () {
       .should("be.visible")
       .contains(`${firstName} ${lastName}`);
     cy.get("#hello-title").should("be.visible").contains(`Hello ${firstName}!`);
-    cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Content");
-    cy.get(":nth-child(2) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Settings")
-      .click();
-    cy.get(":nth-child(6) > .c-sidebar-nav-link")
-      .should("be.visible")
-      .contains("Users")
-      .click();
+    cy.get(".c-sidebar-nav").within(() => {
+      cy.findByText("Users").should("exist").click();
+    });
 
     // check if editor data has been update
     cy.get("#listTitle").should("be.visible").contains("Users");
@@ -162,7 +165,7 @@ describe("Manage Users by Admin", function () {
     cy.get("#firstName").should("have.value", eFirstName);
     cy.get("#lastName").should("have.value", eLastName).type(" jr");
     cy.get("#group").should("have.value", "editor").select("admin");
-    cy.get("#update").click();
+    cy.get("#save").click();
 
     // Check if user is updated
     cy.get("#listTitle").should("be.visible").contains("Users");
@@ -189,7 +192,7 @@ describe("Manage Users by Admin", function () {
     const newPassword = `${faker.internet.password()}1A`;
     cy.get("#password").clear().type(newPassword);
     cy.get("#confirmPassword").clear().type(newPassword);
-    cy.get("#update").click();
+    cy.get("#save").click();
 
     // Logout as admin
     cy.get("#full-name")
@@ -217,18 +220,10 @@ describe("Manage Users by Admin", function () {
     cy.get("#email").type(email);
     cy.get("#password").type(password, { log: false });
     cy.get("#login").click();
-    cy.get(".mr-auto > :nth-child(1) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Content");
     cy.get("#hello-title").should("be.visible").contains(`Hello ${firstName}!`);
-    cy.get(":nth-child(2) > .c-header-nav-link")
-      .should("be.visible")
-      .contains("Settings")
-      .click();
-    cy.get(":nth-child(6) > .c-sidebar-nav-link")
-      .should("be.visible")
-      .contains("Users")
-      .click();
+    cy.get(".c-sidebar-nav").within(() => {
+      cy.findByText("Users").should("exist").click();
+    });
 
     // Delete user
     cy.on("window:confirm", () => true);

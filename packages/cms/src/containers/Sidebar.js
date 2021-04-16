@@ -30,8 +30,21 @@ const Sidebar = () => {
   const group = user?.groups?.[0] || GRP_EDITOR;
 
   useEffect(() => {
-    const contentNav = () =>
-      list.map((model) => ({
+    const contentChildrenNav = () => {
+      if (list.length === 0) {
+        return [
+          {
+            _tag: "CSidebarNavItem",
+            name: "Add model",
+            to: "/system/models",
+            exact: false,
+            icon: "cil-plus",
+            groups: [GRP_ADMIN, GRP_EDITOR],
+          },
+        ];
+      }
+
+      return list.map((model) => ({
         _tag: "CSidebarNavItem",
         name: model.name,
         to: `/content/${model.id}`,
@@ -44,10 +57,16 @@ const Sidebar = () => {
         ),
         groups: [GRP_ADMIN, GRP_EDITOR],
       }));
+    };
 
-    const _nav = location.pathname.match(/^\/((?!system)[^]+)/)
-      ? contentNav()
-      : settingsNav;
+    const contentNav = {
+      _tag: "CSidebarNavTitle",
+      _children: ["Content"],
+      groups: [GRP_ADMIN, GRP_EDITOR],
+    };
+
+    const _nav = [{ ...contentNav }, ...contentChildrenNav(), ...settingsNav];
+
     setNavs(_nav.filter((n) => n.groups.includes(group)));
   }, [location, group, list]);
 

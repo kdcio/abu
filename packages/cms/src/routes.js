@@ -14,52 +14,22 @@ const ContentForm = React.lazy(() => import("./pages/Content/Collection/Form"));
 const routes = [
   {
     path: "/",
+    name: "Home",
     exact: true,
     groups: [GRP_ADMIN, GRP_EDITOR],
   },
   {
     path: "/dashboard",
+    name: "Dashboard",
     exact: true,
     component: Dashboard,
     groups: [GRP_ADMIN, GRP_EDITOR],
   },
   {
-    path: "/system",
+    path: "/content",
+    name: "Content",
     exact: true,
-    groups: [GRP_ADMIN],
-  },
-  {
-    path: "/system/users",
-    exact: true,
-    component: UsersList,
-    groups: [GRP_ADMIN],
-  },
-  {
-    path: "/system/users/add",
-    exact: true,
-    component: UsersAdd,
-    groups: [GRP_ADMIN],
-  },
-  {
-    path: "/system/users/edit/:id",
-    exact: true,
-    component: UsersForm,
-    groups: [GRP_ADMIN],
-  },
-  {
-    path: "/system/models/:id?",
-    component: Models,
-    groups: [GRP_ADMIN],
-  },
-  {
-    path: "/system/api_access/:action/:id?",
-    component: ApiAccessForm,
-    groups: [GRP_ADMIN],
-  },
-  {
-    path: "/system/api_access",
-    component: ApiAccess,
-    groups: [GRP_ADMIN],
+    groups: [GRP_ADMIN, GRP_EDITOR],
   },
   {
     path: "/content/:id/:action/:cid?",
@@ -70,6 +40,59 @@ const routes = [
     path: "/content/:id",
     component: Content,
     groups: [GRP_ADMIN, GRP_EDITOR],
+  },
+  {
+    path: "/system",
+    name: "System",
+    exact: true,
+    groups: [GRP_ADMIN],
+  },
+  {
+    path: "/system/users",
+    name: "Users",
+    exact: true,
+    component: UsersList,
+    groups: [GRP_ADMIN],
+  },
+  {
+    path: "/system/users/add",
+    name: "Add",
+    exact: true,
+    component: UsersAdd,
+    groups: [GRP_ADMIN],
+  },
+  {
+    path: "/system/users/edit/:id",
+    name: "Edit",
+    exact: true,
+    component: UsersForm,
+    groups: [GRP_ADMIN],
+  },
+  {
+    path: "/system/models/:id?",
+    name: "Models",
+    component: Models,
+    groups: [GRP_ADMIN],
+  },
+  {
+    path: "/system/api_access/add",
+    name: "Add",
+    component: ApiAccessForm,
+    groups: [GRP_ADMIN],
+  },
+  {
+    path: "/system/api_access/edit/:id",
+    name: "Edit",
+    exact: true,
+    component: ApiAccessForm,
+    groups: [GRP_ADMIN],
+  },
+  {
+    path: "/system/api_access",
+    name: "API Access",
+    exact: true,
+    component: ApiAccess,
+    groups: [GRP_ADMIN],
   },
 ];
 

@@ -14,11 +14,13 @@ import {
   CInput,
   CInputGroupAppend,
 } from "@coreui/react";
-import { useHistory, useParams, Link } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useForm, useFormState } from "react-hook-form";
-import CIcon from "@coreui/icons-react";
 import { useModels } from "context/models";
 import { useToaster } from "context/toaster";
+import Back from "components/Back";
+import Save from "components/Save";
+import Cancel from "components/Cancel";
 
 import create from "api/create";
 import get from "api/get";
@@ -50,17 +52,15 @@ const Form = () => {
       message: "API Access saved successfully!",
       color: "success",
     });
-    setProcessing(false);
+    reset(data);
   };
 
   const onSubmit = async (data) => {
-    setProcessing(true);
     try {
       if (id) updateAccess(data);
       else createAccess(data);
     } catch (err) {
       setError(err);
-      setProcessing(false);
     }
   };
 
@@ -73,8 +73,10 @@ const Form = () => {
   };
 
   useEffect(() => {
+    let cancel = false;
     const getAccess = async () => {
       const res = await get({ apiName: "Access", id });
+      if (cancel) return;
       const values = {
         ...getValues(),
         ...res,
@@ -84,12 +86,16 @@ const Form = () => {
       setProcessing(false);
     };
     if (id) getAccess();
+    return () => {
+      cancel = true;
+    };
   }, [id, getValues, reset, history]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       <CCard>
         <CCardHeader>
+          <Back isSubmitting={isSubmitting} url="/system/api_access" />
           <h3 id="formTitle" className="mb-0">
             {id ? "Edit" : "Add"} API Access
           </h3>
@@ -184,24 +190,13 @@ const Form = () => {
           </CRow>
         </CCardBody>
         <CCardFooter>
-          <CButton
-            type="submit"
-            id="save"
-            size="sm"
-            color="primary"
+          <Save
+            isRetrieving={processing}
+            isDirty={isDirty}
+            isSubmitting={isSubmitting}
             className="mr-2"
-            disabled={!isDirty || isSubmitting}
-          >
-            <CIcon name="cil-scrubber" /> {isSubmitting ? "Saving..." : "Save"}
-          </CButton>
-          <Link
-            id="cancel"
-            to={`/system/api_access`}
-            className="btn btn-danger btn-sm"
-            disabled={processing}
-          >
-            <CIcon name="cil-ban" /> Cancel
-          </Link>
+          />
+          <Cancel isSubmitting={isSubmitting} url="/system/api_access" />
         </CCardFooter>
       </CCard>
     </form>

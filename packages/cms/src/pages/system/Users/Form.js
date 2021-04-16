@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  CButton,
   CCard,
   CCardBody,
   CCardFooter,
@@ -10,9 +9,11 @@ import {
   CLabel,
   CRow,
 } from "@coreui/react";
-import { useHistory, useParams, Link } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useForm, useFormState } from "react-hook-form";
-import CIcon from "@coreui/icons-react";
+import Back from "components/Back";
+import Save from "components/Save";
+import Cancel from "components/Cancel";
 
 import get from "api/get";
 import update from "api/update";
@@ -70,18 +71,18 @@ const Form = () => {
   };
 
   const onSubmit = async (data) => {
-    setProcessing(true);
     const proms = [];
     proms.push(updateUser(data));
     proms.push(changePassword(data));
     await Promise.all(proms);
-    setProcessing(false);
     history.push("/system/users");
   };
 
   useEffect(() => {
+    let cancel = false;
     const getUser = async () => {
       const res = await get({ apiName: "Users", id });
+      if (cancel) return;
       const values = {
         ...getValues(),
         firstName: res.given_name,
@@ -95,13 +96,19 @@ const Form = () => {
     };
     if (id) getUser();
     else history.push("/system/users");
+    return () => {
+      cancel = true;
+    };
   }, [id, getValues, reset, history]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       <CCard>
         <CCardHeader>
-          <h3 id="formTitle">Edit User</h3>
+          <Back isSubmitting={isSubmitting} url="/system/users" />
+          <h3 id="formTitle" className="mb-0">
+            Edit User
+          </h3>
         </CCardHeader>
         <CCardBody>
           <CRow>
@@ -226,24 +233,13 @@ const Form = () => {
           </CRow>
         </CCardBody>
         <CCardFooter>
-          <CButton
-            type="submit"
-            id="update"
-            size="sm"
-            color="primary"
+          <Save
+            isRetrieving={processing}
+            isDirty={isDirty}
+            isSubmitting={isSubmitting}
             className="mr-2"
-            disabled={processing || !isDirty || isSubmitting}
-          >
-            <CIcon name="cil-scrubber" /> {isSubmitting ? "Saving..." : "Save"}
-          </CButton>
-          <Link
-            id="cancel"
-            to={`/system/users`}
-            className="btn btn-danger btn-sm"
-            disabled={processing || isSubmitting}
-          >
-            <CIcon name="cil-ban" /> Cancel
-          </Link>
+          />
+          <Cancel isSubmitting={isSubmitting} url="/system/users" />
         </CCardFooter>
       </CCard>
     </form>
