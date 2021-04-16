@@ -1,14 +1,23 @@
-import React from "react";
-import { CHeader, CToggler, CHeaderBrand, CHeaderNav } from "@coreui/react";
+import React, { useState, useEffect } from "react";
+import {
+  CHeader,
+  CToggler,
+  CHeaderBrand,
+  CHeaderNav,
+  CBreadcrumbRouter,
+} from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { useSidebar } from "context/sidebar";
+import { useModels } from "context/models";
 
 import HeaderDropdown from "./HeaderDropdown";
 
-import "scss/components/header.scss";
+import routes from "../routes";
 
 const Header = () => {
   const { sidebarShow, setSidebarShow } = useSidebar();
+  const { list } = useModels();
+  const [allRoutes, setAllRoutes] = useState([...routes]);
 
   const toggleSidebar = () => {
     const val = [true, "responsive"].includes(sidebarShow)
@@ -23,6 +32,32 @@ const Header = () => {
       : "responsive";
     setSidebarShow(val);
   };
+
+  useEffect(() => {
+    const contentRoutes = () =>
+      list.reduce(
+        (acc, model) => [
+          ...acc,
+          {
+            path: `/content/${model.id}/add`,
+            name: "Add",
+            exact: true,
+          },
+          {
+            path: `/content/${model.id}/edit/:id`,
+            name: "Edit",
+            exact: true,
+          },
+          {
+            path: `/content/${model.id}`,
+            name: model.name,
+            exact: true,
+          },
+        ],
+        []
+      );
+    setAllRoutes([...contentRoutes(), ...routes]);
+  }, [list]);
 
   return (
     <CHeader withSubheader>
@@ -41,7 +76,12 @@ const Header = () => {
         AbuCMS
       </CHeaderBrand>
 
-      <CHeaderNav className="d-md-down-none mr-auto"></CHeaderNav>
+      <CHeaderNav className="d-md-down-none mr-auto">
+        <CBreadcrumbRouter
+          className="border-0 c-subheader-nav m-0 px-0 px-md-3"
+          routes={allRoutes}
+        />
+      </CHeaderNav>
 
       <CHeaderNav className="px-3">
         <HeaderDropdown />
