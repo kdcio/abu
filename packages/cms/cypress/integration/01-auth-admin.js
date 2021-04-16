@@ -69,14 +69,9 @@ describe("Authentication Page Admin", function () {
       .click();
     cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
     cy.get(".c-sidebar-nav").within(() => {
-      cy.findByText("Content")
+      cy.findByText("Content").should("exist");
+      cy.findByText("System")
         .should("exist")
-        .next()
-        .within(() => {
-          cy.findByText("Add model").should("exist");
-        })
-        .next()
-        .contains("System")
         .next()
         .within(() => {
           cy.findByText("Models").should("exist");
@@ -107,14 +102,9 @@ describe("Authentication Page Admin", function () {
       .click();
     cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
     cy.get(".c-sidebar-nav").within(() => {
-      cy.findByText("Content")
+      cy.findByText("Content").should("exist");
+      cy.findByText("System")
         .should("exist")
-        .next()
-        .within(() => {
-          cy.findByText("Add model").should("exist");
-        })
-        .next()
-        .contains("System")
         .next()
         .within(() => {
           cy.findByText("Models").should("exist");
