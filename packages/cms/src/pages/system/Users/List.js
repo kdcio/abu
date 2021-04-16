@@ -21,12 +21,17 @@ const List = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    let cancel = false;
     const getUsers = async () => {
       const users = await list({ apiName: "Users" });
+      if (cancel) return;
       setUsers(users);
       setProcessing(false);
     };
     getUsers();
+    return () => {
+      cancel = true;
+    };
   }, []);
 
   const removeUser = async (id, idx) => {

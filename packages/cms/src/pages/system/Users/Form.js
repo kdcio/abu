@@ -79,8 +79,10 @@ const Form = () => {
   };
 
   useEffect(() => {
+    let cancel = false;
     const getUser = async () => {
       const res = await get({ apiName: "Users", id });
+      if (cancel) return;
       const values = {
         ...getValues(),
         firstName: res.given_name,
@@ -94,6 +96,9 @@ const Form = () => {
     };
     if (id) getUser();
     else history.push("/system/users");
+    return () => {
+      cancel = true;
+    };
   }, [id, getValues, reset, history]);
 
   return (

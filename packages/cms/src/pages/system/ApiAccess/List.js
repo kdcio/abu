@@ -21,13 +21,18 @@ const List = () => {
   const [list, setList] = useState([]);
 
   useEffect(() => {
+    let cancel = false;
     const getList = async () => {
       const res = await listApi({ apiName: "Access" });
+      if (cancel) return;
       if (res?.Items) setList(res.Items);
       else setList([]);
       setProcessing(false);
     };
     getList();
+    return () => {
+      cancel = true;
+    };
   }, []);
 
   const removeItem = async (id, idx) => {

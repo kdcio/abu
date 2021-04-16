@@ -73,8 +73,10 @@ const Form = () => {
   };
 
   useEffect(() => {
+    let cancel = false;
     const getAccess = async () => {
       const res = await get({ apiName: "Access", id });
+      if (cancel) return;
       const values = {
         ...getValues(),
         ...res,
@@ -84,6 +86,9 @@ const Form = () => {
       setProcessing(false);
     };
     if (id) getAccess();
+    return () => {
+      cancel = true;
+    };
   }, [id, getValues, reset, history]);
 
   return (
