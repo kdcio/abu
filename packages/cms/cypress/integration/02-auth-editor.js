@@ -39,12 +39,7 @@ describe("Authentication Page Editor", function () {
       .click();
     cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
     cy.get(".c-sidebar-nav").within(() => {
-      cy.findByText("Content")
-        .should("exist")
-        .next()
-        .within(() => {
-          cy.findByText("Add model").should("exist");
-        });
+      cy.findByText("Content").should("exist");
       cy.findByText("System").should("not.exist");
       cy.findByText("Models").should("not.exist");
       cy.findByText("API Access").should("not.exist");
@@ -67,12 +62,7 @@ describe("Authentication Page Editor", function () {
       .click();
     cy.get("h1").should("be.visible").contains(`Hello ${firstName}!`);
     cy.get(".c-sidebar-nav").within(() => {
-      cy.findByText("Content")
-        .should("exist")
-        .next()
-        .within(() => {
-          cy.findByText("Add model").should("exist");
-        });
+      cy.findByText("Content").should("exist");
       cy.findByText("System").should("not.exist");
       cy.findByText("Models").should("not.exist");
       cy.findByText("API Access").should("not.exist");
