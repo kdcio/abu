@@ -148,6 +148,42 @@ describe("Content", () => {
     let json = JSON.parse(response.body);
     expect(json).not.toHaveProperty("cursor");
     expect(json.Items).toHaveLength(16);
+    // make sure sorted by last modified
+    let lastModified = new Date().toISOString();
+    json.Items.forEach((blog) => {
+      expect(blog.modified <= lastModified).toBe(true);
+      lastModified = blog.modified;
+    });
+  });
+
+  it("should list all blogs filtered with last modified", async () => {
+    const blog = contents.blog[6];
+    const sk = `CON#${blog.id}`;
+    const params = {
+      TableName: tableName,
+      Key: {
+        pk: "MOD#blog",
+        sk,
+      },
+    };
+
+    const { Item } = await ddb.get(params).promise();
+    const { _md: lastModified } = Item;
+
+    let event = makeFakeEvent({
+      path: "/",
+      pathParameters: { modelId: "blog" },
+      queryStringParameters: { all: "true", lastModified },
+      headers: { "Content-Type": "application/json" },
+      httpMethod: "GET",
+    });
+
+    let response = await list(event);
+    expect(response.statusCode).toEqual(200);
+    expect(response.isBase64Encoded).toBe(false);
+    let json = JSON.parse(response.body);
+    expect(json).not.toHaveProperty("cursor");
+    expect(json.Items).toHaveLength(9);
   });
 
   it("should read a blog", async () => {
