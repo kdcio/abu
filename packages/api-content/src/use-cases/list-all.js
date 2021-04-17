@@ -1,6 +1,10 @@
 const makeListAll = ({ model }) => {
-  const listAll = async ({ modelId }) => {
-    const params = { index: "GSI", reverse: true };
+  const listAll = async ({ modelId, lastModified }) => {
+    const params = {
+      index: "GSI",
+      reverse: true,
+      gt: lastModified || new Date(0).toISOString(),
+    };
 
     let allItems = [];
 

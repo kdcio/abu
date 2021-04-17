@@ -11,10 +11,10 @@ const makeBrowse = ({ list, listAll, parser, response }) => {
 
     const { modelId } = request.params;
     const { query } = request;
-    const { limit, cursor, all } = query;
+    const { limit, cursor, all, lastModified } = query;
 
     const data = all
-      ? await listAll({ modelId })
+      ? await listAll({ modelId, lastModified })
       : await list({ modelId, limit, cursor });
     return response.OK({ body: data });
   };
