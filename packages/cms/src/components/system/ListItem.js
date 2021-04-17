@@ -8,7 +8,7 @@ const ListItem = ({ icon, iconClass, header, text, id }) => {
   return (
     <CCard className="field-list-item">
       <CCardBody className="p-3">
-        <div className={`mr-3 p-3 ${iconClass ? iconClass : ""}`}>
+        <div className={`model-drag mr-3 p-3 ${iconClass ? iconClass : ""}`}>
           <CIcon width={24} name={icon} />
         </div>
         <div className="item-data">

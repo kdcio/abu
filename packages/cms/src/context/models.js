@@ -25,37 +25,41 @@ const initialState = {
   hydrating: false,
 };
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "HYDRATE":
+      return { ...state, status: "HYDRATE" };
+    case "FETCHING":
+      return { ...state, hydrating: true };
+    case "FETCHED":
+      return {
+        ...state,
+        status: "idle",
+        hydrating: false,
+        list: action.payload,
+      };
+    case "FETCH_ERROR":
+      return {
+        ...state,
+        status: "idle",
+        hydrating: false,
+        error: action.payload,
+      };
+    case "SELECT_ID":
+      return { ...state, selectedId: action.id };
+    case "SELECT":
+      return { ...state, selected: action.payload, selectedIdx: action.idx };
+    case "UPDATE_SELECTED":
+      const newList = [...state.list];
+      newList[state.selectedIdx] = action.payload;
+      return { ...state, selected: action.payload, list: newList };
+    default:
+      return state;
+  }
+};
+
 const ModelsProvider = (props) => {
-  const [state, dispatch] = useReducer((state, action) => {
-    switch (action.type) {
-      case "HYDRATE":
-        return { ...state, status: "HYDRATE" };
-      case "FETCHING":
-        return { ...state, hydrating: true };
-      case "FETCHED":
-        return {
-          ...state,
-          status: "idle",
-          hydrating: false,
-          list: action.payload,
-        };
-      case "FETCH_ERROR":
-        return {
-          ...state,
-          status: "idle",
-          hydrating: false,
-          error: action.payload,
-        };
-      case "SELECT_ID":
-        return { ...state, selectedId: action.id };
-      case "SELECT":
-        return { ...state, selected: action.payload, selectedIdx: action.idx };
-      case "UPDATE_SELECTED":
-        return { ...state, selected: action.payload };
-      default:
-        return state;
-    }
-  }, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const selectById = useCallback(
     (id) => {
@@ -81,7 +85,7 @@ const ModelsProvider = (props) => {
 
   useEffect(() => {
     state.status === "HYDRATE" && hydrate();
-  }, [state.status, selectById, hydrate]);
+  }, [state.status, hydrate]);
 
   useEffect(() => {
     state.selectedId && selectById(state.selectedId);
