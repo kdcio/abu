@@ -1,0 +1,58 @@
+service: abu-api-admin
+
+plugins:
+  - serverless-bundle
+  - serverless-offline
+
+package:
+  individually: true
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'local'}
+  region: ${file(../../config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
+  profile: ${file(../../config/${self:provider.stage}.yml):PROFILE, 'default'}
+  runtime: nodejs12.x
+  memorySize: 256
+  timeout: 30
+  lambdaHashingVersion: 20201221
+  environment:
+    TZ: ${file(../../config/${self:provider.stage}.yml):TZ, 'Asia/Singapore'}
+    STAGE: ${self:provider.stage}
+    NODE_ENV: ${self:provider.stage}
+    DEBUG: ${file(../../config/${self:provider.stage}.yml):DEBUG, 'lambda:event,lambda:error'}
+    DDB_REGION: ${file(../../config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
+    DDB_ENDPOINT: ${file(../../config/${self:provider.stage}.yml):DDB_ENDPOINT, ''}
+    DDB_TABLE: ${file(../../config/${self:provider.stage}.yml):DDB_TABLE, 'abu-local'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Scan
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}/*"
+
+functions:
+  - ${file(./functions.yml)}
+
+resources:
+  Resources:
+    ApiGatewayAuthorizer:
+      DependsOn:
+        - ApiGatewayRestApi
+      Type: AWS::ApiGateway::Authorizer
+      Properties:
+        Name: cognito-authorizer
+        IdentitySource: method.request.header.Authorization
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        Type: COGNITO_USER_POOLS
+        ProviderARNs:
+          - Fn::ImportValue: CognitoUserPoolArn-${self:provider.stage}

@@ -1,0 +1,22 @@
+reset:
+  handler: src/reset.handler
+  events:
+    - http:
+        path: /reset
+        method: delete
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
+seed:
+  handler: src/seed.handler
+  events:
+    - http:
+        path: /seed
+        method: post
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors: true
