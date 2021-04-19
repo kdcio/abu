@@ -30,6 +30,14 @@ const navigation = [
     icon: "cil-user",
     groups: [GRP_ADMIN],
   },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Reset",
+    to: "/system/reset",
+    exact: true,
+    icon: "cil-reload",
+    groups: [GRP_ADMIN],
+  },
 ];
 
 export default navigation;

@@ -24,6 +24,7 @@ import {
   cilLink,
   cilFolder,
   cilChevronLeft,
+  cilReload,
 } from "@coreui/icons";
 
 export const icons = {
@@ -51,4 +52,5 @@ export const icons = {
   cilLink,
   cilFolder,
   cilChevronLeft,
+  cilReload,
 };

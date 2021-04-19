@@ -3,6 +3,7 @@ import { GRP_ADMIN, GRP_EDITOR } from "./constants";
 
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const NotFound = React.lazy(() => import("pages/NotFound"));
+const Reset = React.lazy(() => import("./pages/system/Reset"));
 const UsersList = React.lazy(() => import("./pages/system/Users"));
 const UsersForm = React.lazy(() => import("./pages/system/Users/Form"));
 const UsersAdd = React.lazy(() => import("./pages/system/Users/Add"));
@@ -53,6 +54,13 @@ const routes = [
     path: "/system",
     name: "System",
     exact: true,
+    groups: [GRP_ADMIN],
+  },
+  {
+    path: "/system/reset",
+    name: "Reset",
+    exact: true,
+    component: Reset,
     groups: [GRP_ADMIN],
   },
   {
