@@ -43,5 +43,25 @@ API.configure({
         };
       },
     },
+    {
+      name: "Seed",
+      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/admin/seed`,
+      custom_header: async () => {
+        const user = await Auth.currentSession();
+        return {
+          Authorization: `Bearer ${user.getIdToken().getJwtToken()}`,
+        };
+      },
+    },
+    {
+      name: "Reset",
+      endpoint: `${process.env.REACT_APP_API_ENDPOINT}/admin/reset`,
+      custom_header: async () => {
+        const user = await Auth.currentSession();
+        return {
+          Authorization: `Bearer ${user.getIdToken().getJwtToken()}`,
+        };
+      },
+    },
   ],
 });

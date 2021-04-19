@@ -35,6 +35,7 @@ const cspConfigPolicy = {
     "www.googletagmanager.com",
     "https://ssl.gstatic.com",
     "https://www.gstatic.com",
+    "https://live.staticflickr.com",
     uploadEndpoint,
   ],
   "font-src": ["'self'"],

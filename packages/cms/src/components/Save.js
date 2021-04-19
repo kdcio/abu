@@ -9,6 +9,9 @@ const Save = ({
   isSubmitting,
   isRetrieving = false,
   className = "",
+  title = "Save",
+  isSubmittingTitle = "Saving...",
+  icon = "cil-save",
 }) => (
   <CButton
     type="submit"
@@ -17,10 +20,10 @@ const Save = ({
     color="primary"
     className={`abu-btn ${className}`}
     disabled={!isDirty || isSubmitting || isRetrieving}
-    title="Save"
+    title={title}
   >
-    <CIcon name="cil-save" className="mr-2" />
-    {isRetrieving ? "Retrieving..." : isSubmitting ? "Saving..." : "Save"}
+    <CIcon name={icon} className="mr-2" />
+    {isRetrieving ? "Retrieving..." : isSubmitting ? isSubmittingTitle : title}
   </CButton>
 );
 

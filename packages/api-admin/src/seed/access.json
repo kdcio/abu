@@ -1,0 +1,77 @@
+[
+  {
+    "name": "Read Only",
+    "read": {
+      "about_page": true,
+      "blog": true,
+      "social_profile": true,
+      "home_page": true
+    },
+    "write": {
+      "about_page": false,
+      "blog": false,
+      "social_profile": false,
+      "home_page": false
+    }
+  },
+  {
+    "name": "Write Only",
+    "read": {
+      "about_page": false,
+      "blog": false,
+      "social_profile": false,
+      "home_page": false
+    },
+    "write": {
+      "about_page": true,
+      "blog": true,
+      "social_profile": true,
+      "home_page": true
+    }
+  },
+  {
+    "name": "Full Access",
+    "read": {
+      "about_page": true,
+      "blog": true,
+      "social_profile": true,
+      "home_page": true
+    },
+    "write": {
+      "about_page": true,
+      "blog": true,
+      "social_profile": true,
+      "home_page": true
+    }
+  },
+  {
+    "name": "Blog Full Access",
+    "read": {
+      "about_page": false,
+      "blog": true,
+      "social_profile": false,
+      "home_page": false
+    },
+    "write": {
+      "about_page": false,
+      "blog": true,
+      "social_profile": false,
+      "home_page": false
+    }
+  },
+  {
+    "name": "Page Read Access",
+    "read": {
+      "about_page": true,
+      "blog": false,
+      "social_profile": false,
+      "home_page": true
+    },
+    "write": {
+      "about_page": false,
+      "blog": false,
+      "social_profile": false,
+      "home_page": false
+    }
+  }
+]

@@ -60,6 +60,7 @@ provider:
             - "arn:aws:s3:::${self:custom.BucketName}/*"
         - Effect: Allow
           Action:
+            - dynamodb:Scan
             - dynamodb:Query
             - dynamodb:GetItem
             - dynamodb:PutItem
