@@ -15,8 +15,8 @@ module.exports = () => {
     name,
     slug,
     cover_image: {
-      thumb: faker.image.imageUrl(),
-      orig: faker.image.imageUrl(),
+      src: faker.image.imageUrl(),
+      type: faker.image.imageUrl(),
     },
     excerpt: faker.random.words(),
     body: paragraphs,

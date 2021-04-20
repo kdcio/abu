@@ -1,5 +1,9 @@
-const makeListAll = ({ model }) => {
-  const listAll = async ({ modelId, lastModified }) => {
+const makeListAll = ({ model, modelModel }) => {
+  const listAll = async ({
+    modelId,
+    lastModified,
+    fields: includeFields = false,
+  }) => {
     const params = {
       index: "GSI",
       reverse: true,
@@ -27,7 +31,13 @@ const makeListAll = ({ model }) => {
       params.startKey = LastEvaluatedKey;
     } while (params.startKey);
 
-    return { Items: allItems };
+    const data = { Items: allItems };
+    if (includeFields) {
+      const { Item } = await modelModel.get({ id: modelId });
+      data.fields = Item?.fields;
+    }
+
+    return data;
   };
   return listAll;
 };

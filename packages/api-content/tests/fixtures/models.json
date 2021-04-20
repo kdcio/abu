@@ -1,0 +1,88 @@
+[
+  {
+    "id": "blog",
+    "name": "Blog",
+    "collection": true,
+    "fields": [
+      {
+        "name": "Name",
+        "help": "Title of the blog",
+        "default": null,
+        "id": "name",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      },
+      {
+        "name": "Slug",
+        "reference": "name",
+        "help": "Unique link",
+        "id": "slug",
+        "validations": {
+          "required": true
+        },
+        "type": "slug"
+      },
+      {
+        "name": "Author",
+        "help": null,
+        "default": null,
+        "id": "author",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      },
+      {
+        "name": "Publish Date",
+        "help": null,
+        "default": null,
+        "id": "publish_date",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      },
+      {
+        "name": "Cover Image",
+        "help": null,
+        "id": "cover_image",
+        "validations": {
+          "required": true
+        },
+        "type": "image"
+      },
+      {
+        "name": "Excerpt",
+        "help": "Short excerpt from body",
+        "default": null,
+        "id": "excerpt",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      },
+      {
+        "name": "Body",
+        "help": null,
+        "default": null,
+        "id": "body",
+        "validations": {
+          "required": true
+        },
+        "type": "rich-text"
+      },
+      {
+        "name": "Tags",
+        "help": "Comma separated values",
+        "default": null,
+        "id": "tags",
+        "validations": {
+          "required": true
+        },
+        "type": "text"
+      }
+    ]
+  }
+]
