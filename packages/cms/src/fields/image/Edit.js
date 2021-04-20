@@ -7,7 +7,6 @@ import { useData } from "context/data";
 
 import "scss/components/image-edit.scss";
 
-// TODO: Fina a way to validate
 const Edit = ({ name, id, validations, help }) => {
   const { data } = useData();
   const [image, setImage] = useState(null);
@@ -16,6 +15,7 @@ const Edit = ({ name, id, validations, help }) => {
     formState: { errors },
     setValue,
   } = useFormContext();
+
   const [{ error, loading }, setFile] = useFileReader({
     method: "readAsDataURL",
     onload: setImage,
@@ -28,6 +28,7 @@ const Edit = ({ name, id, validations, help }) => {
     },
     [id, setFile, setValue]
   );
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const Edit = ({ name, id, validations, help }) => {
     if (data?.data?.[id]) {
       const val = data?.data[id];
       setValue(id, val);
-      setImage(`${val}?w=400&f=webp`);
+      setImage(`${val.src}?w=400&f=webp`);
     }
   }, [id, data, setValue, setImage]);
 

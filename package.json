@@ -14,6 +14,7 @@
     "start": "concurrently -r npm:start:*",
     "start:cms": "yarn workspace cms start",
     "start:api": "sls offline start -c single-api.yml",
+    "start:db": "yarn workspace res start",
     "cypress": "yarn workspace cms cypress",
     "build:api": "./scripts/build-api.sh",
     "build:single-api": "sls package -c single-api.yml",

@@ -7,6 +7,7 @@ import {
   genSocial,
 } from "helper";
 import ApiAccess from "model/lib/entities/ApiAccess";
+import Model from "model/lib/entities/Model";
 import { handler as create } from "../../src/create";
 import { handler as list } from "../../src/list";
 import { handler as read } from "../../src/read";
@@ -16,6 +17,7 @@ import { handler as authorizer } from "../../src/authorizer";
 import { handler as hello } from "../../src/hello";
 
 import apiAccesses from "../fixtures/api-access.json";
+import models from "../fixtures/models.json";
 
 let ddb;
 let tableName;
@@ -32,6 +34,9 @@ describe("Content", () => {
     const proms = [];
     apiAccesses.forEach((d) => {
       proms.push(ApiAccess.put({ ...d }));
+    });
+    models.forEach((d) => {
+      proms.push(Model.put({ ...d }));
     });
     await Promise.all(proms);
   });
@@ -133,11 +138,11 @@ describe("Content", () => {
     expect(json.Items).toHaveLength(6);
   });
 
-  it("should list all blogs", async () => {
+  it("should list all blogs with fields", async () => {
     let event = makeFakeEvent({
       path: "/",
       pathParameters: { modelId: "blog" },
-      queryStringParameters: { all: "true" },
+      queryStringParameters: { all: "true", fields: "true" },
       headers: { "Content-Type": "application/json" },
       httpMethod: "GET",
     });
@@ -148,6 +153,8 @@ describe("Content", () => {
     let json = JSON.parse(response.body);
     expect(json).not.toHaveProperty("cursor");
     expect(json.Items).toHaveLength(16);
+    expect(json.fields).toEqual(models[0].fields);
+
     // make sure sorted by last modified
     let lastModified = new Date().toISOString();
     json.Items.forEach((blog) => {

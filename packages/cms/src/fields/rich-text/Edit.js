@@ -22,7 +22,7 @@ const Edit = ({ name, id, validations, help }) => {
   const value = useWatch({
     control,
     name: id, // without supply name will watch the entire form, or ['firstName', 'lastName'] to watch both
-    defaultValue: "", // default value before the render
+    defaultValue: { text: "", type: "text/html" }, // default value before the render
   });
 
   useEffect(() => {
@@ -42,9 +42,13 @@ const Edit = ({ name, id, validations, help }) => {
         theme="snow"
         id={id}
         name={id}
-        value={value}
+        value={value.text}
         onChange={(content) => {
-          setValue(id, content, { shouldDirty: true });
+          setValue(
+            id,
+            { text: content, type: "text/html" },
+            { shouldDirty: true }
+          );
         }}
       />
       {errors[id] && (
