@@ -30,7 +30,7 @@ const upload = async (url, file) => {
 const submit = async ({ model, file }) => {
   const { url, target } = await getUrl(model.id, file);
   await upload(url, file);
-  return target;
+  return { src: target, type: file.type };
 };
 
 export default submit;
