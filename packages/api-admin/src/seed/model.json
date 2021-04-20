@@ -88,7 +88,7 @@
         "validations": {
           "required": true
         },
-        "type": "text"
+        "type": "date"
       },
       {
         "name": "Cover Image",
