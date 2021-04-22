@@ -8,7 +8,6 @@ import { useData } from "context/data";
 import "react-quill/dist/quill.snow.css";
 import "scss/components/quill.scss";
 
-// TODO: Fina a way to validate
 const Edit = ({ name, id, validations, help }) => {
   const { data } = useData();
   const { selected: model } = useModels();
@@ -22,7 +21,7 @@ const Edit = ({ name, id, validations, help }) => {
   const value = useWatch({
     control,
     name: id, // without supply name will watch the entire form, or ['firstName', 'lastName'] to watch both
-    defaultValue: { text: "", type: "text/html" }, // default value before the render
+    defaultValue: { html: "", type: "text/html" }, // default value before the render
   });
 
   useEffect(() => {
@@ -42,11 +41,11 @@ const Edit = ({ name, id, validations, help }) => {
         theme="snow"
         id={id}
         name={id}
-        value={value.text}
+        value={value.html}
         onChange={(content) => {
           setValue(
             id,
-            { text: content, type: "text/html" },
+            { html: content, type: "text/html" },
             { shouldDirty: true }
           );
         }}
