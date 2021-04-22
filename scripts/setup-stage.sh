@@ -22,6 +22,8 @@ fi
 
 STAGE=$1
 export ENV_FILE="../packages/cms/.env.production.local"
+# ensure there's a newline
+echo "" >> ./config/$STAGE.yml
 
 echo -e "\n${BLUE}Setting up S3 and CloudFront for CMS...${NC}\n"
 yarn workspace res setup:s3-cf $STAGE
