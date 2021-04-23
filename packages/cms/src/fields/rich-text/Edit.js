@@ -25,7 +25,7 @@ const Edit = ({ name, id, validations, help }) => {
   });
 
   useEffect(() => {
-    data?.data?.[id] && setValue(id, data.data[id] || "");
+    data?.data?.[id] && setValue(id, data.data[id] || {});
   }, [model.id, id, data, setValue]);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const Edit = ({ name, id, validations, help }) => {
         theme="snow"
         id={id}
         name={id}
-        value={value.html}
+        value={value?.html || ""}
         onChange={(content) => {
           setValue(
             id,
