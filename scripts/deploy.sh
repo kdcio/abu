@@ -36,6 +36,12 @@ EMAIL=$2
 # Run setup
 ./scripts/setup-stage.sh $STAGE $EMAIL
 
+# update lambda memory and timeout
+./scripts/update-lambda-edge.sh $STAGE
+
+# Build API
+yarn build:api
+
 # Run deploy api
 yarn deploy:api $STAGE
 
