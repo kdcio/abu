@@ -36,6 +36,9 @@ EMAIL=$2
 # Run setup
 ./scripts/setup-stage.sh $STAGE $EMAIL
 
+# Build API
+yarn build:api
+
 # Run deploy api
 yarn deploy:api $STAGE
 
