@@ -12,6 +12,8 @@ import { ReactComponent as DangerImg } from "assets/svg/danger.svg";
 import Save from "components/Save";
 import Cancel from "components/Cancel";
 
+import "scss/components/dashboard.scss";
+
 import remove from "api/remove";
 
 const Reset = () => {
