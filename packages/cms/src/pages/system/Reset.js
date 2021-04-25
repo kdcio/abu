@@ -24,7 +24,6 @@ const Reset = () => {
   const onSubmit = async () => {
     await remove({ apiName: "Reset", id: "" });
     history.push("/");
-    history.go(0);
   };
 
   return (
