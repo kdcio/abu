@@ -7,4 +7,5 @@ STAGE=$1
 # and 128MB of memoery
 yarn workspace upload deploy:func -s $STAGE -f origin-request
 
-# TODO: We still need to redeploy lambda edge function via AWS Console
+# Redploy whole upload stack for memory and timeout to take effect
+yarn workspace upload deploy $STAGE
