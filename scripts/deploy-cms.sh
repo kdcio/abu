@@ -60,7 +60,7 @@ aws s3 cp packages/cms/build/index.html s3://$S3_BUCKET_NAME/index.html \
 echo "Purging the cache for CloudFront"
 INVID=$(aws cloudfront create-invalidation \
   --distribution-id $CF_ID \
-  --paths /* \
+  --paths '/*' \
   --output text \
   --query 'Invalidation.Id' \
   --profile $PROFILE)
