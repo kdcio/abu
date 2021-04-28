@@ -12,7 +12,7 @@ export const handler = async (event) => {
   const request = { ...event.Records[0].cf.request };
 
   // console.log(JSON.stringify(request));
-  const receivedKey = request.uri.replace("/", "");
+  const receivedKey = decodeURI(request.uri.replace("/", "")); // remove first '/'
 
   if (receivedKey === "") {
     console.log("No file to process");
@@ -48,7 +48,7 @@ export const handler = async (event) => {
     await head({ Bucket, Key: newKey });
     // file already converted
     console.log("Converted file exist");
-    request.uri = `/${newKey}`;
+    request.uri = `/${encodeURI(newKey)}`;
     return request;
   } catch (error) {
     // need to convert, continue
@@ -82,6 +82,7 @@ export const handler = async (event) => {
     return request;
   }
 
-  request.uri = `/${newKey}`;
+  request.uri = `/${encodeURI(newKey)}`;
+  console.log(`New uri: ${request.uri}`);
   return request;
 };
