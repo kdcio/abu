@@ -1,27 +1,13 @@
-import React, { useEffect } from "react";
-import { CFormGroup, CLabel, CSwitch, CButton } from "@coreui/react";
-import { useForm, useFormState } from "react-hook-form";
-import snakeCase from "lodash.snakecase";
+import React from "react";
+
+import Form from "fields/template/Setting/Form";
+import Name from "fields/template/Setting/Name";
+import Id from "fields/template/Setting/Id";
+import Help from "fields/template/Setting/Help";
+import Required from "fields/template/Setting/Required";
+import Submit from "fields/template/Setting/Submit";
 
 const Setting = ({ update, error, ...data }) => {
-  const { register, handleSubmit, control, watch, setValue } = useForm({
-    defaultValues: {
-      id: data.id,
-      name: data.name,
-      required: data?.validations?.required,
-      help: data.help,
-    },
-  });
-  const { errors, isDirty, isSubmitting } = useFormState({ control });
-
-  const { ref: reqRef, ...reqRest } = register("required");
-
-  const name = watch("name");
-  useEffect(() => {
-    if (data?.id) return;
-    setValue("id", snakeCase(name));
-  }, [name, setValue, data]);
-
   const onSubmit = (data) => {
     const field = {
       type: "image",
@@ -35,90 +21,24 @@ const Setting = ({ update, error, ...data }) => {
     update(field);
   };
 
-  let btnLabel = data.id ? "Update" : "Add";
-  if (isSubmitting) btnLabel = data.id ? "Updating..." : "Adding...";
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+    <Form
+      defaultValues={{
+        id: data.id,
+        name: data.name,
+        required: data?.validations?.required,
+        help: data.help,
+      }}
+      onSubmit={onSubmit}
+      data={data}
+    >
       {error && <div className="text-danger font-weight-bold">{error}</div>}
-      <CFormGroup>
-        <CLabel htmlFor="name">Name</CLabel>
-        <input
-          type="text"
-          className={`form-control form-control-lg ${
-            errors.name && "is-invalid"
-          }`}
-          id="name"
-          {...register("name", { required: true })}
-          placeholder="Title"
-          disabled={isSubmitting}
-        />
-        {errors.name && (
-          <div className="invalid-feedback">Please provide name.</div>
-        )}
-      </CFormGroup>
-      <CFormGroup>
-        <CLabel htmlFor="id">Field ID</CLabel>
-        <input
-          type="text"
-          className={`form-control form-control-lg ${
-            errors.id && "is-invalid"
-          }`}
-          id="id"
-          {...register("id", { required: true })}
-          placeholder="title"
-          disabled={isSubmitting}
-          readOnly={!!data.id}
-        />
-        <small className="form-text text-muted">
-          This will be automatically generated based on name and will be used in
-          API endpoints. This needs to be unique in the model.{" "}
-          <strong>This cannot be changed later.</strong>
-        </small>
-        {errors.id && (
-          <div className="invalid-feedback">Please provide id.</div>
-        )}
-      </CFormGroup>
-      <CFormGroup>
-        <CLabel htmlFor="help">Help text</CLabel>
-        <input
-          type="text"
-          className={`form-control form-control-lg ${
-            errors.help && "is-invalid"
-          }`}
-          id="help"
-          {...register("help")}
-          placeholder=""
-          disabled={isSubmitting}
-        />
-        {errors.help && (
-          <div className="invalid-feedback">{errors.help.message}</div>
-        )}
-      </CFormGroup>
-      <div className="d-flex">
-        <CSwitch
-          id="required"
-          name="required"
-          className={"mx-1"}
-          shape={"pill"}
-          color={"primary"}
-          {...reqRest}
-          innerRef={reqRef}
-        />
-        <div className="ml-2 required-info">
-          <span>Required</span>
-        </div>
-      </div>
-      <CButton
-        type="submit"
-        color="success"
-        block
-        className="mt-4"
-        disabled={!isDirty || isSubmitting}
-      >
-        {btnLabel}
-      </CButton>
-    </form>
+      <Name />
+      <Id data={data} />
+      <Help />
+      <Required />
+      <Submit data={data} />
+    </Form>
   );
 };
 
