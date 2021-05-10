@@ -9,16 +9,16 @@ import Submit from "fields/template/Setting/Submit";
 import Today from "./Today";
 
 const Setting = ({ update, error, ...data }) => {
-  const onSubmit = async (data) => {
+  const onSubmit = async (newData) => {
     const field = {
       type: "date",
-      id: data.id,
-      name: data.name,
+      id: newData.id,
+      name: newData.name,
       validations: {
-        required: data.required,
+        required: newData.required,
       },
-      today: data.today,
-      help: data.help,
+      today: newData.today,
+      help: newData.help,
     };
     update(field);
   };

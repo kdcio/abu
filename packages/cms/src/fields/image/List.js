@@ -1,5 +1,5 @@
 import React from "react";
-import ListItem from "fields/template/ListI";
+import ListItem from "fields/template/List";
 
 const List = ({ id, name, validations }) => {
   let header = name;
