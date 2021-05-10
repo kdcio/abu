@@ -1,5 +1,5 @@
 import React from "react";
-import ListItem from "components/system/ListItem";
+import ListItem from "fields/template/ListI";
 
 const List = ({ id, name, validations }) => {
   let header = name;
@@ -9,7 +9,7 @@ const List = ({ id, name, validations }) => {
   return (
     <ListItem
       id={id}
-      text="Rich Text"
+      text="Text"
       header={header}
       icon="cil-text"
       iconClass="text-white bg-success"

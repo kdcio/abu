@@ -1,5 +1,5 @@
 import React from "react";
-import ListItem from "components/system/ListItem";
+import ListItem from "fields/template/ListI";
 
 const List = ({ id, name, validations }) => {
   let header = name;

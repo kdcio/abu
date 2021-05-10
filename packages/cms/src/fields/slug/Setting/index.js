@@ -7,15 +7,18 @@ import Help from "fields/template/Setting/Help";
 import Required from "fields/template/Setting/Required";
 import Submit from "fields/template/Setting/Submit";
 
+import Reference from "./Reference";
+
 const Setting = ({ update, error, ...data }) => {
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const field = {
-      type: "image",
+      type: "slug",
       id: data.id,
       name: data.name,
       validations: {
         required: data.required,
       },
+      reference: data.reference,
       help: data.help,
     };
     update(field);
@@ -27,6 +30,7 @@ const Setting = ({ update, error, ...data }) => {
         id: data.id,
         name: data.name,
         required: data?.validations?.required,
+        reference: data.reference,
         help: data.help,
       }}
       onSubmit={onSubmit}
@@ -35,6 +39,7 @@ const Setting = ({ update, error, ...data }) => {
       {error && <div className="text-danger font-weight-bold">{error}</div>}
       <Name />
       <Id data={data} />
+      <Reference />
       <Help />
       <Required />
       <Submit data={data} />

@@ -1,10 +1,14 @@
 import React from "react";
 import { CCard, CCardBody, CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import { useModal } from "context/modal";
+import { useSelect } from "context/select";
 
 import "scss/components/field-list-item.scss";
 
-const ListItem = ({ icon, iconClass, header, text, id }) => {
+const List = ({ icon, iconClass, header, text, id }) => {
+  const { setModal } = useModal();
+  const { setFieldId } = useSelect();
   return (
     <CCard className="field-list-item">
       <CCardBody className="p-3">
@@ -20,7 +24,15 @@ const ListItem = ({ icon, iconClass, header, text, id }) => {
             {text}
           </div>
         </div>
-        <CButton className="ml-3" type="button" color="info">
+        <CButton
+          className="ml-3"
+          type="button"
+          color="info"
+          onClick={() => {
+            setFieldId(id);
+            setModal("editModelField");
+          }}
+        >
           Edit
         </CButton>
       </CCardBody>
@@ -28,4 +40,4 @@ const ListItem = ({ icon, iconClass, header, text, id }) => {
   );
 };
 
-export default ListItem;
+export default List;

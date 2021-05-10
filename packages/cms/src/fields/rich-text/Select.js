@@ -1,11 +1,11 @@
 import React from "react";
-import SelectorItem from "components/system/SelectItem";
+import SelectItem from "fields/template/Select";
 
 const Select = () => {
   return (
-    <SelectorItem
+    <SelectItem
       id="rich-text"
-      text="Multi-line text with formating"
+      text="Multi-line text with formatting"
       header="Rich Text"
       icon="cil-short-text"
       iconClass="text-white bg-success"

@@ -10,7 +10,7 @@ import { useModels } from "context/models";
 import { useModal } from "context/modal";
 import update from "api/update";
 
-const FieldSetting = ({ type }) => {
+const FieldSetting = ({ type, ...rest }) => {
   const { selected: model, dispatch } = useModels();
   const { setModal } = useModal();
   const [error, setError] = useState(null);
@@ -21,18 +21,22 @@ const FieldSetting = ({ type }) => {
   };
 
   const onSubmit = async (data) => {
-    if (model?.fields?.length > 0) {
-      const idx = model.fields.findIndex((item) => item.id === data.id);
+    const newModel = { ...model };
+    if (!newModel.fields) newModel.fields = [];
+
+    if (rest?.id) {
+      const idx = newModel.fields.findIndex((item) => item.id === data.id);
+      newModel.fields[idx] = data;
+    } else {
+      const idx = newModel.fields.findIndex((item) => item.id === data.id);
       if (idx >= 0) {
         setError("Field ID not unique. Please choose a different one.");
         return;
       }
+      newModel.fields.push(data);
     }
 
     try {
-      const newModel = { ...model };
-      if (newModel.fields) newModel.fields.push(data);
-      else newModel.fields = [data];
       await updateModel(newModel);
       dispatch({ type: "UPDATE_SELECTED", payload: newModel });
       setModal(false);
@@ -44,15 +48,15 @@ const FieldSetting = ({ type }) => {
 
   switch (type) {
     case "date":
-      return <DateField update={onSubmit} error={error} />;
+      return <DateField update={onSubmit} error={error} {...rest} />;
     case "image":
-      return <ImageField update={onSubmit} error={error} />;
+      return <ImageField update={onSubmit} error={error} {...rest} />;
     case "rich-text":
-      return <RichTextField update={onSubmit} error={error} />;
+      return <RichTextField update={onSubmit} error={error} {...rest} />;
     case "slug":
-      return <SlugField update={onSubmit} error={error} />;
+      return <SlugField update={onSubmit} error={error} {...rest} />;
     case "text":
-      return <TextField update={onSubmit} error={error} />;
+      return <TextField update={onSubmit} error={error} {...rest} />;
     default:
       break;
   }

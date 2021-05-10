@@ -1,7 +1,6 @@
 import React from "react";
 import { CCard, CCardBody, CCardHeader } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { Link } from "react-router-dom";
 import { useModels } from "context/models";
 import { useModal } from "context/modal";
 import Info from "./Info";
@@ -23,14 +22,14 @@ const ViewModel = () => {
       <CCardBody>
         <ListModelFields />
         {model?.fields?.length > 0 && (
-          <Link
+          <button
             id="addmodel"
-            to={`/system/models/add`}
+            type="button"
             className="btn btn-success float-right"
             onClick={() => setModal("addModelField")}
           >
             <CIcon name="cil-plus" /> Add another field
-          </Link>
+          </button>
         )}
       </CCardBody>
     </CCard>
