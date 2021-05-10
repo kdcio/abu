@@ -5,7 +5,7 @@ import { useSelect } from "context/select";
 
 import "scss/components/field-selector-item.scss";
 
-const SelectorItem = ({ icon, iconClass, header, text, id }) => {
+const SelectItem = ({ icon, iconClass, header, text, id }) => {
   const { setSelected } = useSelect();
   return (
     <CCard className="field-selector-item" onClick={() => setSelected(id)}>
@@ -22,4 +22,4 @@ const SelectorItem = ({ icon, iconClass, header, text, id }) => {
   );
 };
 
-export default SelectorItem;
+export default SelectItem;

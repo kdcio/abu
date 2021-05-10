@@ -1,9 +1,9 @@
 import React from "react";
-import SelectorItem from "components/system/SelectItem";
+import SelectItem from "fields/template/Select";
 
 const Select = () => {
   return (
-    <SelectorItem
+    <SelectItem
       id="slug"
       text="Unique link"
       header="Slug"

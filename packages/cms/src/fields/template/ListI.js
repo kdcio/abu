@@ -6,7 +6,7 @@ import { useSelect } from "context/select";
 
 import "scss/components/field-list-item.scss";
 
-const ListItem = ({ icon, iconClass, header, text, id }) => {
+const List = ({ icon, iconClass, header, text, id }) => {
   const { setModal } = useModal();
   const { setFieldId } = useSelect();
   return (
@@ -40,4 +40,4 @@ const ListItem = ({ icon, iconClass, header, text, id }) => {
   );
 };
 
-export default ListItem;
+export default List;
