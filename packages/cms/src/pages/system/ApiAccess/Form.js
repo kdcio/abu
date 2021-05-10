@@ -57,8 +57,8 @@ const Form = () => {
 
   const onSubmit = async (data) => {
     try {
-      if (id) updateAccess(data);
-      else createAccess(data);
+      if (id) await updateAccess(data);
+      else await createAccess(data);
     } catch (err) {
       setError(err);
     }
