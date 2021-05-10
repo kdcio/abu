@@ -14,7 +14,7 @@ import { useHistory, Link } from "react-router-dom";
 import Spinner from "components/Spinner";
 import { useModels } from "context/models";
 import { useList } from "context/list";
-import { ReactComponent as EmptydImg } from "assets/svg/empty.svg";
+import { ReactComponent as EmptyImg } from "assets/svg/empty.svg";
 
 import remove from "api/remove";
 
@@ -73,7 +73,7 @@ const List = () => {
           <Spinner />
         ) : list.length === 0 ? (
           <div className="text-center">
-            <EmptydImg className="empty-img" />
+            <EmptyImg className="empty-img" />
             <h5>Add your first {model.name}!</h5>
           </div>
         ) : (
@@ -110,7 +110,7 @@ const List = () => {
                         color="danger"
                         variant="ghost"
                         className="delete-btn"
-                        onClick={() => removeContent(item.id, idx)}
+                        onClick={() => removeContent(item.id)}
                       >
                         <CIcon name="cil-trash" />
                       </CButton>

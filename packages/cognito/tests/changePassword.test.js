@@ -1,3 +1,4 @@
+import faker from 'faker';
 import init from '../src/init';
 import changePassword from '../src/changePassword';
 
@@ -20,7 +21,7 @@ describe('Change Password', () => {
     init.mockImplementation(() => fakeCog);
 
     const email = 'john@doe.com';
-    const password = 'password';
+    const password = faker.internet.password();
     await changePassword({ email, password });
     expect(init).toBeCalledTimes(1);
     expect(fakeCog.adminSetUserPassword).toBeCalledTimes(1);
@@ -36,7 +37,7 @@ describe('Change Password', () => {
     const email = 'john@doe.com';
     expect.assertions(1);
     await expect(
-      changePassword({ email, password: 'password' })
+      changePassword({ email, password: faker.internet.password() })
     ).rejects.toEqual(new Error('Missing Cognito Pool Id'));
   });
 

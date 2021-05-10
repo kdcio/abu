@@ -18,7 +18,7 @@ describe("Change Password", () => {
 
   it("should change password by admin", async () => {
     const email = faker.internet.email();
-    const password = "password";
+    const password = faker.internet.password();
     changePassword.mockImplementation(() => Promise.resolve());
 
     const event = makeFakeEvent({
@@ -39,7 +39,7 @@ describe("Change Password", () => {
 
   it("should read user by self", async () => {
     const user = genUser();
-    const password = "password";
+    const password = faker.internet.password();
     changePassword.mockImplementation(() => Promise.resolve());
 
     const event = makeFakeEvent({
