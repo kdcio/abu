@@ -96,8 +96,14 @@ const ModelsProvider = (props) => {
     hydrate();
   }, [hydrate]);
 
+  // Get field data from selected model
+  const getField = (id) => {
+    if (!state.selected) return undefined;
+    return state.selected.fields.find((s) => s.id === id);
+  };
+
   return (
-    <ModelsContext.Provider value={{ dispatch, ...state }}>
+    <ModelsContext.Provider value={{ dispatch, ...state, getField }}>
       {props.children}
     </ModelsContext.Provider>
   );

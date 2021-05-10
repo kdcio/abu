@@ -8,12 +8,15 @@ const useSelect = () => {
 
 const SelectProvider = (props) => {
   const [selected, setSelected] = useState(null);
+  const [fieldId, setFieldId] = useState(null);
 
   return (
     <SelectContext.Provider
       value={{
         selected,
         setSelected,
+        fieldId,
+        setFieldId,
       }}
     >
       {props.children}

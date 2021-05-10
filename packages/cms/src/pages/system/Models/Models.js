@@ -6,6 +6,7 @@ import List from "./ListModels";
 import ViewModel from "./ViewModel";
 import Add from "./Add";
 import AddField from "./Fields/Add";
+import EditField from "./Fields/Edit";
 
 import "scss/components/models.scss";
 
@@ -24,6 +25,7 @@ const Models = () => {
       </CRow>
       {modal === "addModel" && <Add />}
       {modal === "addModelField" && <AddField />}
+      {modal === "editModelField" && <EditField />}
     </>
   );
 };

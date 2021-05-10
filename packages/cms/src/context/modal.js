@@ -7,7 +7,7 @@ const useModal = () => {
 };
 
 const ModalProvider = (props) => {
-  const [modal, setModal] = useState("responsive");
+  const [modal, setModal] = useState("");
 
   return (
     <ModalContext.Provider

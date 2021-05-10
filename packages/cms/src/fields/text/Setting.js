@@ -3,15 +3,24 @@ import { CFormGroup, CLabel, CSwitch, CButton } from "@coreui/react";
 import { useForm, useFormState } from "react-hook-form";
 import snakeCase from "lodash.snakecase";
 
-const Setting = ({ update, error }) => {
-  const { register, handleSubmit, control, watch, setValue } = useForm();
+const Setting = ({ update, error, ...data }) => {
+  const { register, handleSubmit, control, watch, setValue } = useForm({
+    defaultValues: {
+      id: data.id,
+      name: data.name,
+      required: data?.validations?.required,
+      default: data.default,
+      help: data.help,
+    },
+  });
   const { errors, isDirty, isSubmitting } = useFormState({ control });
   const { ref: reqRef, ...reqRest } = register("required");
 
   const name = watch("name");
   useEffect(() => {
+    if (data?.id) return;
     setValue("id", snakeCase(name));
-  }, [name, setValue]);
+  }, [name, setValue, data]);
 
   const onSubmit = async (data) => {
     const field = {
@@ -26,6 +35,9 @@ const Setting = ({ update, error }) => {
     };
     update(field);
   };
+
+  let btnLabel = data.id ? "Update" : "Add";
+  if (isSubmitting) btnLabel = data.id ? "Updating..." : "Adding...";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
@@ -57,10 +69,12 @@ const Setting = ({ update, error }) => {
           {...register("id", { required: true })}
           placeholder="title"
           disabled={isSubmitting}
+          readOnly={!!data.id}
         />
         <small className="form-text text-muted">
           This will be automatically generated based on name and will be used in
-          API endpoints. This needs to be unique in the model.
+          API endpoints. This needs to be unique in the model.{" "}
+          <strong>This cannot be changed later.</strong>
         </small>
         {errors.id && (
           <div className="invalid-feedback">Please provide id.</div>
@@ -105,7 +119,6 @@ const Setting = ({ update, error }) => {
           className={"mx-1"}
           shape={"pill"}
           color={"primary"}
-          defaultChecked
           {...reqRest}
           innerRef={reqRef}
         />
@@ -120,7 +133,7 @@ const Setting = ({ update, error }) => {
         className="mt-4"
         disabled={!isDirty || isSubmitting}
       >
-        {isSubmitting ? "Adding..." : "Add"}
+        {btnLabel}
       </CButton>
     </form>
   );
