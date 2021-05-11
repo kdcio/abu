@@ -8,17 +8,17 @@ import Help from "./Help";
 import Required from "./Required";
 import Submit from "./Submit";
 
-const Setting = ({ type, update, error, ...data }) => {
-  const onSubmit = async (data) => {
+const Standard = ({ type, update, error, ...data }) => {
+  const onSubmit = async (newData) => {
     const field = {
       type,
-      id: data.id,
-      name: data.name,
+      id: newData.id,
+      name: newData.name,
       validations: {
-        required: data.required,
+        required: newData.required,
       },
-      default: data.default,
-      help: data.help,
+      default: newData.default,
+      help: newData.help,
     };
     update(field);
   };
@@ -46,4 +46,4 @@ const Setting = ({ type, update, error, ...data }) => {
   );
 };
 
-export default Setting;
+export default Standard;

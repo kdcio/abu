@@ -6,7 +6,7 @@ import { useModal } from "context/modal";
 import { useSelect } from "context/select";
 import Setting from "./Setting";
 
-const EditField = () => {
+const Edit = () => {
   const { getField } = useModels();
   const { modal, setModal } = useModal();
   const { fieldId } = useSelect();
@@ -49,4 +49,4 @@ const EditField = () => {
   );
 };
 
-export default EditField;
+export default Edit;

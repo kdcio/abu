@@ -10,16 +10,16 @@ import Submit from "fields/template/Setting/Submit";
 import Reference from "./Reference";
 
 const Setting = ({ update, error, ...data }) => {
-  const onSubmit = async (data) => {
+  const onSubmit = async (newData) => {
     const field = {
       type: "slug",
-      id: data.id,
-      name: data.name,
+      id: newData.id,
+      name: newData.name,
       validations: {
-        required: data.required,
+        required: newData.required,
       },
-      reference: data.reference,
-      help: data.help,
+      reference: newData.reference,
+      help: newData.help,
     };
     update(field);
   };
