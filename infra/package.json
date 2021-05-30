@@ -4,6 +4,9 @@
   "bin": {
     "infra": "bin/infra.js"
   },
+  "author": "Ian Dela Cruz <iandc76@gmail.com>",
+  "license": "MIT",
+  "private": true,
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
@@ -14,13 +17,17 @@
     "@aws-cdk/assert": "1.103.0",
     "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
+    "aws-cdk": "1.103.0",
     "jest": "^26.4.2",
     "ts-jest": "^26.2.0",
-    "aws-cdk": "1.103.0",
     "ts-node": "^9.0.0",
     "typescript": "~3.9.7"
   },
   "dependencies": {
+    "@aws-cdk/aws-cloudfront": "^1.106.1",
+    "@aws-cdk/aws-iam": "^1.106.1",
+    "@aws-cdk/aws-s3": "^1.106.1",
+    "@aws-cdk/aws-s3-deployment": "^1.106.1",
     "@aws-cdk/core": "1.103.0",
     "source-map-support": "^0.5.16"
   }
