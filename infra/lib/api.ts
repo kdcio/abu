@@ -1,11 +1,16 @@
 import * as cdk from "@aws-cdk/core";
 import * as cognito from "@aws-cdk/aws-cognito";
+import * as cloudFront from "@aws-cdk/aws-cloudfront";
+
+interface APIStackProps extends cdk.NestedStackProps {
+  cf: cloudFront.CloudFrontWebDistribution;
+}
 
 export class APIStack extends cdk.NestedStack {
   userPool: cognito.UserPool;
   userPoolClient: cognito.CfnUserPoolClient;
 
-  constructor(scope: cdk.Construct, id: string, props?: cdk.NestedStackProps) {
+  constructor(scope: cdk.Construct, id: string, props?: APIStackProps) {
     super(scope, id, props);
 
     // high level construct
@@ -69,7 +74,7 @@ export class APIStack extends cdk.NestedStack {
 
     const supportedIdentityProviders = ["COGNITO"];
 
-    let appUrl = "https://abu-cms.com";
+    let appUrl = `https://${props?.cf.distributionDomainName}`;
 
     this.userPoolClient = new cognito.CfnUserPoolClient(
       this,

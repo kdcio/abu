@@ -10,6 +10,7 @@ export class InfraStack extends cdk.Stack {
     super(scope, id, props);
 
     this.cms = new CMSStack(this, "CMS");
-    this.api = new APIStack(this, "API");
+    const { cf } = this.cms;
+    this.api = new APIStack(this, "API", { cf });
   }
 }
