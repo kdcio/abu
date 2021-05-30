@@ -1,7 +1,7 @@
 import * as cdk from "@aws-cdk/core";
 import * as s3 from "@aws-cdk/aws-s3";
 import * as iam from "@aws-cdk/aws-iam";
-// import * as s3deploy from "@aws-cdk/aws-s3-deployment";
+import * as s3deploy from "@aws-cdk/aws-s3-deployment";
 import * as cloudFront from "@aws-cdk/aws-cloudfront";
 
 export class InfraStack extends cdk.Stack {
@@ -68,12 +68,12 @@ export class InfraStack extends cdk.Stack {
     );
 
     // Setup Bucket Deployment to automatically deploy new assets and invalidate cache
-    // new s3deploy.BucketDeployment(this, `abu-cms-cdk-s3bucketdeployment`, {
-    //   sources: [s3deploy.Source.asset("../build")],
-    //   destinationBucket: s3Site,
-    //   distribution: distribution,
-    //   distributionPaths: ["/*"],
-    // });
+    new s3deploy.BucketDeployment(this, `abu-cms-cdk-s3-bucket-deployment`, {
+      sources: [s3deploy.Source.asset("../packages/cms/build")],
+      destinationBucket: webappBucket,
+      distribution: distribution,
+      distributionPaths: ["/*"],
+    });
 
     // Final CloudFront URL
     new cdk.CfnOutput(this, "CloudFront URL", {
