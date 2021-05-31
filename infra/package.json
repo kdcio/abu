@@ -26,6 +26,7 @@
   "dependencies": {
     "@aws-cdk/aws-cloudfront": "^1.106.1",
     "@aws-cdk/aws-cognito": "^1.106.1",
+    "@aws-cdk/aws-dynamodb": "^1.106.1",
     "@aws-cdk/aws-iam": "^1.106.1",
     "@aws-cdk/aws-s3": "^1.106.1",
     "@aws-cdk/aws-s3-deployment": "^1.106.1",

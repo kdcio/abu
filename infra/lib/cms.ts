@@ -67,10 +67,5 @@ export class CMSStack extends cdk.NestedStack {
         viewerProtocolPolicy: cloudFront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       }
     );
-
-    // Final CloudFront URL
-    new cdk.CfnOutput(this, "Abu CMS URL", {
-      value: this.cf.distributionDomainName,
-    });
   }
 }
