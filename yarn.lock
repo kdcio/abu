@@ -15574,10 +15574,10 @@ react-error-overlay@^6.0.9:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
   integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
 
-react-hook-form@7.2.1:
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.2.1.tgz#99b3540dd2314499df12e9a53c70587ad63a806c"
-  integrity sha512-QopAubhVofqQrwlWLr9aK0DF8tNU8fnU8sJIlw1Tb3tGkEvP9yeaA+cx1hlxYni8xBswtHruL1WcDEa6CYQDow==
+react-hook-form@7.3.3:
+  version "7.3.3"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.3.3.tgz#0061714a7c3aec6c5a13f10d4e6bf49884f6ca20"
+  integrity sha512-MhKVEwxNgn/VgwOQQwUSZ9g/KhGS+HNzfD++V0mnnGeBjHOFajIPPA19cBzMSd7illd4YyyBXdTxd9+vi6Ne4A==
 
 react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
@@ -19430,9 +19430,9 @@ write-json-file@^2.3.0:
     write-file-atomic "^2.0.0"
 
 ws@^6.2.1:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.1.tgz#442fdf0a47ed64f59b6a5d8ff130f4748ed524fb"
-  integrity sha512-GIyAXC2cB7LjvpgMt9EKS2ldqr0MTrORaleiOno6TweZ6r3TKtoFQWay/2PceJ3RuBasOHzXNn5Lrw1X0bEjqA==
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.2.tgz#dd5cdbd57a9979916097652d78f1cc5faea0c32e"
+  integrity sha512-zmhltoSR8u1cnDsD43TX59mzoMZsLKqUweyYBAIvTngR3shc0W6aOZylZmq/7hqyVxPdi+5Ud2QInblgyE72fw==
   dependencies:
     async-limiter "~1.0.0"
 
