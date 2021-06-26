@@ -1,17 +1,19 @@
 import * as cdk from "@aws-cdk/core";
 import * as cognito from "@aws-cdk/aws-cognito";
 import * as cloudFront from "@aws-cdk/aws-cloudfront";
+import * as iam from "@aws-cdk/aws-iam";
 
-interface APIStackProps extends cdk.NestedStackProps {
+interface CogStackProps extends cdk.NestedStackProps {
   cf: cloudFront.CloudFrontWebDistribution;
 }
 
-export class APIStack extends cdk.NestedStack {
+export class CogStack extends cdk.NestedStack {
   userPool: cognito.UserPool;
   userPoolClient: cognito.UserPoolClient;
   userPoolDomain: cognito.UserPoolDomain;
+  cogAccess: iam.CfnAccessKey;
 
-  constructor(scope: cdk.Construct, id: string, props?: APIStackProps) {
+  constructor(scope: cdk.Construct, id: string, props?: CogStackProps) {
     super(scope, id, props);
 
     // high level construct
@@ -108,5 +110,42 @@ export class APIStack extends cdk.NestedStack {
       this.userPoolDomain.node.addDependency(this.userPool);
       this.userPoolClient.node.addDependency(this.userPool);
     }
+
+    const cogAccessPolicy = new iam.PolicyDocument({
+      statements: [
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          resources: [this.userPool.userPoolArn],
+          actions: [
+            "cognito-idp:AdminDeleteUser",
+            "cognito-idp:ListUsersInGroup",
+            "cognito-idp:ListGroups",
+            "cognito-idp:AdminCreateUser",
+            "cognito-idp:AdminSetUserPassword",
+            "cognito-idp:AdminRemoveUserFromGroup",
+            "cognito-idp:AdminAddUserToGroup",
+            "cognito-idp:AdminListGroupsForUser",
+            "cognito-idp:AdminUpdateUserAttributes",
+            "cognito-idp:AdminGetUser",
+            "cognito-idp:ListUsers",
+          ],
+        }),
+      ],
+    });
+
+    const cognitoAccess = new iam.ManagedPolicy(this, `${id}-CognitoAccess`, {
+      description: "Policy for accessing cognito",
+      managedPolicyName: `${id}-CognitoAccess`,
+      document: cogAccessPolicy,
+    });
+
+    const user = new iam.User(this, `${id}-User`, {
+      userName: `${id}-user`,
+      managedPolicies: [cognitoAccess],
+    });
+
+    this.cogAccess = new iam.CfnAccessKey(this, `${id}-CogAccess`, {
+      userName: user.userName,
+    });
   }
 }

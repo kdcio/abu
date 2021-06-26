@@ -41,6 +41,8 @@ yarn workspace infra cdk bootstrap
 yarn workspace infra build
 yarn workspace infra deploy
 
+node scripts/cdk-to-config.js
+
 exit 0
 
 # # Run setup

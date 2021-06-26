@@ -1,11 +1,11 @@
 import * as cdk from "@aws-cdk/core";
 import { CMSStack } from "./cms";
-import { APIStack } from "./api";
+import { CogStack } from "./cognito";
 import { DBStack } from "./db";
 
 export class InfraStack extends cdk.Stack {
   cms: CMSStack;
-  api: APIStack;
+  cog: CogStack;
   db: DBStack;
 
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -14,7 +14,7 @@ export class InfraStack extends cdk.Stack {
 
     this.cms = new CMSStack(this, `${id}-CMS`);
     const { cf } = this.cms;
-    this.api = new APIStack(this, `${id}-API`, { cf });
+    this.cog = new CogStack(this, `${id}-COG`, { cf });
     this.db = new DBStack(this, `${id}-DB`);
 
     // Final CloudFront URL
@@ -25,7 +25,7 @@ export class InfraStack extends cdk.Stack {
       value: cf.distributionId,
     });
 
-    const { userPool, userPoolClient, userPoolDomain } = this.api;
+    const { userPool, userPoolClient, userPoolDomain, cogAccess } = this.cog;
     new cdk.CfnOutput(this, "COG_POOL_ID", {
       value: userPool.userPoolId,
     });
@@ -34,6 +34,12 @@ export class InfraStack extends cdk.Stack {
     });
     new cdk.CfnOutput(this, "COG_POOL_CLIENT_DOMAIN", {
       value: userPoolDomain.domainName,
+    });
+    new cdk.CfnOutput(this, "COG_ACCESS_KEY_ID", {
+      value: cogAccess.ref,
+    });
+    new cdk.CfnOutput(this, "COG_SECRET_ACCESS_KEY", {
+      value: cogAccess.attrSecretAccessKey,
     });
   }
 }
