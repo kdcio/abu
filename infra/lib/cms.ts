@@ -11,7 +11,8 @@ export class CMSStack extends cdk.NestedStack {
     super(scope, id, props);
 
     this.bucket = new s3.Bucket(this, `${id}-S3`, {
-      bucketName: `abu-cms-cdk-s3bucket`,
+      bucketName: process.env.PROJECT,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     const cloudFrontOAI = new cloudFront.OriginAccessIdentity(
@@ -64,7 +65,7 @@ export class CMSStack extends cdk.NestedStack {
           errorCachingMinTtl: 0,
         },
       ],
-      comment: `abu-cms CDK - CloudFront Distribution`,
+      comment: `${process.env.PROJECT} - CloudFront Distribution`,
       viewerProtocolPolicy: cloudFront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
     });
   }

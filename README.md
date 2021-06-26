@@ -40,6 +40,7 @@ You'll need [docker](https://www.docker.com/) installed for running [local dynam
    PROJECT_NAME: myproject.com
    REGION: ap-southeast-1
    PROFILE: dev
+   FIRST_USER_EMAIL: juan@myproject.com
    ```
 
    `PROJECT_NAME` will be referenced in all resources used in AWS. It must be unique with only letters and numbers. It should also be unique for S3 bucket name and cognito pool client domain usage. I recommend using a subdomain like `admin-dev.myproject.com`.
@@ -51,7 +52,7 @@ You'll need [docker](https://www.docker.com/) installed for running [local dynam
 3. Run local setup script
 
    ```bash
-   yarn setup:local your@email.com
+   yarn setup:local
    ```
 
    This will create cognito resources in your AWS account and then run a local dynamodb.
@@ -93,6 +94,7 @@ Here are the services that will be running:
    UPLOAD_BUCKET: admin-upload.myproject.com
    REGION: ap-southeast-1
    PROFILE: my-production-profile
+   FIRST_USER_EMAIL: juan@myproject.com
    ```
 
    `PROJECT_NAME` will be referenced in all resources used in AWS. It must be unique with only letters and numbers. It should also be unique for S3 bucket name and cognito pool client domain usage. I recommend using a subdomain like `admin.myproject.com`.
@@ -106,7 +108,7 @@ Here are the services that will be running:
 3. Run deploy script
 
    ```bash
-   yarn deploy prod your@email.com
+   yarn deploy prod
    ```
 
    The script will take about 20 minutes to finish to provisioning everything.

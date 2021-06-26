@@ -15,15 +15,15 @@
       "AttributeType": "S"
     },
     {
-      "AttributeName": "pk2",
+      "AttributeName": "gsi1pk",
       "AttributeType": "S"
     },
     {
-      "AttributeName": "sk2",
+      "AttributeName": "gsi1sk",
       "AttributeType": "S"
     },
     {
-      "AttributeName": "pk3",
+      "AttributeName": "gsi2pk",
       "AttributeType": "S"
     }
   ],
@@ -42,11 +42,11 @@
       "IndexName": "GSI",
       "KeySchema": [
         {
-          "AttributeName": "pk2",
+          "AttributeName": "gsi1pk",
           "KeyType": "HASH"
         },
         {
-          "AttributeName": "sk2",
+          "AttributeName": "gsi2pk",
           "KeyType": "RANGE"
         }
       ],
@@ -58,7 +58,7 @@
       "IndexName": "GSI2",
       "KeySchema": [
         {
-          "AttributeName": "pk3",
+          "AttributeName": "gsi2pk",
           "KeyType": "HASH"
         }
       ],
