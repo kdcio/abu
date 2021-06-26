@@ -110,3 +110,4 @@ packages/cms/cypress.env.json
 .dbdata
 .s3-local
 .env.production*
+.vscode

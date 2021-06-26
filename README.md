@@ -129,7 +129,7 @@ Here are the services that will be running:
    - User Management Stack
      - Cognito
    - Database Stack
-     - DyanmoDB
+     - DynamoDB
 
    All of the stacks will use CloudFormation and S3 for deployment.
 

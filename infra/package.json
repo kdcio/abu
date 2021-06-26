@@ -13,7 +13,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "cdk": "cdk",
-    "deploy": "cdk deploy",
+    "deploy": "cdk deploy --require-approval never  --outputs-file .infra-output.json",
     "destroy": "cdk destroy"
   },
   "devDependencies": {

@@ -18,8 +18,22 @@ export class InfraStack extends cdk.Stack {
     this.db = new DBStack(this, `${id}-DB`);
 
     // Final CloudFront URL
-    new cdk.CfnOutput(this, "Abu CMS URL", {
+    new cdk.CfnOutput(this, "CF_URL", {
       value: cf.distributionDomainName,
+    });
+    new cdk.CfnOutput(this, "CF_ID", {
+      value: cf.distributionId,
+    });
+
+    const { userPool, userPoolClient, userPoolDomain } = this.api;
+    new cdk.CfnOutput(this, "COG_POOL_ID", {
+      value: userPool.userPoolId,
+    });
+    new cdk.CfnOutput(this, "COG_POOL_CLIENT_ID", {
+      value: userPoolClient.userPoolClientId,
+    });
+    new cdk.CfnOutput(this, "COG_POOL_CLIENT_DOMAIN", {
+      value: userPoolDomain.domainName,
     });
   }
 }
