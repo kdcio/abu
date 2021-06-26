@@ -70,6 +70,7 @@
   },
   "workspaces": [
     "packages/*",
-    "resources"
+    "resources",
+    "infra"
   ]
 }
