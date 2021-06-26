@@ -29,6 +29,9 @@ export class InfraStack extends cdk.Stack {
     new cdk.CfnOutput(this, "COG_POOL_ID", {
       value: userPool.userPoolId,
     });
+    new cdk.CfnOutput(this, "COG_POOL_ARN", {
+      value: userPool.userPoolArn,
+    });
     new cdk.CfnOutput(this, "COG_POOL_CLIENT_ID", {
       value: userPoolClient.userPoolClientId,
     });

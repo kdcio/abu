@@ -11,6 +11,7 @@ let configs = yaml.parse(file);
 
 const stack = cdkOutput["AbuStack-github"];
 configs.COG_POOL_ID = stack.COGPOOLID;
+configs.COG_POOL_ARN = stack.COGPOOLARN;
 configs.COG_POOL_CLIENT_ID = stack.COGPOOLCLIENTID;
 configs.COG_POOL_CLIENT_DOMAIN = stack.COGPOOLCLIENTDOMAIN;
 configs.COG_ACCESS_KEY_ID = stack.COGACCESSKEYID;
@@ -27,8 +28,12 @@ fileName = path.join(
   __dirname,
   `../packages/cms/.env.production.${process.env.ABU_STAGE}`
 );
-file = fs.readFileSync(fileName, "utf8");
-configs = dotenv.parse(file);
+try {
+  file = fs.readFileSync(fileName, "utf8");
+  configs = dotenv.parse(file);
+} catch (error) {
+  configs = {};
+}
 
 configs.REACT_APP_AUTH_AWS_REGION = process.env.AWS_REGION;
 configs.REACT_APP_AUTH_POOL_ID = stack.COGPOOLID;

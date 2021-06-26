@@ -24,6 +24,9 @@ S3_BUCKET_NAME=$PROJECT
 CF_ID=$CF_ID
 WAIT_INV=yes
 
+# Switch env file
+cp -f packages/cms/.env.production.$STAGE packages/cms/.env.production.local
+
 # Build CMS
 yarn workspace cms build
 

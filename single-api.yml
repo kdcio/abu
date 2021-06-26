@@ -85,4 +85,4 @@ resources:
           Ref: ApiGatewayRestApi
         Type: COGNITO_USER_POOLS
         ProviderARNs:
-          - Fn::ImportValue: AbuCognitoUserPoolArn-${self:provider.stage}
+          - ${file(./config/${self:provider.stage}.yml):COG_POOL_ARN}

@@ -38,3 +38,7 @@ export ABU_STAGE=$STAGE
 cd ..
 
 yarn workspace infra destroy
+
+yarn destroy:api $STAGE
+
+yarn destroy:upload $STAGE

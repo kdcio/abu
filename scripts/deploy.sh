@@ -51,20 +51,15 @@ yarn workspace upload deploy $STAGE
 # Store upload configs
 node scripts/upload-to-config.js
 
-exit 0
+# update lambda memory and timeout
+./scripts/update-lambda-edge.sh $STAGE
 
-# # Run setup
-# ./scripts/setup-stage.sh $STAGE
+echo -e "\n${BLUE}Setting up API...${NC}\n"
+yarn deploy:api $STAGE
 
-# # update lambda memory and timeout
-# ./scripts/update-lambda-edge.sh $STAGE
-
-# # Build API
-# yarn build:api
-
-# # Run deploy api
-# yarn deploy:api $STAGE
+# Store upload configs
+node scripts/api-to-config.js
 
 # # Run deploy cms
-# yarn deploy:cms $STAGE
+yarn deploy:cms $STAGE
 
