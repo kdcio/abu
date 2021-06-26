@@ -1,5 +1,7 @@
 service: abu-api-admin-user
 
+projectDir: ../../
+
 plugins:
   - serverless-bundle
   - serverless-offline
@@ -27,8 +29,7 @@ provider:
     STAGE: ${self:provider.stage}
     NODE_ENV: ${self:provider.stage}
     DEBUG: ${file(../../config/${self:provider.stage}.yml):DEBUG, 'lambda:event,lambda:error'}
-    COG_POOL_ID:
-      Fn::ImportValue: AbuCognitoUserPoolId-${self:provider.stage}
+    COG_POOL_ID: ${file(../../config/${self:provider.stage}.yml):COG_POOL_ID}
 
 functions: ${file(./functions.yml)}
 
@@ -45,4 +46,4 @@ resources:
           Ref: ApiGatewayRestApi
         Type: COGNITO_USER_POOLS
         ProviderARNs:
-          - Fn::ImportValue: AbuCognitoUserPoolArn-${self:provider.stage}
+          - ${file(../../config/${self:provider.stage}.yml):COG_POOL_ARN}
