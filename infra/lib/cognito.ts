@@ -47,19 +47,6 @@ export class CogStack extends cdk.NestedStack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
-    // create two groups, one for admins one for users
-    // these groups can be used without configuring a 3rd party IdP
-
-    // new cognito.CfnUserPoolGroup(this, "AdminsGroup", {
-    //   groupName: adminsGroupName,
-    //   userPoolId: userPool.userPoolId,
-    // });
-
-    // new cognito.CfnUserPoolGroup(this, "UsersGroup", {
-    //   groupName: usersGroupName,
-    //   userPoolId: userPool.userPoolId,
-    // });
-
     const supportedIdentityProviders = [
       cognito.UserPoolClientIdentityProvider.COGNITO,
     ];
@@ -105,10 +92,48 @@ export class CogStack extends cdk.NestedStack {
       }
     );
 
+    // create two groups, one for admins one for users
+    // these groups can be used without configuring a 3rd party IdP
+
+    const admin = new cognito.CfnUserPoolGroup(this, `${id}-UserGroup-Admin`, {
+      groupName: "admin",
+      userPoolId: this.userPool.userPoolId,
+    });
+
+    const editor = new cognito.CfnUserPoolGroup(
+      this,
+      `${id}-UserGroup-Editor`,
+      {
+        groupName: "editor",
+        userPoolId: this.userPool.userPoolId,
+      }
+    );
+
+    const user = new cognito.CfnUserPoolUser(this, `${id}-FirstUser`, {
+      userPoolId: this.userPool.userPoolId,
+      username: process.env.FIRST_USER_EMAIL,
+    });
+
+    const userGroup = new cognito.CfnUserPoolUserToGroupAttachment(
+      this,
+      `${id}-FirstUser-Group`,
+      {
+        groupName: "admin",
+        username: process.env.FIRST_USER_EMAIL || "",
+        userPoolId: this.userPool.userPoolId,
+      }
+    );
+
     // we want to make sure we do things in the right order
     if (this.userPool) {
       this.userPoolDomain.node.addDependency(this.userPool);
       this.userPoolClient.node.addDependency(this.userPool);
+      admin.node.addDependency(this.userPool);
+      editor.node.addDependency(this.userPool);
+      user.node.addDependency(this.userPool);
+      user.node.addDependency(admin);
+      userGroup.node.addDependency(user);
+      userGroup.node.addDependency(admin);
     }
 
     const cogAccessPolicy = new iam.PolicyDocument({
@@ -139,13 +164,13 @@ export class CogStack extends cdk.NestedStack {
       document: cogAccessPolicy,
     });
 
-    const user = new iam.User(this, `${id}-User`, {
+    const iamUser = new iam.User(this, `${id}-User`, {
       userName: `${id}-user`,
       managedPolicies: [cognitoAccess],
     });
 
     this.cogAccess = new iam.CfnAccessKey(this, `${id}-CogAccess`, {
-      userName: user.userName,
+      userName: iamUser.userName,
     });
   }
 }
