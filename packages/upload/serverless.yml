@@ -1,5 +1,7 @@
 service: abu-upload
 
+projectDir: ../../
+
 package:
   individually: true
   excludeDevDependencies: true

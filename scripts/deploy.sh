@@ -37,11 +37,19 @@ export ABU_STAGE=$STAGE
 # Change to root dir
 cd ..
 
+echo -e "\n${BLUE}Setting up infrastructure...${NC}\n"
 yarn workspace infra cdk bootstrap
 yarn workspace infra build
 yarn workspace infra deploy
 
+# Store configs
 node scripts/cdk-to-config.js
+
+echo -e "\n${BLUE}Setting up S3 and CloudFront for uploads...${NC}\n"
+yarn workspace upload deploy $STAGE
+
+# Store upload configs
+node scripts/upload-to-config.js
 
 exit 0
 
