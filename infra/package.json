@@ -13,7 +13,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "cdk": "cdk",
-    "deploy": "cdk deploy"
+    "deploy": "cdk deploy",
+    "destroy": "cdk destroy"
   },
   "devDependencies": {
     "@aws-cdk/assert": "^1.106.1",

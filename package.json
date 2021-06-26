@@ -26,6 +26,7 @@
     "deploy:api:all": "sls deploy -c single-api.yml -s",
     "deploy:api:func": "sls deploy function -c single-api.yml ",
     "delete:api": "sls remove -c single-api.yml -s",
+    "destroy": "./scripts/destroy.sh",
     "changeset": "changeset"
   },
   "devDependencies": {
