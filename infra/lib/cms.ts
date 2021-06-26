@@ -10,13 +10,17 @@ export class CMSStack extends cdk.NestedStack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.NestedStackProps) {
     super(scope, id, props);
 
-    this.bucket = new s3.Bucket(this, `AbuCMSS3`, {
+    this.bucket = new s3.Bucket(this, `${id}-S3`, {
       bucketName: `abu-cms-cdk-s3bucket`,
     });
 
-    const cloudFrontOAI = new cloudFront.OriginAccessIdentity(this, "OAI", {
-      comment: "OAI for Abu CMS.",
-    });
+    const cloudFrontOAI = new cloudFront.OriginAccessIdentity(
+      this,
+      `${id}-CF-OAI`,
+      {
+        comment: "Origin Access Identity",
+      }
+    );
 
     const cloudfrontS3Access = new iam.PolicyStatement();
     cloudfrontS3Access.addActions("s3:GetBucket*");
@@ -31,41 +35,37 @@ export class CMSStack extends cdk.NestedStack {
     this.bucket.addToResourcePolicy(cloudfrontS3Access);
 
     // Create a new CloudFront Distribution
-    this.cf = new cloudFront.CloudFrontWebDistribution(
-      this,
-      `abu-cms-cdk-cf-distribution`,
-      {
-        originConfigs: [
-          {
-            s3OriginSource: {
-              s3BucketSource: this.bucket,
-              originAccessIdentity: cloudFrontOAI,
+    this.cf = new cloudFront.CloudFrontWebDistribution(this, `${id}-CF`, {
+      originConfigs: [
+        {
+          s3OriginSource: {
+            s3BucketSource: this.bucket,
+            originAccessIdentity: cloudFrontOAI,
+          },
+          behaviors: [
+            {
+              isDefaultBehavior: true,
+              compress: true,
             },
-            behaviors: [
-              {
-                isDefaultBehavior: true,
-                compress: true,
-              },
-            ],
-          },
-        ],
-        errorConfigurations: [
-          {
-            errorCode: 403,
-            responseCode: 200,
-            responsePagePath: "/index.html",
-            errorCachingMinTtl: 0,
-          },
-          {
-            errorCode: 404,
-            responseCode: 200,
-            responsePagePath: "/index.html",
-            errorCachingMinTtl: 0,
-          },
-        ],
-        comment: `abu-cms CDK - CloudFront Distribution`,
-        viewerProtocolPolicy: cloudFront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      }
-    );
+          ],
+        },
+      ],
+      errorConfigurations: [
+        {
+          errorCode: 403,
+          responseCode: 200,
+          responsePagePath: "/index.html",
+          errorCachingMinTtl: 0,
+        },
+        {
+          errorCode: 404,
+          responseCode: 200,
+          responsePagePath: "/index.html",
+          errorCachingMinTtl: 0,
+        },
+      ],
+      comment: `abu-cms CDK - CloudFront Distribution`,
+      viewerProtocolPolicy: cloudFront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+    });
   }
 }

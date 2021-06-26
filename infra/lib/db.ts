@@ -2,13 +2,13 @@ import * as cdk from "@aws-cdk/core";
 import * as dynamodb from "@aws-cdk/aws-dynamodb";
 import schema from "./schema.json";
 
-export class DDBStack extends cdk.NestedStack {
+export class DBStack extends cdk.NestedStack {
   public readonly ddb: dynamodb.Table;
 
   constructor(scope: cdk.Construct, id: string, props?: cdk.NestedStackProps) {
     super(scope, id, props);
 
-    this.ddb = new dynamodb.Table(this, "DDB", {
+    this.ddb = new dynamodb.Table(this, `${id}-DDB`, {
       tableName: schema.TableName,
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,

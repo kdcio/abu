@@ -1,0 +1,219 @@
+{
+  "Resources": {
+    "MyTestStackCMSNestedStackMyTestStackCMSNestedStackResource069EC104": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "AssetParametersb0f91dc3a507f1e5dd5b2ea047d309ecc56760ef6307ba668f206f883e11bcc4S3Bucket377FA1C8"
+              },
+              "/",
+              {
+                "Fn::Select": [
+                  0,
+                  {
+                    "Fn::Split": [
+                      "||",
+                      {
+                        "Ref": "AssetParametersb0f91dc3a507f1e5dd5b2ea047d309ecc56760ef6307ba668f206f883e11bcc4S3VersionKey633EB3CF"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Fn::Select": [
+                  1,
+                  {
+                    "Fn::Split": [
+                      "||",
+                      {
+                        "Ref": "AssetParametersb0f91dc3a507f1e5dd5b2ea047d309ecc56760ef6307ba668f206f883e11bcc4S3VersionKey633EB3CF"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "MyTestStackAPINestedStackMyTestStackAPINestedStackResource7FC80D75": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "AssetParametersa8c39f270e0dfa15ddd848d8bdf87e78802e33b36d37e1005e398f7802032b99S3BucketB9DDAB03"
+              },
+              "/",
+              {
+                "Fn::Select": [
+                  0,
+                  {
+                    "Fn::Split": [
+                      "||",
+                      {
+                        "Ref": "AssetParametersa8c39f270e0dfa15ddd848d8bdf87e78802e33b36d37e1005e398f7802032b99S3VersionKeyE4C6E0D3"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Fn::Select": [
+                  1,
+                  {
+                    "Fn::Split": [
+                      "||",
+                      {
+                        "Ref": "AssetParametersa8c39f270e0dfa15ddd848d8bdf87e78802e33b36d37e1005e398f7802032b99S3VersionKeyE4C6E0D3"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        },
+        "Parameters": {
+          "referencetoMyTestStackundefinedMyTestStackCMSNestedStackMyTestStackCMSNestedStackResource1AD2AFF2OutputsMyTestStackundefinedMyTestStackCMSMyTestStackCMSCFCFDistribution96A42D18DomainName": {
+            "Fn::GetAtt": [
+              "MyTestStackCMSNestedStackMyTestStackCMSNestedStackResource069EC104",
+              "Outputs.MyTestStackundefinedMyTestStackCMSMyTestStackCMSCFCFDistribution96A42D18DomainName"
+            ]
+          }
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "MyTestStackDBNestedStackMyTestStackDBNestedStackResource5E89452B": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "AssetParameters57d5023ac07b97338e507577aa952588ad6b704465b4c97304680e5ce4191bcbS3Bucket975309DA"
+              },
+              "/",
+              {
+                "Fn::Select": [
+                  0,
+                  {
+                    "Fn::Split": [
+                      "||",
+                      {
+                        "Ref": "AssetParameters57d5023ac07b97338e507577aa952588ad6b704465b4c97304680e5ce4191bcbS3VersionKeyB4D3756B"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Fn::Select": [
+                  1,
+                  {
+                    "Fn::Split": [
+                      "||",
+                      {
+                        "Ref": "AssetParameters57d5023ac07b97338e507577aa952588ad6b704465b4c97304680e5ce4191bcbS3VersionKeyB4D3756B"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    }
+  },
+  "Outputs": {
+    "AbuCMSURL": {
+      "Value": {
+        "Fn::GetAtt": [
+          "MyTestStackCMSNestedStackMyTestStackCMSNestedStackResource069EC104",
+          "Outputs.MyTestStackundefinedMyTestStackCMSMyTestStackCMSCFCFDistribution96A42D18DomainName"
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "AssetParametersb0f91dc3a507f1e5dd5b2ea047d309ecc56760ef6307ba668f206f883e11bcc4S3Bucket377FA1C8": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"b0f91dc3a507f1e5dd5b2ea047d309ecc56760ef6307ba668f206f883e11bcc4\""
+    },
+    "AssetParametersb0f91dc3a507f1e5dd5b2ea047d309ecc56760ef6307ba668f206f883e11bcc4S3VersionKey633EB3CF": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"b0f91dc3a507f1e5dd5b2ea047d309ecc56760ef6307ba668f206f883e11bcc4\""
+    },
+    "AssetParametersb0f91dc3a507f1e5dd5b2ea047d309ecc56760ef6307ba668f206f883e11bcc4ArtifactHash95E416FB": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"b0f91dc3a507f1e5dd5b2ea047d309ecc56760ef6307ba668f206f883e11bcc4\""
+    },
+    "AssetParametersa8c39f270e0dfa15ddd848d8bdf87e78802e33b36d37e1005e398f7802032b99S3BucketB9DDAB03": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"a8c39f270e0dfa15ddd848d8bdf87e78802e33b36d37e1005e398f7802032b99\""
+    },
+    "AssetParametersa8c39f270e0dfa15ddd848d8bdf87e78802e33b36d37e1005e398f7802032b99S3VersionKeyE4C6E0D3": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"a8c39f270e0dfa15ddd848d8bdf87e78802e33b36d37e1005e398f7802032b99\""
+    },
+    "AssetParametersa8c39f270e0dfa15ddd848d8bdf87e78802e33b36d37e1005e398f7802032b99ArtifactHash703A76C1": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"a8c39f270e0dfa15ddd848d8bdf87e78802e33b36d37e1005e398f7802032b99\""
+    },
+    "AssetParameters57d5023ac07b97338e507577aa952588ad6b704465b4c97304680e5ce4191bcbS3Bucket975309DA": {
+      "Type": "String",
+      "Description": "S3 bucket for asset \"57d5023ac07b97338e507577aa952588ad6b704465b4c97304680e5ce4191bcb\""
+    },
+    "AssetParameters57d5023ac07b97338e507577aa952588ad6b704465b4c97304680e5ce4191bcbS3VersionKeyB4D3756B": {
+      "Type": "String",
+      "Description": "S3 key for asset version \"57d5023ac07b97338e507577aa952588ad6b704465b4c97304680e5ce4191bcb\""
+    },
+    "AssetParameters57d5023ac07b97338e507577aa952588ad6b704465b4c97304680e5ce4191bcbArtifactHash79ECBB9C": {
+      "Type": "String",
+      "Description": "Artifact hash for asset \"57d5023ac07b97338e507577aa952588ad6b704465b4c97304680e5ce4191bcb\""
+    }
+  }
+}

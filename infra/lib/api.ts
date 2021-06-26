@@ -14,7 +14,7 @@ export class APIStack extends cdk.NestedStack {
     super(scope, id, props);
 
     // high level construct
-    this.userPool = new cognito.UserPool(this, id + "Pool", {
+    this.userPool = new cognito.UserPool(this, `${id}-UserPool`, {
       signInAliases: {
         email: true,
       },
@@ -78,7 +78,7 @@ export class APIStack extends cdk.NestedStack {
 
     this.userPoolClient = new cognito.CfnUserPoolClient(
       this,
-      "CognitoAppClientCDK",
+      `${id}-UserPool-Client`,
       {
         supportedIdentityProviders: supportedIdentityProviders,
         clientName: "Web",
@@ -96,8 +96,8 @@ export class APIStack extends cdk.NestedStack {
     );
 
     // we want to make sure we do things in the right order
-    // if (cognitoIdp) {
-    //   cfnUserPoolClient.node.addDependency(cognitoIdp);
-    // }
+    if (this.userPool) {
+      this.userPoolClient.node.addDependency(this.userPool);
+    }
   }
 }
