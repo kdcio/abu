@@ -6,9 +6,9 @@ const ApiAccess = new Entity({
   attributes: {
     id: { partitionKey: true, prefix: 'API#' },
     sk: { sortKey: true, default: 'META', hidden: true },
-    pk2: { default: 'API', hidden: true },
-    sk2: { alias: 'name' },
-    pk3: { alias: 'key', prefix: 'KEY#' },
+    gsi1pk: { default: 'API', hidden: true },
+    gsi1sk: { alias: 'name' },
+    gsi2pk: { alias: 'key', prefix: 'KEY#' },
     read: { type: 'map', required: false },
     write: { type: 'map', required: false },
   },

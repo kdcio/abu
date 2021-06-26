@@ -39,10 +39,10 @@ describe("Access", () => {
       };
 
       const { Item } = await ddb.get(params).promise();
-      expect(Item.sk2).toBe(access.name);
+      expect(Item.gsi1sk).toBe(access.name);
       expect(Item.read).toEqual(access.read);
       expect(Item.write).toEqual(access.write);
-      expect(Item).toHaveProperty("pk3");
+      expect(Item).toHaveProperty("gsi2pk");
 
       accesses.push({ ...access, id: json.id });
     });
@@ -118,10 +118,10 @@ describe("Access", () => {
     expect(json).toHaveProperty("created");
     expect(json).toHaveProperty("modified");
     expect(json).not.toHaveProperty("pk");
-    expect(json).not.toHaveProperty("pk2");
-    expect(json).not.toHaveProperty("pk3");
+    expect(json).not.toHaveProperty("gsi1pk");
+    expect(json).not.toHaveProperty("gsi2pk");
     expect(json).not.toHaveProperty("sk");
-    expect(json).not.toHaveProperty("sk2");
+    expect(json).not.toHaveProperty("gsi1sk");
     expect(json).not.toHaveProperty("entity");
 
     accesses[4].key = json.key;
@@ -132,7 +132,7 @@ describe("Access", () => {
     const params = {
       TableName: tableName,
       IndexName: "GSI2",
-      KeyConditionExpression: "pk3 = :key",
+      KeyConditionExpression: "gsi2pk = :key",
       ExpressionAttributeValues: {
         ":key": `KEY#${access.key}`,
       },
@@ -141,7 +141,7 @@ describe("Access", () => {
     const { Items, Count } = await ddb.query(params).promise();
     const [data] = Items;
     expect(Count).toBe(1);
-    expect(data.sk2).toBe(access.name);
+    expect(data.gsi1sk).toBe(access.name);
     expect(data.read).toEqual(access.read);
     expect(data.write).toEqual(access.write);
   });
@@ -211,6 +211,6 @@ describe("Access", () => {
     };
 
     const res = await ddb.get(params).promise();
-    expect(res.Item.sk2).toEqual("Edited access");
+    expect(res.Item.gsi1sk).toEqual("Edited access");
   });
 });

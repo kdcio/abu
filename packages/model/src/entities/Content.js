@@ -6,8 +6,8 @@ const Content = new Entity({
   attributes: {
     modelId: { partitionKey: true, prefix: 'MOD#' },
     id: { sortKey: true, prefix: 'CON#' },
-    pk2: { default: (data) => `MOD#${data.modelId}#CON` },
-    sk2: { default: (data) => data.modified() },
+    gsi1pk: { default: (data) => `MOD#${data.modelId}#CON` },
+    gsi1sk: { default: (data) => data.modified() },
     data: { type: 'map', required: false },
   },
   table,

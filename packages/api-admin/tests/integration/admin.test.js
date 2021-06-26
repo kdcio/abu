@@ -27,7 +27,7 @@ describe("Seed", () => {
     const params = {
       TableName: tableName,
       IndexName: "GSI",
-      KeyConditionExpression: "pk2 = :key",
+      KeyConditionExpression: "gsi1pk = :key",
       ExpressionAttributeValues: {
         ":key": "MOD",
       },
