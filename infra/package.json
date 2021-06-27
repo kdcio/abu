@@ -18,7 +18,7 @@
     "setup:local:ddb": "mkdir -p .dbdata && yarn start && yarn ddb:wait && yarn ddb:init",
     "start": "docker compose -p abu up -d",
     "ddb:wait": "until nc -z localhost 8062; do sleep 1; done && echo \"DynamoDB started\" && sleep 2",
-    "ddb:init": "aws dynamodb create-table --cli-input-json file://schema.json --endpoint-url http://localhost:8062 --region ap-southeast-1 --output text --query 'Table.TableName'",
+    "ddb:init": "aws dynamodb create-table --cli-input-json file://./schema.json --endpoint-url http://localhost:8062 --region ap-southeast-1 --output text --query 'Table.TableName'",
     "ddb:stop": "docker-compose -p abu stop",
     "ddb:rm": "docker-compose -p abu rm",
     "ddb:clear": "node clearDB.js",
