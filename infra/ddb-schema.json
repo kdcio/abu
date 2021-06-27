@@ -46,7 +46,7 @@
           "KeyType": "HASH"
         },
         {
-          "AttributeName": "gsi2pk",
+          "AttributeName": "gsi1sk",
           "KeyType": "RANGE"
         }
       ],

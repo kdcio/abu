@@ -14,7 +14,15 @@
     "test:watch": "jest --watch",
     "cdk": "cdk",
     "deploy": "cdk deploy --require-approval never  --outputs-file .infra-output.json",
-    "destroy": "cdk destroy"
+    "destroy": "cdk destroy",
+    "setup:local:ddb": "mkdir -p .dbdata && yarn start && yarn ddb:wait && yarn ddb:init",
+    "start": "docker compose -p abu up -d",
+    "ddb:wait": "until nc -z localhost 8062; do sleep 1; done && echo \"DynamoDB started\" && sleep 2",
+    "ddb:init": "aws dynamodb create-table --cli-input-json file://ddb-schema.json --endpoint-url http://localhost:8062 --region ap-southeast-1 --output text --query 'Table.TableName'",
+    "ddb:stop": "docker-compose -p abu stop",
+    "ddb:rm": "docker-compose -p abu rm",
+    "ddb:clear": "node clearDB.js",
+    "ddb:clear:dev": "DDB_ENDPOINT=http://localhost:8062 AWS_REGION=ap-southeast-1 node clearDB.js"
   },
   "devDependencies": {
     "@aws-cdk/assert": "^1.106.1",

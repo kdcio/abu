@@ -4,7 +4,7 @@ import * as cloudFront from "@aws-cdk/aws-cloudfront";
 import * as iam from "@aws-cdk/aws-iam";
 
 interface CogStackProps extends cdk.NestedStackProps {
-  cf: cloudFront.CloudFrontWebDistribution;
+  appUrl: string;
 }
 
 export class CogStack extends cdk.NestedStack {
@@ -51,8 +51,6 @@ export class CogStack extends cdk.NestedStack {
       cognito.UserPoolClientIdentityProvider.COGNITO,
     ];
 
-    let appUrl = `https://${props?.cf.distributionDomainName}`;
-
     this.userPoolClient = new cognito.UserPoolClient(
       this,
       `${id}-UserPool-Client`,
@@ -63,8 +61,8 @@ export class CogStack extends cdk.NestedStack {
           flows: {
             implicitCodeGrant: true,
           },
-          callbackUrls: [appUrl],
-          logoutUrls: [appUrl],
+          callbackUrls: [`${props?.appUrl}`],
+          logoutUrls: [`${props?.appUrl}`],
           scopes: [
             cognito.OAuthScope.COGNITO_ADMIN,
             cognito.OAuthScope.PHONE,

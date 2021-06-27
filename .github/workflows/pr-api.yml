@@ -71,7 +71,7 @@ jobs:
 
       - name: Create DynamoDB Table
         working-directory: resources
-        run: yarn workspace res ddb:init
+        run: yarn workspace infra ddb:init
 
       - name: Smoke Test
         run: yarn build:api

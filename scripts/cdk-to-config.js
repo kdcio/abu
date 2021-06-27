@@ -5,11 +5,14 @@ const dotenv = require("dotenv");
 const yaml = require("yaml");
 const cdkOutput = require("../infra/.infra-output.json");
 
+/**
+ * Update config yaml for API
+ */
 let fileName = path.join(__dirname, `../config/${process.env.ABU_STAGE}.yml`);
 let file = fs.readFileSync(fileName, "utf8");
 let configs = yaml.parse(file);
 
-const stack = cdkOutput["AbuStack-github"];
+const stack = cdkOutput[`AbuStack-${process.env.ABU_STAGE}`];
 configs.COG_POOL_ID = stack.COGPOOLID;
 configs.COG_POOL_ARN = stack.COGPOOLARN;
 configs.COG_POOL_CLIENT_ID = stack.COGPOOLCLIENTID;
@@ -24,6 +27,9 @@ configs.DDB_TABLE = process.env.PROJECT;
 let newConfigs = yaml.stringify(configs);
 fs.writeFileSync(fileName, newConfigs, { encoding: "utf8" });
 
+/**
+ * Update env for CMS
+ */
 fileName = path.join(
   __dirname,
   `../packages/cms/.env.production.${process.env.ABU_STAGE}`

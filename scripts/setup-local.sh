@@ -1,42 +1,43 @@
 #!/bin/bash
 
+set -e
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-if [ -z "$1" ]
+export STAGE=local
+CONFIG_FILE=./config/$STAGE.yml
+
+if [ ! -f $CONFIG_FILE ]
   then
-    echo -e "\nThis script will provision resources needed to run this CMS.\n"
-    echo -e "Usage: setup-local.sh ${BLUE}<email>${NC}\n"
-    echo -e "Example: setup-local.sh jon@doe.com\n"
+    echo -e "\nMissing ${RED}$CONFIG_FILE${NC} config file\n"
   exit 1
 fi
 
-if [ -z "$1" ]
-  then
-    echo -e "\nMissing ${RED}email${NC}\n"
-  exit 1
-fi
-
-STAGE=dev
-export ENV_FILE="../packages/cms/.env"
-# ensure there's a newline
-echo "" >> ./config/$STAGE.yml
-
+# Change to script dir
 cd "$(dirname "$0")"
 source ./config-to-env.sh
-./setup-cog.sh $STAGE $1
 
-# Write additional cms env
-echo "REACT_APP_AUTH_OAUTH_SIGNIN=http://localhost:8060" >> $ENV_FILE
-echo "REACT_APP_AUTH_OAUTH_SIGNOUT=http://localhost:8060" >> $ENV_FILE
-echo "REACT_APP_API_ENDPOINT=http://localhost:8061" >> $ENV_FILE
-echo "REACT_APP_UPLOAD_ENDPOINT==http://localhost:8064" >> $ENV_FILE
+# Export AWS Profile to use
+export AWS_PROFILE=$PROFILE
+export AWS_REGION=$REGION
+export ABU_STAGE=$STAGE
+
+# Change to root dir
+cd ..
+
+echo -e "\n${BLUE}Setting up infrastructure...${NC}\n"
+yarn workspace infra cdk bootstrap
+yarn workspace infra build
+yarn workspace infra deploy
+
+# Store configs
+node scripts/cdk-to-config-local.js
 
 # Setup local dynamodb
-yarn workspace res setup:local:ddb
-echo "DDB_ENDPOINT: http://localhost:8062" >> ../config/$STAGE.yml
+yarn workspace infra setup:local:ddb
 
 echo -e "${GREEN}Local Setup Success!!!${NC}\n"
