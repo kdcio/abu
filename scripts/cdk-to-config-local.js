@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const yaml = require("yaml");
 const cdkOutput = require("../infra/.infra-output.json");
 
-const STAGE = "local";
+const ABU_STAGE = "local";
 
 /**
  * Update config yaml for API
@@ -14,13 +14,13 @@ let fileName = path.join(__dirname, `../config/local.yml`);
 let file = fs.readFileSync(fileName, "utf8");
 let configs = yaml.parse(file);
 
-const stack = cdkOutput[`AbuStack-${STAGE}`];
-configs.COG_POOL_ID = stack[`COGPOOLID${STAGE}`];
-configs.COG_POOL_ARN = stack[`COGPOOLARN${STAGE}`];
-configs.COG_POOL_CLIENT_ID = stack[`COGPOOLCLIENTID${STAGE}`];
-configs.COG_POOL_CLIENT_DOMAIN = stack[`COGPOOLCLIENTDOMAIN${STAGE}`];
-configs.COG_ACCESS_KEY_ID = stack[`COGACCESSKEYID${STAGE}`];
-configs.COG_SECRET_ACCESS_KEY = stack[`COGSECRETACCESSKEY${STAGE}`];
+const stack = cdkOutput[`AbuStack-${ABU_STAGE}`];
+configs.COG_POOL_ID = stack[`COGPOOLID${ABU_STAGE}`];
+configs.COG_POOL_ARN = stack[`COGPOOLARN${ABU_STAGE}`];
+configs.COG_POOL_CLIENT_ID = stack[`COGPOOLCLIENTID${ABU_STAGE}`];
+configs.COG_POOL_CLIENT_DOMAIN = stack[`COGPOOLCLIENTDOMAIN${ABU_STAGE}`];
+configs.COG_ACCESS_KEY_ID = stack[`COGACCESSKEYID${ABU_STAGE}`];
+configs.COG_SECRET_ACCESS_KEY = stack[`COGSECRETACCESSKEY${ABU_STAGE}`];
 configs.COG_OAUTH_CALLBACK = "http://localhost:8060";
 configs.PAGINATION_SECRET = crypto.randomBytes(32).toString("hex");
 configs.DDB_TABLE = "abu-local";
@@ -41,10 +41,10 @@ try {
 }
 
 configs.REACT_APP_AUTH_AWS_REGION = process.env.AWS_REGION;
-configs.REACT_APP_AUTH_POOL_ID = stack[`COGPOOLID${STAGE}`];
-configs.REACT_APP_AUTH_CLIENT_ID = stack[`COGPOOLCLIENTID${STAGE}`];
+configs.REACT_APP_AUTH_POOL_ID = stack[`COGPOOLID${ABU_STAGE}`];
+configs.REACT_APP_AUTH_CLIENT_ID = stack[`COGPOOLCLIENTID${ABU_STAGE}`];
 configs.REACT_APP_AUTH_OAUTH_DOMAIN = `${
-  stack[`COGPOOLCLIENTDOMAIN${STAGE}`]
+  stack[`COGPOOLCLIENTDOMAIN${ABU_STAGE}`]
 }.auth.${process.env.AWS_REGION}.amazoncognito.com`;
 configs.REACT_APP_AUTH_OAUTH_SIGNIN = "http://localhost:8060";
 configs.REACT_APP_AUTH_OAUTH_SIGNOUT = "http://localhost:8060";
