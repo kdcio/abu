@@ -23,34 +23,36 @@ export class InfraStack extends cdk.Stack {
     }
     this.cog = new CogStack(this, `${rootId}-COG`, { appUrl });
 
-    if (!isLocal) {
-      // Final CloudFront URL
-      new cdk.CfnOutput(this, `CF_URL_${ABU_STAGE}`, {
-        value: this.cms.cf.distributionDomainName,
-      });
-      new cdk.CfnOutput(this, `CF_ID_${ABU_STAGE}`, {
-        value: this.cms.cf.distributionId,
-      });
-    }
+    try {
+      if (!isLocal) {
+        // Final CloudFront URL
+        new cdk.CfnOutput(this, `CF_URL_${ABU_STAGE}`, {
+          value: this.cms.cf.distributionDomainName,
+        });
+        new cdk.CfnOutput(this, `CF_ID_${ABU_STAGE}`, {
+          value: this.cms.cf.distributionId,
+        });
+      }
 
-    const { userPool, userPoolClient, userPoolDomain, cogAccess } = this.cog;
-    new cdk.CfnOutput(this, `COG_POOL_ID_${ABU_STAGE}`, {
-      value: userPool.userPoolId,
-    });
-    new cdk.CfnOutput(this, `COG_POOL_ARN_${ABU_STAGE}`, {
-      value: userPool.userPoolArn,
-    });
-    new cdk.CfnOutput(this, `COG_POOL_CLIENT_ID_${ABU_STAGE}`, {
-      value: userPoolClient.userPoolClientId,
-    });
-    new cdk.CfnOutput(this, `COG_POOL_CLIENT_DOMAIN_${ABU_STAGE}`, {
-      value: userPoolDomain.domainName,
-    });
-    new cdk.CfnOutput(this, `COG_ACCESS_KEY_ID_${ABU_STAGE}`, {
-      value: cogAccess.ref,
-    });
-    new cdk.CfnOutput(this, `COG_SECRET_ACCESS_KEY_${ABU_STAGE}`, {
-      value: cogAccess.attrSecretAccessKey,
-    });
+      const { userPool, userPoolClient, userPoolDomain, cogAccess } = this.cog;
+      new cdk.CfnOutput(this, `COG_POOL_ID_${ABU_STAGE}`, {
+        value: userPool.userPoolId,
+      });
+      new cdk.CfnOutput(this, `COG_POOL_ARN_${ABU_STAGE}`, {
+        value: userPool.userPoolArn,
+      });
+      new cdk.CfnOutput(this, `COG_POOL_CLIENT_ID_${ABU_STAGE}`, {
+        value: userPoolClient.userPoolClientId,
+      });
+      new cdk.CfnOutput(this, `COG_POOL_CLIENT_DOMAIN_${ABU_STAGE}`, {
+        value: userPoolDomain.domainName,
+      });
+      new cdk.CfnOutput(this, `COG_ACCESS_KEY_ID_${ABU_STAGE}`, {
+        value: cogAccess.ref,
+      });
+      new cdk.CfnOutput(this, `COG_SECRET_ACCESS_KEY_${ABU_STAGE}`, {
+        value: cogAccess.attrSecretAccessKey,
+      });
+    } catch (error) {}
   }
 }
