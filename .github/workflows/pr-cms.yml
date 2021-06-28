@@ -246,6 +246,8 @@ jobs:
 
       - name: Start API
         run: yarn start:api &
+        env:
+          DEBUG: "lambda:*"
 
       - name: Integration tests
         uses: cypress-io/github-action@v2
