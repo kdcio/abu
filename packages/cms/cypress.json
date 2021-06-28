@@ -2,5 +2,5 @@
   "projectId": "2rjjt5",
   "baseUrl": "http://localhost:8060/",
   "chromeWebSecurity": false,
-  "defaultCommandTimeout": 10000
+  "defaultCommandTimeout": 30000
 }
