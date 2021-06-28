@@ -85,4 +85,4 @@ resources:
           Ref: ApiGatewayRestApi
         Type: COGNITO_USER_POOLS
         ProviderARNs:
-          - ${file(./config/${self:provider.stage}.yml):COG_POOL_ARN}
+          - ${file(./config/${self:provider.stage}.yml):COG_POOL_ARN, 'pool-arn'}
