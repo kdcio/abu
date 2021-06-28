@@ -1,5 +1,7 @@
 service: abu-api-admin-access
 
+projectDir: ../../
+
 plugins:
   - serverless-bundle
   - serverless-offline
@@ -59,4 +61,4 @@ resources:
           Ref: ApiGatewayRestApi
         Type: COGNITO_USER_POOLS
         ProviderARNs:
-          - Fn::ImportValue: CognitoUserPoolArn-${self:provider.stage}
+          - ${file(../../config/${self:provider.stage}.yml):COG_POOL_ARN}

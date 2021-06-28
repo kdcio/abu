@@ -4,7 +4,7 @@ Open-source serverless headless CMS. Deployed in AWS infrastructure.
 
 ![Models](docs/img/models.png)
 
-AbuCMS is an easy to use content manager making them availble via API.
+AbuCMS is an easy to use content manager making them available via API.
 
 - Bring your data anywhere - Central location for all your content. Accessible to anywhere via REST API.
 - Zero-cost - As long you are within the AWS free-tier limit, you'll be paying $0 forever. Even if you go above the free-tier, cost will be minimal and it will be a pay-per-use model.
@@ -40,18 +40,19 @@ You'll need [docker](https://www.docker.com/) installed for running [local dynam
    PROJECT_NAME: myproject.com
    REGION: ap-southeast-1
    PROFILE: dev
+   FIRST_USER_EMAIL: juan@myproject.com
    ```
 
    `PROJECT_NAME` will be referenced in all resources used in AWS. It must be unique with only letters and numbers. It should also be unique for S3 bucket name and cognito pool client domain usage. I recommend using a subdomain like `admin-dev.myproject.com`.
 
    `REGION` is the [AWS Region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html) you want your application to be deployed.
 
-   `PROFILE` is used by AWS CLI to indentify who you are. Here's how you configure [named profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
+   `PROFILE` is used by AWS CLI to identify who you are. Here's how you configure [named profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
 
 3. Run local setup script
 
    ```bash
-   yarn setup:local your@email.com
+   yarn setup:local
    ```
 
    This will create cognito resources in your AWS account and then run a local dynamodb.
@@ -66,14 +67,14 @@ You'll need [docker](https://www.docker.com/) installed for running [local dynam
    yarn start
    ```
 
-   You can also run them sepeartely `yarn start:api` and `yarn start:cms` for easier debugging.
+   You can also run them separately `yarn start:api` and `yarn start:cms` for easier debugging.
 
 Here are the services that will be running:
 
 1. [http://localhost:8060/](http://localhost:8060/) - CMS
 2. [http://localhost:8061/](http://localhost:8061/) - API
-3. [http://localhost:8062/](http://localhost:8062/) - DyanmoDB local
-4. [http://localhost:8063/](http://localhost:8063/) - [DyanmoDB manager](https://github.com/YoyaTeam/dynamodb-manager)
+3. [http://localhost:8062/](http://localhost:8062/) - DynamoDB local
+4. [http://localhost:8063/](http://localhost:8063/) - [DynamoDB manager](https://github.com/YoyaTeam/dynamodb-manager)
 5. [http://localhost:8064/](http://localhost:8064) - S3 local
 
 ## Deployment using S3 and CloudFront without domain name
@@ -93,6 +94,7 @@ Here are the services that will be running:
    UPLOAD_BUCKET: admin-upload.myproject.com
    REGION: ap-southeast-1
    PROFILE: my-production-profile
+   FIRST_USER_EMAIL: juan@myproject.com
    ```
 
    `PROJECT_NAME` will be referenced in all resources used in AWS. It must be unique with only letters and numbers. It should also be unique for S3 bucket name and cognito pool client domain usage. I recommend using a subdomain like `admin.myproject.com`.
@@ -101,12 +103,12 @@ Here are the services that will be running:
 
    `REGION` is the [AWS Region](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html) you want your application to be deployed.
 
-   `PROFILE` is used by AWS CLI to indentify who you are. Here's how you configure [named profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
+   `PROFILE` is used by AWS CLI to identify who you are. Here's how you configure [named profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
 
 3. Run deploy script
 
    ```bash
-   yarn deploy prod your@email.com
+   yarn deploy prod
    ```
 
    The script will take about 20 minutes to finish to provisioning everything.
@@ -127,7 +129,7 @@ Here are the services that will be running:
    - User Management Stack
      - Cognito
    - Database Stack
-     - DyanmoDB
+     - DynamoDB
 
    All of the stacks will use CloudFormation and S3 for deployment.
 

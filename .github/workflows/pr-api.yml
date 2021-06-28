@@ -13,7 +13,7 @@ on:
       - "!**/**.md"
       - "!docs/**"
       - "!packages/cms/**"
-      - "!resources/**"
+      - "!infra/**"
       - "!scripts/**"
       - "!config/**"
   workflow_dispatch:
@@ -70,8 +70,8 @@ jobs:
           cors: "*"
 
       - name: Create DynamoDB Table
-        working-directory: resources
-        run: yarn workspace res ddb:init
+        working-directory: infra
+        run: yarn workspace infra ddb:init
 
       - name: Smoke Test
         run: yarn build:api

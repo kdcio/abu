@@ -7,5 +7,4 @@ if [ -n "$FUNC" ]; then
     yarn deploy:api:func -s $STAGE -f $FUNC
 else
     yarn deploy:api:all $STAGE
-    ./scripts/api-endpoint.sh  $STAGE
 fi

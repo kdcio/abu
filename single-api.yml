@@ -22,7 +22,7 @@ custom:
   s3:
     port: 8064
     directory: ./.s3-local
-    cors: ./resources/s3-cors.xml
+    cors: ./packages/upload/s3-cors.xml
   bundle:
     packager: yarn
 
@@ -30,7 +30,7 @@ provider:
   name: aws
   runtime: nodejs14.x
   memorySize: 512
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'local'}
   region: ${file(./config/${self:provider.stage}.yml):REGION, 'ap-southeast-1'}
   profile: ${file(./config/${self:provider.stage}.yml):PROFILE, 'default'}
   lambdaHashingVersion: 20201221
@@ -85,4 +85,4 @@ resources:
           Ref: ApiGatewayRestApi
         Type: COGNITO_USER_POOLS
         ProviderARNs:
-          - Fn::ImportValue: AbuCognitoUserPoolArn-${self:provider.stage}
+          - ${file(./config/${self:provider.stage}.yml):COG_POOL_ARN, 'pool-arn'}

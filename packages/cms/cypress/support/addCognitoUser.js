@@ -7,18 +7,23 @@ Cypress.Commands.add("addCognitoUser", async (email, group = "editor") => {
     region: Cypress.env("cognitoRegion"),
   });
 
-  await cognito
-    .adminCreateUser({
-      UserPoolId: Cypress.env("cognitoPoolId"),
-      Username: email,
-    })
-    .promise();
+  try {
+    await cognito
+      .adminCreateUser({
+        UserPoolId: Cypress.env("cognitoPoolId"),
+        Username: email,
+      })
+      .promise();
 
-  await cognito
-    .adminAddUserToGroup({
-      UserPoolId: Cypress.env("cognitoPoolId"),
-      Username: email,
-      GroupName: group,
-    })
-    .promise();
+    await cognito
+      .adminAddUserToGroup({
+        UserPoolId: Cypress.env("cognitoPoolId"),
+        Username: email,
+        GroupName: group,
+      })
+      .promise();
+  } catch (error) {
+    console.log(error);
+    console.log("PoolId", Cypress.env("cognitoPoolId"));
+  }
 });

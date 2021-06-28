@@ -19,6 +19,7 @@ import "./verificationCode";
 import "./localStorage";
 import "./addCognitoUser";
 import "./deleteCognitoUser";
-
+import logsCollector from "cypress-terminal-report/src/installLogsCollector";
+logsCollector();
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

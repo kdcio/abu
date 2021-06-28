@@ -11,12 +11,12 @@ NC='\033[0m' # No Color
 if [ -z "$1" ]
   then
     echo -e "\nThis script will deploy the CMS.\n"
-    echo -e "Usage: deploy.sh ${BLUE}<stage> <email>${NC}\n"
-    echo -e "Example: deploy.sh prod jon@doe.com\n"
+    echo -e "Usage: deploy.sh ${BLUE}<stage>${NC}\n"
+    echo -e "Example: deploy.sh prod\n"
   exit 1
 fi
 
-STAGE=$1
+export STAGE=$1
 CONFIG_FILE=./config/$STAGE.yml
 
 if [ ! -f $CONFIG_FILE ]
@@ -25,26 +25,41 @@ if [ ! -f $CONFIG_FILE ]
   exit 1
 fi
 
-if [ -z "$2" ]
-  then
-    echo -e "\nMissing ${RED}email${NC}\n"
-  exit 1
-fi
+# Change to script dir
+cd "$(dirname "$0")"
+source ./config-to-env.sh
 
-EMAIL=$2
+# Export AWS Profile to use
+export AWS_PROFILE=$PROFILE
+export AWS_REGION=$REGION
+export ABU_STAGE=$STAGE
 
-# Run setup
-./scripts/setup-stage.sh $STAGE $EMAIL
+# Change to root dir
+cd ..
+
+echo -e "\n${BLUE}Setting up infrastructure...${NC}\n"
+yarn workspace infra cdk bootstrap
+yarn workspace infra build
+yarn workspace infra deploy
+
+# Store configs
+node scripts/cdk-to-config.js
+
+echo -e "\n${BLUE}Setting up S3 and CloudFront for uploads...${NC}\n"
+yarn workspace upload deploy $STAGE
+
+# Store upload configs
+node scripts/upload-to-config.js
 
 # update lambda memory and timeout
 ./scripts/update-lambda-edge.sh $STAGE
 
-# Build API
-yarn build:api
-
-# Run deploy api
+echo -e "\n${BLUE}Setting up API...${NC}\n"
 yarn deploy:api $STAGE
 
-# Run deploy cms
+# Store upload configs
+node scripts/api-to-config.js
+
+# # Run deploy cms
 yarn deploy:cms $STAGE
 

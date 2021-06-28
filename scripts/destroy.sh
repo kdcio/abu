@@ -8,7 +8,15 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-export STAGE=local
+if [ -z "$1" ]
+  then
+    echo -e "\nThis script will deploy the CMS.\n"
+    echo -e "Usage: deploy.sh ${BLUE}<stage>${NC}\n"
+    echo -e "Example: deploy.sh prod\n"
+  exit 1
+fi
+
+export STAGE=$1
 CONFIG_FILE=./config/$STAGE.yml
 
 if [ ! -f $CONFIG_FILE ]
@@ -29,15 +37,8 @@ export ABU_STAGE=$STAGE
 # Change to root dir
 cd ..
 
-echo -e "\n${BLUE}Setting up infrastructure...${NC}\n"
-yarn workspace infra cdk bootstrap
-yarn workspace infra build
-yarn workspace infra deploy
+yarn workspace infra destroy
 
-# Store configs
-node scripts/cdk-to-config-local.js
+yarn destroy:api $STAGE
 
-# Setup local dynamodb
-yarn workspace infra setup:local:ddb
-
-echo -e "${GREEN}Local Setup Success!!!${NC}\n"
+yarn destroy:upload $STAGE

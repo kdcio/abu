@@ -218,10 +218,10 @@ describe("Content", () => {
     expect(json).toHaveProperty("created");
     expect(json).toHaveProperty("modified");
     expect(json).not.toHaveProperty("pk");
-    expect(json).not.toHaveProperty("pk2");
-    expect(json).not.toHaveProperty("pk3");
+    expect(json).not.toHaveProperty("gsi1pk");
+    expect(json).not.toHaveProperty("gsi2pk");
     expect(json).not.toHaveProperty("sk");
-    expect(json).not.toHaveProperty("sk2");
+    expect(json).not.toHaveProperty("gsi1sk");
   });
 
   it("should throw content not found", async () => {

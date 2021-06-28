@@ -1,5 +1,7 @@
 service: abu-api-admin-content
 
+projectDir: ../../
+
 plugins:
   - serverless-bundle
   - serverless-offline

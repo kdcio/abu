@@ -6,8 +6,8 @@ const Model = new Entity({
   attributes: {
     id: { partitionKey: true, prefix: 'MOD#' },
     sk: { sortKey: true, default: 'META', hidden: true },
-    pk2: { default: 'MOD', hidden: true },
-    sk2: { alias: 'name' },
+    gsi1pk: { default: 'MOD', hidden: true },
+    gsi1sk: { alias: 'name' },
     fields: { type: 'list', required: false },
     collection: { type: 'boolean' },
   },

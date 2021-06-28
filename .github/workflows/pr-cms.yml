@@ -161,8 +161,8 @@ jobs:
           cors: "*"
 
       - name: Create DynamoDB Table
-        working-directory: resources
-        run: yarn workspace res ddb:init
+        working-directory: infra
+        run: yarn workspace infra ddb:init
 
       - name: Smoke Test
         run: yarn build:api
@@ -241,11 +241,13 @@ jobs:
           cors: "*"
 
       - name: Create DynamoDB Table
-        working-directory: resources
-        run: yarn workspace res ddb:init
+        working-directory: infra
+        run: yarn workspace infra ddb:init
 
       - name: Start API
         run: yarn start:api &
+        env:
+          DEBUG: "lambda:*"
 
       - name: Integration tests
         uses: cypress-io/github-action@v2

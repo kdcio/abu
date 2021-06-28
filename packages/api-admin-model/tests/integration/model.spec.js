@@ -50,7 +50,7 @@ describe("Model", () => {
       };
 
       const { Item } = await ddb.get(params).promise();
-      expect(Item.sk2).toBe(model.name);
+      expect(Item.gsi1sk).toBe(model.name);
       expect(Item.collection).toBe(model.collection);
       expect(Item.fields).toEqual(model.fields);
 
@@ -227,7 +227,7 @@ describe("Model", () => {
     };
 
     const { Item } = await ddb.get(params).promise();
-    expect(Item.sk2).toBe(newName);
+    expect(Item.gsi1sk).toBe(newName);
     expect(Item.collection).toBe(model.collection);
     expect(Item.fields).toEqual(model.fields);
   });
@@ -259,7 +259,7 @@ describe("Model", () => {
     };
 
     const { Item } = await ddb.get(params).promise();
-    expect(Item.sk2).toBe(model.name);
+    expect(Item.gsi1sk).toBe(model.name);
     expect(Item.collection).toBe(model.collection);
     expect(Item.fields).toEqual(newFields);
     expect(Item.fields).not.toEqual(fields);
