@@ -57,7 +57,7 @@
     "cypress-wait-until": "^1.7.1",
     "eslint-plugin-cypress": "^2.11.2",
     "faker": "^5.5.1",
-    "postcss": "^7.0.35",
+    "postcss": "^7.0.36",
     "progress-bar-webpack-plugin": "^2.1.0",
     "serve": "^11.3.2",
     "webpack-bundle-analyzer": "^4.4.0"
