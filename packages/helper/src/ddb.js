@@ -1,5 +1,5 @@
 const DynamoDB = require("aws-sdk/clients/dynamodb");
-const schema = require("../../../resources/schema.json");
+const schema = require("../../../infra/schema.json");
 
 const dropTableIfExists = async ({ dynamoDB, TableName }) => {
   const { TableNames } = await dynamoDB.listTables().promise();
