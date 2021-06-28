@@ -161,7 +161,7 @@ jobs:
           cors: "*"
 
       - name: Create DynamoDB Table
-        working-directory: resources
+        working-directory: infra
         run: yarn workspace infra ddb:init
 
       - name: Smoke Test
@@ -241,7 +241,7 @@ jobs:
           cors: "*"
 
       - name: Create DynamoDB Table
-        working-directory: resources
+        working-directory: infra
         run: yarn workspace infra ddb:init
 
       - name: Start API
